@@ -1,0 +1,114 @@
+{
+    "problem_parameters": {
+        "network_name": "4-Bus High Gen",
+        "topology": {
+            "buses": 4,
+            "branches": 5,
+            "lines": 5,
+            "trafos": 0,
+            "is_connected": true
+        },
+        "dispatchable_assets": {
+            "total_count": 4,
+            "generators": 3,
+            "external_grids": 1,
+            "capacity_max_mw": 340.0,
+            "capacity_min_mw": 0.0
+        },
+        "demand": {
+            "load_count": 3,
+            "total_load_mw": 180.0,
+            "static_gen_mw": 0.0,
+            "net_active_demand_mw": 180.0
+        },
+        "feasibility_precheck": {
+            "capacity_sufficient": true
+        },
+        "linear_costs_eur_per_mw": {
+            "ext_grid_0": 40.0,
+            "gen_0": 30.0,
+            "gen_1": 20.0,
+            "gen_2": 10.0
+        }
+    },
+    "opf_results": {
+        "solution": {
+            "cost_eur_per_hr": 3000.0,
+            "generator_dispatch_mw": {
+                "0": {
+                    "p_mw": 20.0
+                },
+                "1": {
+                    "p_mw": 80.0
+                },
+                "2": {
+                    "p_mw": 80.0
+                }
+            },
+            "static_generator_dispatch_mw": {},
+            "slack_dispatch_mw": {
+                "0": {
+                    "p_mw": 0.0
+                }
+            },
+            "grid_state": {
+                "max_line_loading_percent": 20.918,
+                "max_voltage_pu": 1.0,
+                "min_voltage_pu": 1.0,
+                "feasibility": {
+                    "total_generation_mw": 180.0,
+                    "total_load_mw": 180.0,
+                    "raw_imbalance_mw": 0.0,
+                    "raw_slack_dispatch_mw": 0.0,
+                    "cost_raw_dispatch_eur": 3000.0,
+                    "max_line_violation_mw": 0.0,
+                    "tolerance_mw": 0.0001,
+                    "balance_ok": true,
+                    "lines_ok": true,
+                    "bounds_ok": true,
+                    "is_feasible": true,
+                    "line_flows_mw": {
+                        "0": 7.5,
+                        "1": -12.5,
+                        "2": 2.5,
+                        "3": 2.5,
+                        "4": -5.0
+                    },
+                    "bus_angles_rad": {
+                        "0": 0.0,
+                        "1": -0.001418,
+                        "2": 0.000945,
+                        "3": 0.000473
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "status": "Success",
+            "solver_name": "pandapower_dc_interior_point",
+            "execution_time_seconds": {
+                "total": 0.0241,
+                "qpu_master": 0.0,
+                "cpu_subproblem": 0.0241
+            },
+            "problem_complexity": {
+                "num_continuous_variables": 8,
+                "num_binary_variables": 0,
+                "num_equality_constraints": 4,
+                "num_inequality_constraints": 18
+            },
+            "algorithmic_metrics": {
+                "framework": "standard_interior_point",
+                "num_iterations": 1,
+                "optimality_gap_percent": 0.0
+            },
+            "hardware_metrics": {
+                "qpu_target": "none",
+                "logical_qubits": 0,
+                "physical_qubits": 0,
+                "max_chain_length": 0,
+                "circuit_depth": 0
+            }
+        }
+    }
+}

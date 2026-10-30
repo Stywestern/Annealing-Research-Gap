@@ -1,0 +1,23 @@
+__pycache__
+_site/
+
+# Python tooling virtual environments (uv). The lockfile (misc/uv.lock) is committed.
+.qudigtwin/
+.vscode/
+*.egg-info/
+
+# Ignore Rust target directory
+target/
+
+.DS_Store
+
+# Environment / secret files — never commit these
+.env
+.env.*
+*.local
+
+/.idea/misc.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/.idea/workspace.xml

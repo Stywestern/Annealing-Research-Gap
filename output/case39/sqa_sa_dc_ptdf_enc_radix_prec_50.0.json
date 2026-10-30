@@ -1,0 +1,327 @@
+{
+    "problem_parameters": {
+        "network_name": "case39",
+        "topology": {
+            "buses": 39,
+            "branches": 46,
+            "lines": 35,
+            "trafos": 11,
+            "is_connected": true
+        },
+        "dispatchable_assets": {
+            "total_count": 10,
+            "generators": 9,
+            "external_grids": 1,
+            "capacity_max_mw": 7367.0,
+            "capacity_min_mw": 0.0
+        },
+        "demand": {
+            "load_count": 21,
+            "total_load_mw": 6254.23,
+            "static_gen_mw": 0.0,
+            "net_active_demand_mw": 6254.23
+        },
+        "feasibility_precheck": {
+            "capacity_sufficient": true
+        },
+        "linear_costs_eur_per_mw": {
+            "gen_0": 0.3,
+            "ext_grid_0": 0.3,
+            "gen_1": 0.3,
+            "gen_2": 0.3,
+            "gen_3": 0.3,
+            "gen_4": 0.3,
+            "gen_5": 0.3,
+            "gen_6": 0.3,
+            "gen_7": 0.3,
+            "gen_8": 0.3
+        }
+    },
+    "opf_results": {
+        "solution": {
+            "cost_eur_per_hr": 42995.748,
+            "generator_dispatch_mw": {
+                "0": {
+                    "p_mw": 600.0
+                },
+                "1": {
+                    "p_mw": 600.0
+                },
+                "2": {
+                    "p_mw": 650.0
+                },
+                "3": {
+                    "p_mw": 500.0
+                },
+                "4": {
+                    "p_mw": 650.0
+                },
+                "5": {
+                    "p_mw": 550.0
+                },
+                "6": {
+                    "p_mw": 500.0
+                },
+                "7": {
+                    "p_mw": 700.0
+                },
+                "8": {
+                    "p_mw": 1000.0
+                }
+            },
+            "static_generator_dispatch_mw": {},
+            "slack_dispatch_mw": {
+                "0": {
+                    "p_mw": 504.23
+                }
+            },
+            "grid_state": {
+                "max_line_loading_percent": 99.31,
+                "max_voltage_pu": 1.0,
+                "min_voltage_pu": 1.0,
+                "feasibility": {
+                    "total_generation_mw": 6254.23,
+                    "total_load_mw": 6254.23,
+                    "raw_imbalance_mw": -4.23,
+                    "raw_slack_dispatch_mw": 500.0,
+                    "cost_raw_dispatch_eur": 42952.0,
+                    "max_line_violation_mw": 0.0,
+                    "tolerance_mw": 50.0,
+                    "balance_ok": true,
+                    "lines_ok": true,
+                    "bounds_ok": true,
+                    "is_feasible": true,
+                    "line_flows_mw": {
+                        "line_0": -221.756,
+                        "line_1": 124.156,
+                        "line_2": 496.552,
+                        "line_3": -118.308,
+                        "line_4": 158.436,
+                        "line_5": 16.116,
+                        "line_6": -99.202,
+                        "line_7": -242.363,
+                        "line_8": -421.962,
+                        "line_9": 322.76,
+                        "line_10": 419.384,
+                        "line_11": -346.315,
+                        "line_12": 185.584,
+                        "line_13": -13.656,
+                        "line_14": -20.156,
+                        "line_15": 346.033,
+                        "line_16": 253.967,
+                        "line_17": 245.155,
+                        "line_18": 2.792,
+                        "line_19": -317.208,
+                        "line_20": 193.692,
+                        "line_21": -470.0,
+                        "line_22": -329.532,
+                        "line_23": -40.368,
+                        "line_24": 141.884,
+                        "line_25": 51.808,
+                        "line_26": -603.532,
+                        "line_27": 46.468,
+                        "line_28": 348.968,
+                        "line_29": -550.0,
+                        "line_30": 157.692,
+                        "line_31": 229.192,
+                        "line_32": -80.365,
+                        "line_33": -130.135,
+                        "line_34": -286.365,
+                        "trafo_0": -600.0,
+                        "trafo_1": -495.03,
+                        "trafo_2": -600.0,
+                        "trafo_3": 0.282,
+                        "trafo_4": -8.812,
+                        "trafo_5": 180.0,
+                        "trafo_6": -650.0,
+                        "trafo_7": -500.0,
+                        "trafo_8": -650.0,
+                        "trafo_9": -500.0,
+                        "trafo_10": -700.0
+                    },
+                    "bus_angles_rad": {
+                        "0": -0.129842,
+                        "1": -0.0387,
+                        "2": -0.113679,
+                        "3": -0.147426,
+                        "4": -0.134729,
+                        "5": -0.123758,
+                        "6": -0.162341,
+                        "7": -0.170878,
+                        "8": -0.16592,
+                        "9": -0.08048,
+                        "10": -0.09536,
+                        "11": -0.095237,
+                        "12": -0.091401,
+                        "13": -0.116161,
+                        "14": -0.116767,
+                        "15": -0.08695,
+                        "16": -0.104188,
+                        "17": -0.115823,
+                        "18": 0.0047,
+                        "19": -0.020172,
+                        "20": -0.042463,
+                        "21": 0.042031,
+                        "22": 0.037571,
+                        "23": -0.084568,
+                        "24": -0.028526,
+                        "25": -0.07946,
+                        "26": -0.113151,
+                        "27": -0.041367,
+                        "28": 0.001874,
+                        "29": 0.0699,
+                        "30": 0.0,
+                        "31": 0.03952,
+                        "32": 0.097112,
+                        "33": 0.069941,
+                        "34": 0.134981,
+                        "35": 0.187171,
+                        "36": 0.087513,
+                        "37": 0.111218,
+                        "38": -0.160881
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "status": "Success",
+            "solver_name": "emulated_qpu_sa_dc_ptdf",
+            "execution_time_seconds": {
+                "total": 1212.3169,
+                "formulation_cpu": 0.0264,
+                "embedding_cpu": 361.7965,
+                "sampling_analog_sim": 850.3494
+            },
+            "problem_complexity": {
+                "formulation": "dc_ptdf",
+                "encoding": "radix",
+                "classical_domain_input": {
+                    "continuous_variables": 10,
+                    "equality_constraints": 1,
+                    "inequality_constraints": 90
+                },
+                "quantum_domain_qubo": {
+                    "total_logical_qubits": 182,
+                    "qubits_used_for_variables": 43,
+                    "qubits_used_for_dispatch": 43,
+                    "qubits_used_for_angles": 0,
+                    "qubits_wasted_on_slack": 139,
+                    "num_interactions": 5770,
+                    "density_percent": 35.03,
+                    "offset": 66875183.10007067
+                },
+                "hardware_limits": {
+                    "ising_max": 2774430.6786,
+                    "ising_min": 64.735308,
+                    "ising_dynamic_range": 42858.07,
+                    "ising_at_risk_percent": 96.66,
+                    "max_coefficient_magnitude": 11433104.1275,
+                    "min_coefficient_magnitude": 258.9412,
+                    "dac_precision_warning": true
+                },
+                "penalties": {
+                    "balance": 0.49060000000000004,
+                    "line": {
+                        "line_0": 0.49060000000000004,
+                        "line_1": 0.49060000000000004,
+                        "line_2": 0.49060000000000004,
+                        "line_3": 0.49060000000000004,
+                        "line_4": 0.49060000000000004,
+                        "line_5": 0.4642000000000001,
+                        "line_6": 0.49060000000000004,
+                        "line_7": 0.24530000000000002,
+                        "line_8": 0.24530000000000002,
+                        "line_9": 0.24530000000000002,
+                        "line_10": 0.49060000000000004,
+                        "line_11": 0.49060000000000004,
+                        "line_12": 0.49060000000000004,
+                        "line_13": 0.49060000000000004,
+                        "line_14": 0.49060000000000004,
+                        "line_15": 0.49060000000000004,
+                        "line_16": 0.49060000000000004,
+                        "line_17": 0.49060000000000004,
+                        "line_18": 0.49060000000000004,
+                        "line_19": 0.49060000000000004,
+                        "line_20": 0.49060000000000004,
+                        "line_21": 0.2934800000000001,
+                        "line_22": 0.24530000000000002,
+                        "line_23": 0.24530000000000002,
+                        "line_24": 0.4642000000000001,
+                        "line_25": 0.49060000000000004,
+                        "line_26": 0.24530000000000002,
+                        "line_27": 0.24530000000000002,
+                        "line_28": 0.24530000000000002,
+                        "line_29": 0.26180000000000003,
+                        "line_30": 0.49060000000000004,
+                        "line_31": 0.49060000000000004,
+                        "line_32": 0.24530000000000002,
+                        "line_33": 0.24530000000000002,
+                        "line_34": 0.24530000000000002,
+                        "trafo_0": 0.4642000000000001,
+                        "trafo_1": 0.49060000000000004,
+                        "trafo_2": 0.3256,
+                        "trafo_3": 0.24530000000000002,
+                        "trafo_4": 0.24530000000000002,
+                        "trafo_5": 0.24530000000000002,
+                        "trafo_6": 0.2934800000000001,
+                        "trafo_7": 0.23012000000000005,
+                        "trafo_8": 0.30888000000000004,
+                        "trafo_9": 0.25476000000000004,
+                        "trafo_10": 0.38720000000000004
+                    }
+                }
+            },
+            "hardware_feasibility_report": {
+                "at_risk_fraction": 0.9662
+            },
+            "qubo_parameters": {
+                "mw_precision": 50.0,
+                "penalty_balance": null,
+                "penalty_line": null
+            },
+            "hardware_metrics": {
+                "qpu_target": "ideal_zephyr_Z(15,4)",
+                "topology": {
+                    "type": "zephyr",
+                    "shape": [
+                        15,
+                        4
+                    ]
+                },
+                "logical_qubits": 182,
+                "physical_qubits": 1277,
+                "qubit_overhead_factor": 7.02,
+                "max_chain_length": 21,
+                "mean_chain_length": 7.02,
+                "chain_length_variance": 23.5217,
+                "multi_qubit_chains": 182,
+                "single_qubit_variables": 0,
+                "total_chain_qubits": 1277,
+                "embedding_heuristic_winner": "minorminer_seed2",
+                "hardware_scale_factor": 3.4026552758539245e-06,
+                "chain_strength_applied": 304316.41947954125,
+                "dac_resolution_bits": 5,
+                "dac_step_granularity": 0.03125,
+                "ice_sigma_h": 0.01,
+                "ice_sigma_j": 0.01
+            },
+            "algorithmic_metrics": {
+                "framework": "hardware_aware_analog_simulation",
+                "sampler_stats": {
+                    "num_reads_requested": 2000,
+                    "num_sweeps_per_read": 20000,
+                    "unique_states_found": 2000,
+                    "raw_energy_best_logical": -13912203.05,
+                    "raw_energy_mean_logical": -10825759.43,
+                    "sds_energy_best_logical": 47052.92,
+                    "sds_energy_mean_logical": 132366.14,
+                    "energy_improvement_delta": -13959255.97,
+                    "mean_chain_break_fraction": 0.099,
+                    "postprocess_physical_flips": 4790,
+                    "postprocess_logical_flips": 72455,
+                    "total_flips_executed": 77245
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,279 @@
+{
+    "problem_parameters": {
+        "network_name": "case24_ieee_rts",
+        "topology": {
+            "buses": 24,
+            "branches": 38,
+            "lines": 33,
+            "trafos": 5,
+            "is_connected": true
+        },
+        "dispatchable_assets": {
+            "total_count": 11,
+            "generators": 10,
+            "external_grids": 1,
+            "capacity_max_mw": 1509.0,
+            "capacity_min_mw": 378.0
+        },
+        "demand": {
+            "load_count": 17,
+            "total_load_mw": 2850.0,
+            "static_gen_mw": 1632.2,
+            "net_active_demand_mw": 1217.8
+        },
+        "feasibility_precheck": {
+            "capacity_sufficient": true
+        },
+        "linear_costs_eur_per_mw": {
+            "gen_0": 130.0,
+            "sgen_0": 130.0,
+            "sgen_7": 43.6615,
+            "ext_grid_0": 48.5804,
+            "sgen_8": 48.5804,
+            "sgen_9": 48.5804,
+            "gen_3": 0.0,
+            "gen_4": 56.56399999999999,
+            "sgen_10": 56.56399999999999,
+            "sgen_11": 56.56399999999999,
+            "sgen_12": 56.56399999999999,
+            "sgen_13": 56.56399999999999,
+            "sgen_1": 16.0811,
+            "sgen_14": 12.3883,
+            "gen_5": 12.3883,
+            "gen_6": 4.4231,
+            "gen_7": 4.4231,
+            "gen_8": 0.001,
+            "sgen_15": 0.001,
+            "sgen_16": 0.001,
+            "sgen_17": 0.001,
+            "sgen_18": 0.001,
+            "sgen_19": 0.001,
+            "sgen_2": 16.0811,
+            "gen_9": 12.3883,
+            "sgen_20": 12.3883,
+            "sgen_21": 11.8495,
+            "gen_1": 130.0,
+            "sgen_3": 130.0,
+            "sgen_4": 16.0811,
+            "sgen_5": 16.0811,
+            "gen_2": 43.6615,
+            "sgen_6": 43.6615
+        }
+    },
+    "opf_results": {
+        "solution": {
+            "cost_eur_per_hr": 61001.24,
+            "generator_dispatch_mw": {
+                "0": {
+                    "p_mw": 16.0
+                },
+                "1": {
+                    "p_mw": 16.0
+                },
+                "2": {
+                    "p_mw": 57.074
+                },
+                "3": {
+                    "p_mw": -0.0
+                },
+                "4": {
+                    "p_mw": 2.4
+                },
+                "5": {
+                    "p_mw": 155.0
+                },
+                "6": {
+                    "p_mw": 400.0
+                },
+                "7": {
+                    "p_mw": 400.0
+                },
+                "8": {
+                    "p_mw": 50.0
+                },
+                "9": {
+                    "p_mw": 155.0
+                }
+            },
+            "static_generator_dispatch_mw": {
+                "0": {
+                    "p_mw": 16.0
+                },
+                "1": {
+                    "p_mw": 76.0
+                },
+                "2": {
+                    "p_mw": 76.0
+                },
+                "3": {
+                    "p_mw": 16.0
+                },
+                "4": {
+                    "p_mw": 76.0
+                },
+                "5": {
+                    "p_mw": 76.0
+                },
+                "6": {
+                    "p_mw": 57.074
+                },
+                "7": {
+                    "p_mw": 57.074
+                },
+                "8": {
+                    "p_mw": 76.259
+                },
+                "9": {
+                    "p_mw": 76.259
+                },
+                "10": {
+                    "p_mw": 2.4
+                },
+                "11": {
+                    "p_mw": 2.4
+                },
+                "12": {
+                    "p_mw": 2.4
+                },
+                "13": {
+                    "p_mw": 2.4
+                },
+                "14": {
+                    "p_mw": 155.0
+                },
+                "15": {
+                    "p_mw": 50.0
+                },
+                "16": {
+                    "p_mw": 50.0
+                },
+                "17": {
+                    "p_mw": 50.0
+                },
+                "18": {
+                    "p_mw": 50.0
+                },
+                "19": {
+                    "p_mw": 50.0
+                },
+                "20": {
+                    "p_mw": 155.0
+                },
+                "21": {
+                    "p_mw": 350.0
+                }
+            },
+            "slack_dispatch_mw": {
+                "0": {
+                    "p_mw": 76.259
+                }
+            },
+            "grid_state": {
+                "max_line_loading_percent": 73.225,
+                "max_voltage_pu": 1.0,
+                "min_voltage_pu": 1.0,
+                "feasibility": {
+                    "total_generation_mw": 2850.0,
+                    "total_load_mw": 2850.0,
+                    "raw_imbalance_mw": 0.0,
+                    "raw_slack_dispatch_mw": 76.259,
+                    "cost_raw_dispatch_eur": 61001.24,
+                    "max_line_violation_mw": 0.0,
+                    "tolerance_mw": 0.0001,
+                    "balance_ok": true,
+                    "lines_ok": true,
+                    "bounds_ok": true,
+                    "is_feasible": true,
+                    "line_flows_mw": {
+                        "0": 11.062,
+                        "1": -4.753,
+                        "2": 69.692,
+                        "3": 43.219,
+                        "4": 54.842,
+                        "5": 28.921,
+                        "6": -30.781,
+                        "7": -1.308,
+                        "8": -81.158,
+                        "9": 46.223,
+                        "10": -72.49,
+                        "11": -52.286,
+                        "12": -102.486,
+                        "13": -172.123,
+                        "14": -75.491,
+                        "15": -229.003,
+                        "16": -214.2,
+                        "17": -366.123,
+                        "18": 82.54,
+                        "19": -223.107,
+                        "20": -223.107,
+                        "21": 213.674,
+                        "22": -320.785,
+                        "23": 92.203,
+                        "24": -179.873,
+                        "25": -140.912,
+                        "26": -56.437,
+                        "27": -56.437,
+                        "28": -44.399,
+                        "29": -44.399,
+                        "30": -108.399,
+                        "31": -108.399,
+                        "32": -159.088
+                    },
+                    "bus_angles_rad": {
+                        "0": -0.125722,
+                        "1": -0.127259,
+                        "2": -0.115683,
+                        "3": -0.182018,
+                        "4": -0.184611,
+                        "5": -0.232557,
+                        "6": -0.241399,
+                        "7": -0.269781,
+                        "8": -0.150099,
+                        "9": -0.183456,
+                        "10": -0.048783,
+                        "11": -0.035934,
+                        "12": 0.0,
+                        "13": 0.023164,
+                        "14": 0.179865,
+                        "15": 0.165586,
+                        "16": 0.248669,
+                        "17": 0.274571,
+                        "18": 0.144287,
+                        "19": 0.161869,
+                        "20": 0.289188,
+                        "21": 0.39705,
+                        "22": 0.185283,
+                        "23": 0.068968
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "status": "Success",
+            "solver_name": "pandapower_dc_interior_point",
+            "execution_time_seconds": {
+                "total": 0.0575,
+                "qpu_master": 0.0,
+                "cpu_subproblem": 0.0575
+            },
+            "problem_complexity": {
+                "num_continuous_variables": 35,
+                "num_binary_variables": 0,
+                "num_equality_constraints": 24,
+                "num_inequality_constraints": 88
+            },
+            "algorithmic_metrics": {
+                "framework": "standard_interior_point",
+                "num_iterations": 1,
+                "optimality_gap_percent": 0.0
+            },
+            "hardware_metrics": {
+                "qpu_target": "none",
+                "logical_qubits": 0,
+                "physical_qubits": 0,
+                "max_chain_length": 0,
+                "circuit_depth": 0
+            }
+        }
+    }
+}

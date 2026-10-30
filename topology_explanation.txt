@@ -1,0 +1,17 @@
+1. The Nodes (Buses)
+The Blue Dots: These are your 14 buses. Mathematically, these are the vertices of your graph. Every calculation for voltage magnitude and phase angle happens exactly at these points.
+
+2. The Power Sources
+The Crosshatched Square (Bottom Left): This is your Slack Bus (ext_grid). Notice it is connected to a single blue dot (Bus 0). This acts as the mathematical anchor for the entire simulation, providing whatever infinite power is needed to balance the equations and cover transmission losses.
+
+The Hollow Circles (attached to buses): These are your Generators (gen). If you look closely at the buses on the left side of the graph, you will see small lines connecting the blue dots to these circles. These represent the physical synchronous machines injecting active and reactive power into the network.
+
+3. The Power Consumers
+The Small Triangles: These are the Loads (load). Notice they are scattered across almost every bus. They represent cities, factories, or neighborhoods. In standard OPF, these are treated as negative power injections (constants) that the generators must collectively match.
+
+4. The Routing (Branches)
+The Solid Grey Lines: These are the standard Transmission Lines (line). They connect the buses and possess inherent electrical resistance and reactance. The power flows through these automatically based on the impedance matrix, not by active routing.
+
+The Black Lines with Interlocking Circles: These are Transformers (trafo). The interlocking circles are the universal schematic symbol for transformer coils.
+
+System Insight: Notice how these transformers divide the graph. The densely connected area on the left (where the generators and slack bus are) is the high-voltage transmission network. The transformers step that voltage down to the buses on the right, which represents a lower-voltage distribution network.

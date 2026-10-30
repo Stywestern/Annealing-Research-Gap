@@ -1,0 +1,203 @@
+{
+    "problem_parameters": {
+        "network_name": "case39",
+        "topology": {
+            "buses": 39,
+            "branches": 46,
+            "lines": 35,
+            "trafos": 11,
+            "is_connected": true
+        },
+        "dispatchable_assets": {
+            "total_count": 10,
+            "generators": 9,
+            "external_grids": 1,
+            "capacity_max_mw": 7367.0,
+            "capacity_min_mw": 0.0
+        },
+        "demand": {
+            "load_count": 21,
+            "total_load_mw": 6254.23,
+            "static_gen_mw": 0.0,
+            "net_active_demand_mw": 6254.23
+        },
+        "feasibility_precheck": {
+            "capacity_sufficient": true
+        },
+        "linear_costs_eur_per_mw": {
+            "gen_0": 0.3,
+            "ext_grid_0": 0.3,
+            "gen_1": 0.3,
+            "gen_2": 0.3,
+            "gen_3": 0.3,
+            "gen_4": 0.3,
+            "gen_5": 0.3,
+            "gen_6": 0.3,
+            "gen_7": 0.3,
+            "gen_8": 0.3
+        }
+    },
+    "opf_results": {
+        "solution": {
+            "cost_eur_per_hr": 41263.941,
+            "generator_dispatch_mw": {
+                "0": {
+                    "p_mw": 660.846
+                },
+                "1": {
+                    "p_mw": 660.846
+                },
+                "2": {
+                    "p_mw": 652.0
+                },
+                "3": {
+                    "p_mw": 508.0
+                },
+                "4": {
+                    "p_mw": 660.846
+                },
+                "5": {
+                    "p_mw": 580.0
+                },
+                "6": {
+                    "p_mw": 564.0
+                },
+                "7": {
+                    "p_mw": 660.846
+                },
+                "8": {
+                    "p_mw": 660.846
+                }
+            },
+            "static_generator_dispatch_mw": {},
+            "slack_dispatch_mw": {
+                "0": {
+                    "p_mw": 646.0
+                }
+            },
+            "grid_state": {
+                "max_line_loading_percent": 90.162,
+                "max_voltage_pu": 1.0,
+                "min_voltage_pu": 1.0,
+                "feasibility": {
+                    "total_generation_mw": 6254.23,
+                    "total_load_mw": 6254.23,
+                    "raw_imbalance_mw": 0.0,
+                    "raw_slack_dispatch_mw": 646.0,
+                    "cost_raw_dispatch_eur": 41263.941,
+                    "max_line_violation_mw": 0.0,
+                    "tolerance_mw": 0.0001,
+                    "balance_ok": true,
+                    "lines_ok": true,
+                    "bounds_ok": true,
+                    "is_feasible": true,
+                    "line_flows_mw": {
+                        "0": -383.083,
+                        "1": 285.483,
+                        "2": 450.812,
+                        "3": -173.049,
+                        "4": 133.054,
+                        "5": -4.241,
+                        "6": -99.324,
+                        "7": -267.622,
+                        "8": -510.986,
+                        "9": 411.662,
+                        "10": 508.309,
+                        "11": -382.495,
+                        "12": 274.509,
+                        "13": 164.171,
+                        "14": 157.671,
+                        "15": 381.72,
+                        "16": 279.126,
+                        "17": 269.821,
+                        "18": 2.199,
+                        "19": -317.801,
+                        "20": 243.945,
+                        "21": -480.0,
+                        "22": -352.285,
+                        "23": -58.461,
+                        "24": 162.241,
+                        "25": 81.703,
+                        "26": -626.285,
+                        "27": 34.561,
+                        "28": 367.061,
+                        "29": -580.0,
+                        "30": 166.951,
+                        "31": 199.297,
+                        "32": -60.788,
+                        "33": -110.558,
+                        "34": -266.788
+                    },
+                    "bus_angles_rad": {
+                        "0": -0.257377,
+                        "1": -0.09993,
+                        "2": -0.168003,
+                        "3": -0.196343,
+                        "4": -0.18363,
+                        "5": -0.170344,
+                        "6": -0.217108,
+                        "7": -0.229736,
+                        "8": -0.28933,
+                        "9": -0.122565,
+                        "10": -0.138979,
+                        "11": -0.13864,
+                        "12": -0.134568,
+                        "13": -0.16182,
+                        "14": -0.162297,
+                        "15": -0.132424,
+                        "16": -0.154135,
+                        "17": -0.167439,
+                        "18": -0.038824,
+                        "19": -0.063984,
+                        "20": -0.084865,
+                        "21": 0.002815,
+                        "22": -0.000503,
+                        "23": -0.128974,
+                        "24": -0.085048,
+                        "25": -0.138973,
+                        "26": -0.168269,
+                        "27": -0.110159,
+                        "28": -0.069874,
+                        "29": 0.022674,
+                        "30": 0.0,
+                        "31": 0.018856,
+                        "32": 0.060241,
+                        "33": 0.028279,
+                        "34": 0.099678,
+                        "35": 0.157257,
+                        "36": 0.049071,
+                        "37": 0.035795,
+                        "38": -0.328748
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "status": "Success",
+            "solver_name": "pandapower_dc_interior_point",
+            "execution_time_seconds": {
+                "total": 0.0297,
+                "qpu_master": 0.0,
+                "cpu_subproblem": 0.0297
+            },
+            "problem_complexity": {
+                "num_continuous_variables": 49,
+                "num_binary_variables": 0,
+                "num_equality_constraints": 39,
+                "num_inequality_constraints": 90
+            },
+            "algorithmic_metrics": {
+                "framework": "standard_interior_point",
+                "num_iterations": 1,
+                "optimality_gap_percent": 0.0
+            },
+            "hardware_metrics": {
+                "qpu_target": "none",
+                "logical_qubits": 0,
+                "physical_qubits": 0,
+                "max_chain_length": 0,
+                "circuit_depth": 0
+            }
+        }
+    }
+}

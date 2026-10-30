@@ -1,0 +1,368 @@
+{
+    "problem_parameters": {
+        "network_name": "case24_ieee_rts",
+        "topology": {
+            "buses": 24,
+            "branches": 38,
+            "lines": 33,
+            "trafos": 5,
+            "is_connected": true
+        },
+        "dispatchable_assets": {
+            "total_count": 11,
+            "generators": 10,
+            "external_grids": 1,
+            "capacity_max_mw": 1509.0,
+            "capacity_min_mw": 378.0
+        },
+        "demand": {
+            "load_count": 17,
+            "total_load_mw": 2850.0,
+            "static_gen_mw": 1632.2,
+            "net_active_demand_mw": 1217.8
+        },
+        "feasibility_precheck": {
+            "capacity_sufficient": true
+        },
+        "linear_costs_eur_per_mw": {
+            "gen_0": 130.0,
+            "sgen_0": 130.0,
+            "sgen_7": 43.6615,
+            "ext_grid_0": 48.5804,
+            "sgen_8": 48.5804,
+            "sgen_9": 48.5804,
+            "gen_3": 0.0,
+            "gen_4": 56.56399999999999,
+            "sgen_10": 56.56399999999999,
+            "sgen_11": 56.56399999999999,
+            "sgen_12": 56.56399999999999,
+            "sgen_13": 56.56399999999999,
+            "sgen_1": 16.0811,
+            "sgen_14": 12.3883,
+            "gen_5": 12.3883,
+            "gen_6": 4.4231,
+            "gen_7": 4.4231,
+            "gen_8": 0.001,
+            "sgen_15": 0.001,
+            "sgen_16": 0.001,
+            "sgen_17": 0.001,
+            "sgen_18": 0.001,
+            "sgen_19": 0.001,
+            "sgen_2": 16.0811,
+            "gen_9": 12.3883,
+            "sgen_20": 12.3883,
+            "sgen_21": 11.8495,
+            "gen_1": 130.0,
+            "sgen_3": 130.0,
+            "sgen_4": 16.0811,
+            "sgen_5": 16.0811,
+            "gen_2": 43.6615,
+            "sgen_6": 43.6615
+        }
+    },
+    "opf_results": {
+        "solution": {
+            "cost_eur_per_hr": 66382.905,
+            "generator_dispatch_mw": {
+                "0": {
+                    "p_mw": 16.0
+                },
+                "1": {
+                    "p_mw": 16.0
+                },
+                "2": {
+                    "p_mw": 65.0
+                },
+                "3": {
+                    "p_mw": 0.0
+                },
+                "4": {
+                    "p_mw": 12.0
+                },
+                "5": {
+                    "p_mw": 154.3
+                },
+                "6": {
+                    "p_mw": 400.0
+                },
+                "7": {
+                    "p_mw": 400.0
+                },
+                "8": {
+                    "p_mw": 50.0
+                },
+                "9": {
+                    "p_mw": 124.3
+                }
+            },
+            "static_generator_dispatch_mw": {
+                "0": {
+                    "p_mw": 16.0
+                },
+                "1": {
+                    "p_mw": 45.2
+                },
+                "2": {
+                    "p_mw": 65.2
+                },
+                "3": {
+                    "p_mw": 16.0
+                },
+                "4": {
+                    "p_mw": 75.2
+                },
+                "5": {
+                    "p_mw": 75.2
+                },
+                "6": {
+                    "p_mw": 25.0
+                },
+                "7": {
+                    "p_mw": 25.0
+                },
+                "8": {
+                    "p_mw": 149.0
+                },
+                "9": {
+                    "p_mw": 89.0
+                },
+                "10": {
+                    "p_mw": 2.4
+                },
+                "11": {
+                    "p_mw": 2.4
+                },
+                "12": {
+                    "p_mw": 2.4
+                },
+                "13": {
+                    "p_mw": 2.4
+                },
+                "14": {
+                    "p_mw": 134.3
+                },
+                "15": {
+                    "p_mw": 50.0
+                },
+                "16": {
+                    "p_mw": 40.0
+                },
+                "17": {
+                    "p_mw": 30.0
+                },
+                "18": {
+                    "p_mw": 50.0
+                },
+                "19": {
+                    "p_mw": 50.0
+                },
+                "20": {
+                    "p_mw": 154.3
+                },
+                "21": {
+                    "p_mw": 340.0
+                }
+            },
+            "slack_dispatch_mw": {
+                "0": {
+                    "p_mw": 173.4
+                }
+            },
+            "grid_state": {
+                "max_line_loading_percent": 68.285,
+                "max_voltage_pu": null,
+                "min_voltage_pu": null,
+                "feasibility": {
+                    "total_generation_mw": 2850.0,
+                    "total_load_mw": 2850.0,
+                    "raw_imbalance_mw": -3.4,
+                    "raw_slack_dispatch_mw": 170.0,
+                    "cost_raw_dispatch_eur": 66209.36,
+                    "max_line_violation_mw": 0.0,
+                    "tolerance_mw": 10.0,
+                    "balance_ok": true,
+                    "lines_ok": true,
+                    "bounds_ok": true,
+                    "is_feasible": true,
+                    "line_flows_mw": {
+                        "line_0": -6.916,
+                        "line_1": -13.986,
+                        "line_2": 55.302,
+                        "line_3": 32.499,
+                        "line_4": 45.984,
+                        "line_5": 22.452,
+                        "line_6": -41.501,
+                        "line_7": -15.698,
+                        "line_8": -90.016,
+                        "line_9": -10.0,
+                        "line_10": -101.309,
+                        "line_11": -79.691,
+                        "line_12": -172.042,
+                        "line_13": -147.426,
+                        "line_14": -139.575,
+                        "line_15": -216.719,
+                        "line_16": -165.217,
+                        "line_17": -341.426,
+                        "line_18": 58.075,
+                        "line_19": -217.806,
+                        "line_20": -217.806,
+                        "line_21": 216.438,
+                        "line_22": -301.387,
+                        "line_23": 72.336,
+                        "line_24": -173.269,
+                        "line_25": -128.118,
+                        "line_26": -53.135,
+                        "line_27": -53.135,
+                        "line_28": -54.332,
+                        "line_29": -54.332,
+                        "line_30": -118.332,
+                        "line_31": -118.332,
+                        "line_32": -141.882,
+                        "trafo_0": 216.438,
+                        "trafo_1": 138.472,
+                        "trafo_2": 156.885,
+                        "trafo_3": 180.996,
+                        "trafo_4": 199.409
+                    },
+                    "bus_angles_rad": {
+                        "0": -0.200935,
+                        "1": -0.199974,
+                        "2": -0.171397,
+                        "3": -0.24115,
+                        "4": -0.247666,
+                        "5": -0.288264,
+                        "6": -0.371515,
+                        "7": -0.365375,
+                        "8": -0.198114,
+                        "9": -0.233804,
+                        "10": -0.081892,
+                        "11": -0.066438,
+                        "12": 0.0,
+                        "13": -0.020268,
+                        "14": 0.122594,
+                        "15": 0.112547,
+                        "16": 0.190606,
+                        "17": 0.215557,
+                        "18": 0.095838,
+                        "19": 0.117353,
+                        "20": 0.229319,
+                        "21": 0.325515,
+                        "22": 0.142913,
+                        "23": 0.010263
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "status": "Success",
+            "solver_name": "neal_simulated_annealing_dc_ptdf",
+            "execution_time_seconds": {
+                "total": 212.1868,
+                "formulation_cpu": 0.0205,
+                "sampling_cpu_sa": 212.0856
+            },
+            "problem_complexity": {
+                "formulation": "dc_ptdf",
+                "encoding": "radix",
+                "classical_domain_input": {
+                    "continuous_variables": 33,
+                    "equality_constraints": 1,
+                    "inequality_constraints": 76
+                },
+                "quantum_domain_qubo": {
+                    "total_logical_qubits": 106,
+                    "qubits_used_for_variables": 92,
+                    "qubits_used_for_dispatch": 92,
+                    "qubits_used_for_angles": 0,
+                    "qubits_wasted_on_slack": 14,
+                    "num_interactions": 5334,
+                    "density_percent": 95.85,
+                    "offset": 57729575.11413882
+                },
+                "hardware_limits": {
+                    "ising_max": 2364354.2999,
+                    "ising_min": 278.078532,
+                    "ising_dynamic_range": 8502.47,
+                    "ising_at_risk_percent": 95.5,
+                    "max_coefficient_magnitude": 11901193.5237,
+                    "min_coefficient_magnitude": 1112.3141,
+                    "dac_precision_warning": true
+                },
+                "penalties": {
+                    "balance": 14.3,
+                    "line": {
+                        "line_0": 14.3,
+                        "line_1": 14.3,
+                        "line_2": 14.3,
+                        "line_3": 14.3,
+                        "line_4": 14.3,
+                        "line_5": 7.15,
+                        "line_6": 7.15,
+                        "line_7": 7.15,
+                        "line_8": 7.15,
+                        "line_9": 5.961549,
+                        "line_10": 7.15,
+                        "line_11": 7.15,
+                        "line_12": 14.3,
+                        "line_13": 7.15,
+                        "line_14": 14.3,
+                        "line_15": 1.6803599999999999,
+                        "line_16": 5.6545918,
+                        "line_17": 1.6471752,
+                        "line_18": 7.08904768,
+                        "line_19": 7.08904768,
+                        "line_20": 7.08904768,
+                        "line_21": 7.08904768,
+                        "line_22": 1.6471752,
+                        "line_23": 1.6471752,
+                        "line_24": 0.505285,
+                        "line_25": 7.15,
+                        "line_26": 0.505285,
+                        "line_27": 0.505285,
+                        "line_28": 7.15,
+                        "line_29": 7.15,
+                        "line_30": 1.6803599999999999,
+                        "line_31": 1.6803599999999999,
+                        "line_32": 0.505285,
+                        "trafo_0": 7.15,
+                        "trafo_1": 7.15,
+                        "trafo_2": 7.15,
+                        "trafo_3": 7.15,
+                        "trafo_4": 7.15
+                    }
+                }
+            },
+            "qubo_parameters": {
+                "mw_precision": 10.0,
+                "angle_precision": null,
+                "penalty_balance": null,
+                "penalty_line": null,
+                "seed": null
+            },
+            "algorithmic_metrics": {
+                "framework": "pure_qubo_discretization",
+                "num_iterations": 1,
+                "optimality_gap_percent": 0.0,
+                "sampler_stats": {
+                    "num_reads_requested": 2000,
+                    "num_sweeps_per_read": 20000,
+                    "unique_states_found": 2000,
+                    "energy_best": 66458.37,
+                    "energy_mean": 77197.44,
+                    "energy_worst": 151625.42,
+                    "energy_std_dev": 14263.8,
+                    "reads_checked_for_feasibility": 1,
+                    "feasible_read_found": true,
+                    "chosen_sample_energy": 66458.37187897973
+                }
+            },
+            "hardware_metrics": {
+                "qpu_target": "classical_cpu_simulated",
+                "logical_qubits": 106,
+                "physical_qubits": 106,
+                "max_chain_length": 1,
+                "circuit_depth": 0
+            }
+        }
+    }
+}
