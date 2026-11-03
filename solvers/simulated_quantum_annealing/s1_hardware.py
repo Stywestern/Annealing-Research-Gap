@@ -10,20 +10,21 @@ from __future__ import annotations
 
 import json
 import warnings
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import networkx as nx
 import numpy as np
 import os
 
+DEFAULT_SCHEDULE_CSV = os.environ.get("QPU_SCHEDULE_CSV", "/home/stywestern/Quantum_Digital_Twin/solvers/simulated_quantum_annealing/standart_annealing_schedule_Ad2Sys1.csv")
 KB_OVER_H_GHZ_PER_K = 20.8366   # k_B / h expressed in GHz per Kelvin
 
 @dataclass
 class Hardware:
     graph: nx.Graph
     name: str = "ideal_zephyr"
-    topology: dict = field(default_factory=lambda: {"type": "zephyr", "shape": [15, 4]})
+    topology: dict = field(default_factory=lambda: {"type": "zephyr", "shape": [12, 4]})
     # Programmable ranges. DEFAULTS ARE ASSUMPTIONS for an Advantage2-like device;
     # from_qpu() overwrites them with the values the real solver reports.
     h_range: tuple = (-4.0, 4.0)
@@ -31,10 +32,12 @@ class Hardware:
     extended_j_range: tuple = (-2.0, 1.0)
     temperature_mk: float = 12.0          # physical fridge temperature; treated as a fit parameter later
     extra: dict = field(default_factory=dict)
+    properties: dict = field(default_factory=dict)       # full solver-properties dict (real device only)
+    effective_temperature_mk: float | None = None        # fitted effective T; falls back to temperature_mk
 
     # ---- constructors ------------------------------------------------------
     @classmethod
-    def ideal_zephyr(cls, m: int = 15, t: int = 4) -> "Hardware":
+    def ideal_zephyr(cls, m: int = 12, t: int = 4) -> "Hardware":
         import dwave_networkx as dnx
         return cls(graph=dnx.zephyr_graph(m, t), name=f"ideal_zephyr_Z({m},{t})",
                    topology={"type": "zephyr", "shape": [m, t]})
@@ -45,6 +48,7 @@ class Hardware:
         from dwave.system import DWaveSampler
         sampler = DWaveSampler(solver=solver or dict(topology__type="zephyr"))
         p = sampler.properties
+        props = {k: v for k, v in p.items() if k not in ("qubits", "couplers")}
         return cls(
             graph=sampler.to_networkx_graph(),
             name=sampler.solver.name,
@@ -55,6 +59,7 @@ class Hardware:
             extra={"chip_id": p.get("chip_id"),
                    "annealing_time_range": p.get("annealing_time_range"),
                    "default_annealing_time": p.get("default_annealing_time")},
+            properties=props,
         )
 
     # ---- persistence ---------------------------------------------------------
@@ -63,8 +68,9 @@ class Hardware:
                    "h_range": self.h_range, "j_range": self.j_range,
                    "extended_j_range": self.extended_j_range,
                    "temperature_mk": self.temperature_mk, "extra": self.extra,
+                   "effective_temperature_mk": self.effective_temperature_mk, "properties": self.properties,
                    "nodes": sorted(self.graph.nodes), "edges": sorted(self.graph.edges)}
-        Path(path).write_text(json.dumps(payload))
+        Path(path).write_text(json.dumps(payload, default=str))
 
     @classmethod
     def load(cls, path) -> "Hardware":
@@ -75,12 +81,39 @@ class Hardware:
         return cls(graph=g, name=d["name"], topology=d["topology"],
                    h_range=tuple(d["h_range"]), j_range=tuple(d["j_range"]),
                    extended_j_range=tuple(d["extended_j_range"]),
-                   temperature_mk=d["temperature_mk"], extra=d.get("extra", {}))
+                   temperature_mk=d["temperature_mk"], extra=d.get("extra", {}),
+                   effective_temperature_mk=d.get("effective_temperature_mk"), properties=d.get("properties", {}))
 
     def summary(self) -> str:
         n, e = self.graph.number_of_nodes(), self.graph.number_of_edges()
         return f"{self.name}: {n} qubits, {e} couplers, topology={self.topology}"
 
+    def with_defects(self, qubit_fraction: float = 0.08, coupler_fraction: float = 0.01, seed: int = 0) -> "Hardware":
+        """Copy with randomly removed qubits/couplers. Use as a robustness test when the real working graph is
+        unavailable. The default fractions are rough guesses; replace them with the real device's counts."""
+        rng = np.random.default_rng(seed)
+        g = self.graph.copy()
+        nodes = list(g.nodes)
+        drop = rng.choice(len(nodes), size=int(round(qubit_fraction * len(nodes))), replace=False)
+        g.remove_nodes_from([nodes[i] for i in drop])
+        edges = list(g.edges)
+        dropE = rng.choice(len(edges), size=int(round(coupler_fraction * len(edges))), replace=False)
+        g.remove_edges_from([edges[i] for i in dropE])
+        return replace(self, graph=g, name=f"{self.name}+defects(q={qubit_fraction},c={coupler_fraction},seed={seed})")
+
+    def beta(self, B_ghz: float) -> float:
+        """Inverse temperature at schedule scale B, using the fitted effective T if one has been set."""
+        t = self.effective_temperature_mk if self.effective_temperature_mk is not None else self.temperature_mk
+        return beta_eff(B_ghz, t)
+
+    def provenance(self) -> dict:
+        """Compact description to stamp into every saved result file."""
+        return {"hardware": self.name, "n_qubits": self.graph.number_of_nodes(),
+                "n_couplers": self.graph.number_of_edges(),
+                "h_range": self.h_range, "j_range": self.j_range, "extended_j_range": self.extended_j_range,
+                "temperature_mk": self.temperature_mk,
+                "effective_temperature_mk": self.effective_temperature_mk,
+                "from_real_properties": bool(self.properties)}
 
 @dataclass
 class Schedule:
@@ -89,21 +122,7 @@ class Schedule:
     A: np.ndarray
     B: np.ndarray
     is_placeholder: bool = False
-
-    @classmethod
-    def from_csv(cls, path: str = "/home/stywestern/Quantum_Digital_Twin/solvers/simulated_quantum_annealing/standart_annealing_schedule_Ad2Sys1.csv") -> "Schedule":
-        """CSV from D-Wave's docs (QPU-specific anneal schedule): columns s, A(s), B(s), ...
-        One header row is skipped. Falls back to placeholder if the file is not found."""
-        if os.path.exists(path):
-            try:
-                arr = np.loadtxt(path, delimiter=",", skiprows=1, usecols=(0, 1, 2))
-                return cls(s=arr[:, 0], A=arr[:, 1], B=arr[:, 2])
-            except Exception as e:
-                warnings.warn(f"Error reading {path}: {e}. Falling back to placeholder schedule.")
-        else:
-            warnings.warn(f"Schedule file not found at '{path}'. Using PLACEHOLDER annealing schedule.")
-        
-        return cls.placeholder()
+    source: str = "unknown"
 
     @classmethod
     def placeholder(cls) -> "Schedule":
@@ -111,10 +130,45 @@ class Schedule:
         s~0.4-0.5). NOT the real device schedule: replace with from_csv() before drawing conclusions."""
         warnings.warn("Using PLACEHOLDER annealing schedule; load the real one with Schedule.from_csv().")
         s = np.linspace(0.0, 1.0, 501)
-        return cls(s=s, A=8.0 * (1.0 - s) ** 2.5, B=12.0 * s ** 1.5, is_placeholder=True)
+        return cls(s=s, A=8.0 * (1.0 - s) ** 2.5, B=12.0 * s ** 1.5, is_placeholder=True, source="placeholder")
 
     def at(self, s: float):
         return float(np.interp(s, self.s, self.A)), float(np.interp(s, self.s, self.B))
+
+    @classmethod
+    def from_csv(cls, path: str | None = None, strict: bool = True) -> "Schedule":
+        """strict=True (default) raises if the file is missing or unreadable, so a result run can never silently use
+        a made-up schedule. strict=False falls back to the placeholder for quick tests."""
+        path = path or DEFAULT_SCHEDULE_CSV
+        try:
+            if not os.path.exists(path):
+                raise FileNotFoundError(f"Schedule file not found: {path}")
+            arr = np.loadtxt(path, delimiter=",", skiprows=1, usecols=(0, 1, 2))
+            sched = cls(s=arr[:, 0], A=arr[:, 1], B=arr[:, 2], source=Path(path).name)
+            sched.validate()
+            return sched
+        except Exception as e:
+            if strict:
+                raise
+            warnings.warn(f"{e}. Falling back to placeholder schedule.")
+            return cls.placeholder()
+
+    def validate(self) -> None:
+        if not (np.all(np.diff(self.s) > 0) and abs(self.s[0]) < 1e-9 and abs(self.s[-1] - 1.0) < 1e-9):
+            raise ValueError("schedule s must be strictly increasing from 0 to 1")
+        if not (self.A[0] > self.A[-1] and self.B[-1] > self.B[0]):
+            raise ValueError("expected A to fall and B to rise over the anneal; check the CSV columns/units (GHz)")
+
+    def crossing(self) -> float:
+        """s where A(s) = B(s); a rough marker of the region where freeze-out matters."""
+        i = int(np.argmin(np.abs(self.A - self.B)))
+        return float(self.s[i])
+
+    def at_many(self, s):
+        """Vectorised A(s), B(s). For per-qubit anneal offsets use s_i = s + delta_i. The sign and units of the real
+        offsets must be checked against the D-Wave docs before use."""
+        s = np.asarray(s, dtype=float)
+        return np.interp(s, self.s, self.A), np.interp(s, self.s, self.B)
 
 
 def beta_eff(B_ghz: float, temperature_mk: float) -> float:
