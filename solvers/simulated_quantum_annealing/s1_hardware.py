@@ -16,6 +16,7 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 import os
+import hashlib
 
 DEFAULT_SCHEDULE_CSV = os.environ.get("QPU_SCHEDULE_CSV", "/home/stywestern/Quantum_Digital_Twin/solvers/simulated_quantum_annealing/standart_annealing_schedule_Ad2Sys1.csv")
 KB_OVER_H_GHZ_PER_K = 20.8366   # k_B / h expressed in GHz per Kelvin
@@ -107,12 +108,15 @@ class Hardware:
         return beta_eff(B_ghz, t)
 
     def provenance(self) -> dict:
-        """Compact description to stamp into every saved result file."""
-        return {"hardware": self.name, "n_qubits": self.graph.number_of_nodes(),
-                "n_couplers": self.graph.number_of_edges(),
-                "h_range": self.h_range, "j_range": self.j_range, "extended_j_range": self.extended_j_range,
+        """Plain-dict description of this hardware, for stamping into result files."""
+        t_used = self.effective_temperature_mk if self.effective_temperature_mk is not None else self.temperature_mk
+        return {"hardware": self.name, "topology": self.topology,
+                "n_qubits": self.graph.number_of_nodes(), "n_couplers": self.graph.number_of_edges(),
+                "h_range": list(self.h_range), "j_range": list(self.j_range),
+                "extended_j_range": list(self.extended_j_range),
                 "temperature_mk": self.temperature_mk,
                 "effective_temperature_mk": self.effective_temperature_mk,
+                "temperature_used_by_beta_mk": t_used,
                 "from_real_properties": bool(self.properties)}
 
 @dataclass
@@ -169,6 +173,15 @@ class Schedule:
         offsets must be checked against the D-Wave docs before use."""
         s = np.asarray(s, dtype=float)
         return np.interp(s, self.s, self.A), np.interp(s, self.s, self.B)
+
+    def provenance(self) -> dict:
+        """Plain-dict description of this schedule, for stamping into result files."""
+        blob = np.concatenate([self.s, self.A, self.B]).astype(float).tobytes()
+        return {"source": self.source, "is_placeholder": self.is_placeholder,
+                "n_points": int(len(self.s)), "sha1": hashlib.sha1(blob).hexdigest(),
+                "crossing_s": self.crossing(),
+                "A_range_ghz": [float(self.A.min()), float(self.A.max())],
+                "B_range_ghz": [float(self.B.min()), float(self.B.max())]}
 
 
 def beta_eff(B_ghz: float, temperature_mk: float) -> float:
