@@ -360,7 +360,7 @@ if __name__ == "__main__":
         for r in embs.attempts:
             if r.get("skipped"):
                 continue
-            
+
             secs = r.get("seconds", 0.0)
             if r["ok"]:
                 fp = r["footprint"]
@@ -402,6 +402,10 @@ if __name__ == "__main__":
     for hw in (z4, z12, z12d):
         print("    " + hw.summary())
     caps = {hw.name: max_embeddable_clique(hw.graph) for hw in (z4, z12, z12d)}
+    defect_caps = [max_embeddable_clique(z12.with_defects(qubit_fraction=0.02, coupler_fraction=0.005, seed=s).graph)
+                   for s in range(5)]
+    print(f"    clique capacity over 5 defect seeds (2% qubits, 0.5% couplers): "
+          f"min {min(defect_caps)}, max {max(defect_caps)}, all {defect_caps}")
     print("    largest embeddable clique per target:", caps)
 
     # ---------------------------------------------------------------- [2] API checks
@@ -449,8 +453,8 @@ if __name__ == "__main__":
         check("select_best on an empty set raises RuntimeError", True)
 
     e4 = find_embeddings(k12, z12, methods=("mm_from_clique",), seeds=(0,), timeout=TIMEOUT, verbose=False)
-    check("mm_from_clique without clique fails cleanly and is logged",
-          len(e4) == 0 and e4.attempts and "needs a successful" in str(e4.attempts[0].get("error")))
+    check("mm_from_clique without clique is logged as skipped",
+          len(e4) == 0 and e4.attempts and e4.attempts[0].get("skipped") and "needs a successful" in str(e4.attempts[0].get("error")))
 
     if caps[z4.name]:
         big = bqm_from_graph(nx.complete_graph(caps[z4.name] + 5))
@@ -459,6 +463,22 @@ if __name__ == "__main__":
               len(e3) == 0 and e3.attempts and e3.attempts[0]["method"] == "precheck")
     else:
         print("    [skip] precheck test: busclique reports no clique capacity for Z4")
+
+    huge = bqm_from_graph(nx.complete_graph(101))    # 5050 edges > 5032 couplers on Z4
+    e5 = find_embeddings(huge, z4, methods=ALL_METHODS, seeds=(0,), timeout=TIMEOUT, verbose=False)
+    check("edge-count precheck reports a PROOF", len(e5) == 0 and e5.attempts and e5.attempts[0].get("proven") is True)
+
+    cap12 = caps[z12.name]
+    if cap12:
+        e6 = find_embeddings(bqm_from_graph(nx.complete_graph(cap12)), z12, methods=("clique",), verbose=False)
+        check(f"stated clique capacity is real: K{cap12} embeds on {z12.name}", len(e6) == 1)
+        if not QUICK:
+            for extra in (1, 3, 6):
+                k = cap12 + extra
+                pr = find_embeddings(bqm_from_graph(nx.complete_graph(k)), z12, methods=("minorminer",), seeds=(0,),
+                                     timeout=TIMEOUT, verbose=False, skip_beyond_clique_capacity=False)
+                print(f"    probe: K{k} (capacity+{extra}) minorminer -> "
+                      f"{'EMBEDDED' if pr else 'no embedding'} ({pr.attempts[0]['seconds']:.0f}s)")
 
     # ---------------------------------------------------------------- [3] tier A: synthetic graphs
     print("\n[3] Tier A: synthetic source graphs, dense to sparse, on Z4 (expect failures) and Z12")
