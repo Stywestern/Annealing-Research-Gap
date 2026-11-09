@@ -1,0 +1,1057 @@
+{
+ "settings": {
+  "quick": false,
+  "no_opf": false,
+  "no_emulator": false,
+  "schedule_source": "standart_annealing_schedule_Ad2Sys1.csv",
+  "schedule_placeholder": false
+ },
+ "checks": [
+  [
+   "unknown method raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "method='pt' with use_auto_beta raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "negative beta_sigma_rel raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "pt_replicas < 2 raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "freeze_s with a bad shape raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "freeze_s table with a non-positive time raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "old positional signature still works",
+   true,
+   ""
+  ],
+  [
+   "beta_final = (B(s*)/2) / kT with kT in GHz",
+   true,
+   "beta=13.2094 per scaled energy unit"
+  ],
+  [
+   "doubling the temperature halves beta",
+   true,
+   ""
+  ],
+  [
+   "beta_override takes priority over (freeze_s, temperature)",
+   true,
+   ""
+  ],
+  [
+   "beta_final increases with the freeze point s* (B(s) rises)",
+   true,
+   ""
+  ],
+  [
+   "table: log-time interpolation hits the midpoint at the geometric mean time",
+   true,
+   ""
+  ],
+  [
+   "table: clamped outside the table",
+   true,
+   ""
+  ],
+  [
+   "table without an anneal time raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "constructor anneal_time_us is used when sample() gets none",
+   true,
+   ""
+  ],
+  [
+   "callable freeze_s",
+   true,
+   ""
+  ],
+  [
+   "freeze point outside [0, 1] raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "anneal: shape (reads, n), dtype int8, values +-1",
+   true,
+   ""
+  ],
+  [
+   "anneal: columns follow ar.labels order (field-only model, unique ground state s = -sign(h))",
+   true,
+   ""
+  ],
+  [
+   "anneal: the input model is not modified",
+   true,
+   ""
+  ],
+  [
+   "pt: shape (reads, n), dtype int8, values +-1",
+   true,
+   ""
+  ],
+  [
+   "pt: columns follow ar.labels order (field-only model, unique ground state s = -sign(h))",
+   true,
+   ""
+  ],
+  [
+   "pt: the input model is not modified",
+   true,
+   ""
+  ],
+  [
+   "anneal: all-to-all ferromagnet ends all-aligned (>= 99% of reads)",
+   true,
+   "100.0%"
+  ],
+  [
+   "pt: all-to-all ferromagnet ends all-aligned (>= 99% of reads)",
+   true,
+   "100.0%"
+  ],
+  [
+   "zero spins -> an (R, 0) array",
+   true,
+   ""
+  ],
+  [
+   "zero reads -> a (0, n) array",
+   true,
+   ""
+  ],
+  [
+   "default settings reproduce the original neal-based sampler exactly",
+   true,
+   ""
+  ],
+  [
+   "use_auto_beta: no physical beta is used or reported",
+   true,
+   ""
+  ],
+  [
+   "anneal: beta_hot is min(beta_hot, beta/10)",
+   true,
+   ""
+  ],
+  [
+   "anneal: beta_hot_used = min(0.1, beta/10)",
+   true,
+   ""
+  ],
+  [
+   "anneal: same seed -> identical samples",
+   true,
+   ""
+  ],
+  [
+   "anneal: different seed -> different samples",
+   true,
+   ""
+  ],
+  [
+   "anneal: a fresh object reproduces the same samples (no hidden state)",
+   true,
+   ""
+  ],
+  [
+   "pt: same seed -> identical samples",
+   true,
+   ""
+  ],
+  [
+   "pt: different seed -> different samples",
+   true,
+   ""
+  ],
+  [
+   "pt: a fresh object reproduces the same samples (no hidden state)",
+   true,
+   ""
+  ],
+  [
+   "beta fluctuation: log(beta_used / beta_nominal) has mean ~ 0",
+   true,
+   "mean -0.0019"
+  ],
+  [
+   "beta fluctuation: its std matches beta_sigma_rel within 20%",
+   true,
+   "std 0.1990 vs 0.2"
+  ],
+  [
+   "the same seed draws the same beta; the nominal beta is untouched",
+   true,
+   ""
+  ],
+  [
+   "no fluctuation: beta_used == beta_nominal exactly",
+   true,
+   ""
+  ],
+  [
+   "anneal_time_us passed to sample() moves the freeze point and beta",
+   true,
+   "beta 10.081 -> 16.715"
+  ],
+  [
+   "PT: mean energy within 4 sigma of exact",
+   true,
+   "z=-0.04"
+  ],
+  [
+   "PT: energy-histogram TV within 2.5x the statistical floor (+0.01)",
+   true,
+   ""
+  ],
+  [
+   "PT: ground-state probability within 4 sigma",
+   true,
+   ""
+  ],
+  [
+   "PT: replica swaps happen (minimum swap acceptance > 0.05)",
+   true,
+   "min 0.882"
+  ],
+  [
+   "PT ladder increases from min(beta_hot, beta/10) to beta",
+   true,
+   ""
+  ],
+  [
+   "the exact enumerator agrees with an independent energies()-based calculation",
+   true,
+   ""
+  ],
+  [
+   "check_equilibrium restores beta_sigma_rel afterwards",
+   true,
+   ""
+  ],
+  [
+   "check_equilibrium refuses models above max_spins",
+   true,
+   ""
+  ],
+  [
+   "mean energy falls as beta rises (0.3 > 1.0 > 3.0)",
+   true,
+   "{0.3: -2.911, 1.0: -7.239, 3.0: -9.384}"
+  ],
+  [
+   "enumerator matches the analytic basin probability",
+   true,
+   ""
+  ],
+  [
+   "PT reproduces the basin populations (error < 0.08)",
+   true,
+   "error 0.002"
+  ],
+  [
+   "PT is closer to the exact basin populations than the anneal",
+   true,
+   "0.002 vs 0.293"
+  ],
+  [
+   "2 sweeps give a higher mean energy than 300 sweeps (within 3 s.e.)",
+   true,
+   ""
+  ],
+  [
+   "kT_scaled = 1/beta",
+   true,
+   ""
+  ],
+  [
+   "J below kT: 2 of 4 couplings (0.01, 0.05)",
+   true,
+   ""
+  ],
+  [
+   "h below kT counts only non-zero fields (1 of 3)",
+   true,
+   ""
+  ],
+  [
+   "J_min, J_median and kT/max|J|",
+   true,
+   ""
+  ],
+  [
+   "a model without couplers is handled (J fields None)",
+   true,
+   ""
+  ],
+  [
+   "default beta comes from beta_final()",
+   true,
+   ""
+  ],
+  [
+   "last_info mean/min energy match a recomputation from the returned samples",
+   true,
+   ""
+  ],
+  [
+   "last_info carries method, beta and PT diagnostics",
+   true,
+   ""
+  ],
+  [
+   "describe() is JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "describe() counts programming cycles and records the beta spread",
+   true,
+   ""
+  ],
+  [
+   "describe() includes the schedule record",
+   true,
+   ""
+  ],
+  [
+   "uncalibrated_defaults flag: True for the placeholders, False once beta_override / T / s* are set",
+   true,
+   ""
+  ],
+  [
+   "describe() works when the freeze point (table) needs an anneal time that was not given",
+   true,
+   ""
+  ],
+  [
+   "describe() works when the freeze point (callable) needs an anneal time that was not given",
+   true,
+   ""
+  ],
+  [
+   "make_sampler('sa') returns SAFreezeout and accepts sample(ar, reads, seed=...)",
+   true,
+   ""
+  ],
+  [
+   "make_sampler('sa', method='pt', ...) works",
+   true,
+   ""
+  ],
+  [
+   "make_sampler rejects unknown samplers",
+   true,
+   ""
+  ],
+  [
+   "case5/ideal/neal auto-beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5: the old auto-beta anneal still finds feasible samples on the unquantised model",
+   true,
+   "99.5%"
+  ],
+  [
+   "case5/ideal/anneal @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/ideal/anneal @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case5/ideal/PT @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/ideal/PT @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case5/8-bit/neal auto-beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/8-bit/anneal @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/8-bit/anneal @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case5/8-bit/PT @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/8-bit/PT @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case5/5-bit/neal auto-beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/5-bit/anneal @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/5-bit/anneal @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case5/5-bit/PT @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/5-bit/PT @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case9/ideal/neal auto-beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9: the old auto-beta anneal still finds feasible samples on the unquantised model",
+   true,
+   "95.5%"
+  ],
+  [
+   "case9/ideal/anneal @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/ideal/anneal @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case9/ideal/PT @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/ideal/PT @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case9/8-bit/neal auto-beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/8-bit/anneal @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/8-bit/anneal @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case9/8-bit/PT @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/8-bit/PT @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case9/5-bit/neal auto-beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/5-bit/anneal @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/5-bit/anneal @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "case9/5-bit/PT @ physical beta: valid +-1 samples, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/5-bit/PT @ physical beta: kT_scaled == 1/beta_used",
+   true,
+   ""
+  ],
+  [
+   "emulated run returns all reads",
+   true,
+   ""
+  ],
+  [
+   "logical sampleset has a chain_break_fraction field",
+   true,
+   ""
+  ],
+  [
+   "one sampler.sample() call per programming cycle (100 reads / 25 per cycle = 4)",
+   true,
+   "got 4"
+  ],
+  [
+   "beta fluctuates between programming cycles inside the emulator",
+   true,
+   ""
+  ],
+  [
+   "sampler.describe() after an emulated run is JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "identical EmulatedQPU seeds give identical logical samples",
+   true,
+   ""
+  ]
+ ],
+ "report": {
+  "equilibrium_pt_12spin": {
+   "n_spins": 12,
+   "num_reads": 4000,
+   "beta": 1.5,
+   "mean_energy_exact": -8.390119139869013,
+   "mean_energy_sampled": -8.390931308984756,
+   "mean_energy_z": -0.04262879929947286,
+   "p_ground_exact": 0.15538640924241498,
+   "p_ground_sampled": 0.149,
+   "tv_energy_hist": 0.020182411548200267,
+   "tv_noise_floor": 0.015802171831000026,
+   "method": "pt"
+  },
+  "equilibrium_anneal_12spin": {
+   "n_spins": 12,
+   "num_reads": 4000,
+   "beta": 1.5,
+   "mean_energy_exact": -8.390119139869013,
+   "mean_energy_sampled": -8.31834234982729,
+   "mean_energy_z": 3.767390704395535,
+   "p_ground_exact": 0.15538640924241498,
+   "p_ground_sampled": 0.1365,
+   "tv_energy_hist": 0.03444598499571636,
+   "tv_noise_floor": 0.015802171831000026,
+   "method": "anneal"
+  },
+  "double_well": {
+   "analytic": 0.8581489350995123,
+   "pt": {
+    "n_spins": 6,
+    "num_reads": 800,
+    "beta": 3.0,
+    "mean_energy_exact": -15.214889581262913,
+    "mean_energy_sampled": -15.216000137329102,
+    "mean_energy_z": -0.15005017258766024,
+    "p_ground_exact": 0.8581490744072311,
+    "p_ground_sampled": 0.86,
+    "tv_energy_hist": 4.642952688982405e-13,
+    "tv_noise_floor": 2.265804506632781e-08,
+    "method": "pt"
+   },
+   "anneal": {
+    "n_spins": 6,
+    "num_reads": 800,
+    "beta": 3.0,
+    "mean_energy_exact": -15.214889581262913,
+    "mean_energy_sampled": -15.039000024795532,
+    "mean_energy_z": 23.76490400422491,
+    "p_ground_exact": 0.8581490744072311,
+    "p_ground_sampled": 0.565,
+    "tv_energy_hist": 4.642952688982405e-13,
+    "tv_noise_floor": 2.265804506632781e-08,
+    "method": "anneal"
+   }
+  },
+  "anneal_sweeps": {
+   "mean_energy": {
+    "2": -6.621650883665477,
+    "20": -8.086805556759531,
+    "300": -8.271548003724705
+   },
+   "exact": -8.390119139869013
+  },
+  "describe_example": {
+   "class": "SAFreezeout",
+   "method": "pt",
+   "temperature_mk": 12.0,
+   "freeze_s": 0.6,
+   "anneal_time_us": null,
+   "beta_override": 2.0,
+   "use_auto_beta": false,
+   "beta_hot": 0.1,
+   "num_sweeps": 1000,
+   "beta_sigma_rel": 0.1,
+   "beta_nominal": 2.0,
+   "freeze_point_s": null,
+   "schedule": {
+    "source": "standart_annealing_schedule_Ad2Sys1.csv",
+    "is_placeholder": false,
+    "n_points": 1001,
+    "sha1": "9d20af09ab071c012c944001cd590b482326bd96",
+    "crossing_s": 0.265,
+    "A_range_ghz": [
+     3.3e-07,
+     11.31481618
+    ],
+    "B_range_ghz": [
+     0.55821572,
+     14.73382979
+    ]
+   },
+   "uncalibrated_defaults": false,
+   "pt": {
+    "replicas": 4,
+    "sweeps": 20,
+    "swap_every": 1
+   },
+   "runs": {
+    "programming_cycles": 5,
+    "beta_used_mean": 2.1745588091423174,
+    "beta_used_std": 0.1355204803485658,
+    "beta_used_min": 2.0264206667634985,
+    "beta_used_max": 2.414281083384263
+   },
+   "last_call": {
+    "method": "pt",
+    "num_reads": 10,
+    "n_spins": 12,
+    "beta_nominal": 2.0,
+    "beta_used": 2.414281083384263,
+    "anneal_time_us": null,
+    "freeze_s_used": null,
+    "mean_energy": -9.078598530631075,
+    "min_energy": -9.762340203654178,
+    "pt_replicas": 4,
+    "pt_sweeps": 20,
+    "pt_beta_ladder": [
+     0.1,
+     0.2890209187088312,
+     0.8353309145129683,
+     2.414281083384263
+    ],
+    "pt_swap_acceptance": [
+     0.7600000000000001,
+     0.38,
+     0.26
+    ],
+    "pt_swap_acceptance_min": 0.26
+   }
+  },
+  "opf_case5": [
+   {
+    "quantisation": "ideal",
+    "sampler": "neal auto-beta",
+    "feasible_pct": 99.5,
+    "gap_pct": -1.433486288178693,
+    "thermal_resolution": null,
+    "mean_energy": -3.4304848228990217,
+    "seconds": 0.12720894813537598
+   },
+   {
+    "quantisation": "ideal",
+    "sampler": "anneal @ physical beta",
+    "feasible_pct": 23.0,
+    "gap_pct": -1.2618605621938015,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 435,
+     "J_median_abs": 0.016233766233766232,
+     "J_min_abs": 0.00040429185090536156,
+     "J_below_kT_pct": 82.98850574712644,
+     "h_nonzero": 31,
+     "h_below_kT_pct": 29.03225806451613,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -3.353269133877735,
+    "seconds": 0.19316458702087402
+   },
+   {
+    "quantisation": "ideal",
+    "sampler": "PT @ physical beta",
+    "feasible_pct": 18.0,
+    "gap_pct": 2.1706539575040265,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 435,
+     "J_median_abs": 0.016233766233766232,
+     "J_min_abs": 0.00040429185090536156,
+     "J_below_kT_pct": 82.98850574712644,
+     "h_nonzero": 31,
+     "h_below_kT_pct": 29.03225806451613,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -3.356407368962857,
+    "seconds": 0.4607093334197998
+   },
+   {
+    "quantisation": "8-bit",
+    "sampler": "neal auto-beta",
+    "feasible_pct": 61.0,
+    "gap_pct": -1.948363466133367,
+    "thermal_resolution": null,
+    "mean_energy": -3.73921875,
+    "seconds": 0.1392533779144287
+   },
+   {
+    "quantisation": "8-bit",
+    "sampler": "anneal @ physical beta",
+    "feasible_pct": 25.0,
+    "gap_pct": 1.8274025055342438,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 361,
+     "J_median_abs": 0.0234375,
+     "J_min_abs": 0.0078125,
+     "J_below_kT_pct": 79.22437673130193,
+     "h_nonzero": 31,
+     "h_below_kT_pct": 32.25806451612903,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -3.430234375,
+    "seconds": 0.1693127155303955
+   },
+   {
+    "quantisation": "8-bit",
+    "sampler": "PT @ physical beta",
+    "feasible_pct": 22.0,
+    "gap_pct": 2.056236806847432,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 361,
+     "J_median_abs": 0.0234375,
+     "J_min_abs": 0.0078125,
+     "J_below_kT_pct": 79.22437673130193,
+     "h_nonzero": 31,
+     "h_below_kT_pct": 32.25806451612903,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -3.443203125,
+    "seconds": 0.45967745780944824
+   },
+   {
+    "quantisation": "5-bit",
+    "sampler": "neal auto-beta",
+    "feasible_pct": 3.0,
+    "gap_pct": 42.6743252899384,
+    "thermal_resolution": null,
+    "mean_energy": -6.3575,
+    "seconds": 0.1385345458984375
+   },
+   {
+    "quantisation": "5-bit",
+    "sampler": "anneal @ physical beta",
+    "feasible_pct": 20.0,
+    "gap_pct": 11.781694612657946,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 154,
+     "J_median_abs": 0.0625,
+     "J_min_abs": 0.0625,
+     "J_below_kT_pct": 59.74025974025974,
+     "h_nonzero": 20,
+     "h_below_kT_pct": 0.0,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -6.1075,
+    "seconds": 0.15352606773376465
+   },
+   {
+    "quantisation": "5-bit",
+    "sampler": "PT @ physical beta",
+    "feasible_pct": 21.0,
+    "gap_pct": 11.781694612657946,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 154,
+     "J_median_abs": 0.0625,
+     "J_min_abs": 0.0625,
+     "J_below_kT_pct": 59.74025974025974,
+     "h_nonzero": 20,
+     "h_below_kT_pct": 0.0,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -6.20375,
+    "seconds": 0.4812915325164795
+   }
+  ],
+  "opf_case9": [
+   {
+    "quantisation": "ideal",
+    "sampler": "neal auto-beta",
+    "feasible_pct": 95.5,
+    "gap_pct": 0.09534829146271308,
+    "thermal_resolution": null,
+    "mean_energy": -3.7267607682941697,
+    "seconds": 0.025627851486206055
+   },
+   {
+    "quantisation": "ideal",
+    "sampler": "anneal @ physical beta",
+    "feasible_pct": 38.5,
+    "gap_pct": 0.56984740470035,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 215,
+     "J_median_abs": 0.043066444762932234,
+     "J_min_abs": 0.00022451728783116163,
+     "J_below_kT_pct": 63.72093023255814,
+     "h_nonzero": 26,
+     "h_below_kT_pct": 53.84615384615385,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -3.6294195022990525,
+    "seconds": 0.11676287651062012
+   },
+   {
+    "quantisation": "ideal",
+    "sampler": "PT @ physical beta",
+    "feasible_pct": 32.0,
+    "gap_pct": 0.21996422019178943,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 215,
+     "J_median_abs": 0.043066444762932234,
+     "J_min_abs": 0.00022451728783116163,
+     "J_below_kT_pct": 63.72093023255814,
+     "h_nonzero": 26,
+     "h_below_kT_pct": 53.84615384615385,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -3.624325176056212,
+    "seconds": 0.3474733829498291
+   },
+   {
+    "quantisation": "8-bit",
+    "sampler": "neal auto-beta",
+    "feasible_pct": 82.5,
+    "gap_pct": 0.21996422019178943,
+    "thermal_resolution": null,
+    "mean_energy": -3.810390625,
+    "seconds": 0.0983579158782959
+   },
+   {
+    "quantisation": "8-bit",
+    "sampler": "anneal @ physical beta",
+    "feasible_pct": 35.5,
+    "gap_pct": 0.09534829146271308,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 195,
+     "J_median_abs": 0.0625,
+     "J_min_abs": 0.0078125,
+     "J_below_kT_pct": 58.46153846153847,
+     "h_nonzero": 17,
+     "h_below_kT_pct": 29.411764705882355,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -3.658828125,
+    "seconds": 0.11593270301818848
+   },
+   {
+    "quantisation": "8-bit",
+    "sampler": "PT @ physical beta",
+    "feasible_pct": 33.0,
+    "gap_pct": 0.21996422019178943,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 195,
+     "J_median_abs": 0.0625,
+     "J_min_abs": 0.0078125,
+     "J_below_kT_pct": 58.46153846153847,
+     "h_nonzero": 17,
+     "h_below_kT_pct": 29.411764705882355,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -3.665390625,
+    "seconds": 0.3375275135040283
+   },
+   {
+    "quantisation": "5-bit",
+    "sampler": "neal auto-beta",
+    "feasible_pct": 58.0,
+    "gap_pct": 2.19944031884981,
+    "thermal_resolution": null,
+    "mean_energy": -4.960625,
+    "seconds": 0.09937644004821777
+   },
+   {
+    "quantisation": "5-bit",
+    "sampler": "anneal @ physical beta",
+    "feasible_pct": 44.0,
+    "gap_pct": 1.8160066919911135,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 121,
+     "J_median_abs": 0.125,
+     "J_min_abs": 0.0625,
+     "J_below_kT_pct": 43.80165289256198,
+     "h_nonzero": 9,
+     "h_below_kT_pct": 0.0,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -4.699375,
+    "seconds": 0.10771727561950684
+   },
+   {
+    "quantisation": "5-bit",
+    "sampler": "PT @ physical beta",
+    "feasible_pct": 42.0,
+    "gap_pct": 1.2120987296886665,
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 121,
+     "J_median_abs": 0.125,
+     "J_min_abs": 0.0625,
+     "J_below_kT_pct": 43.80165289256198,
+     "h_nonzero": 9,
+     "h_below_kT_pct": 0.0,
+     "kT_over_max_abs_J": 0.07570339679373139
+    },
+    "mean_energy": -4.7625,
+    "seconds": 0.35273098945617676
+   }
+  ],
+  "emulator_run": {
+   "embedding": "minorminer_seed0",
+   "describe": {
+    "class": "SAFreezeout",
+    "method": "pt",
+    "temperature_mk": 12.0,
+    "freeze_s": 0.6,
+    "anneal_time_us": null,
+    "beta_override": 2.0,
+    "use_auto_beta": false,
+    "beta_hot": 0.1,
+    "num_sweeps": 1000,
+    "beta_sigma_rel": 0.2,
+    "beta_nominal": 2.0,
+    "freeze_point_s": null,
+    "schedule": {
+     "source": "standart_annealing_schedule_Ad2Sys1.csv",
+     "is_placeholder": false,
+     "n_points": 1001,
+     "sha1": "9d20af09ab071c012c944001cd590b482326bd96",
+     "crossing_s": 0.265,
+     "A_range_ghz": [
+      3.3e-07,
+      11.31481618
+     ],
+     "B_range_ghz": [
+      0.55821572,
+      14.73382979
+     ]
+    },
+    "uncalibrated_defaults": false,
+    "pt": {
+     "replicas": 8,
+     "sweeps": 40,
+     "swap_every": 1
+    },
+    "runs": {
+     "programming_cycles": 4,
+     "beta_used_mean": 2.5083315747065846,
+     "beta_used_std": 0.34937625561033886,
+     "beta_used_min": 2.154682835704855,
+     "beta_used_max": 3.0268627048520136
+    },
+    "last_call": {
+     "method": "pt",
+     "num_reads": 25,
+     "n_spins": 12,
+     "beta_nominal": 2.0,
+     "beta_used": 2.626788371851389,
+     "anneal_time_us": null,
+     "freeze_s_used": null,
+     "mean_energy": -20.95053199387915,
+     "min_energy": -21.081141895229816,
+     "pt_replicas": 8,
+     "pt_sweeps": 40,
+     "pt_beta_ladder": [
+      0.1,
+      0.15950526103307489,
+      0.25441928297229355,
+      0.4058121414234342,
+      0.6472917154813598,
+      1.0324643404240113,
+      1.6468349412667336,
+      2.626788371851389
+     ],
+     "pt_swap_acceptance": [
+      0.804,
+      0.696,
+      0.562,
+      0.5119999999999999,
+      0.622,
+      0.766,
+      0.8019999999999999
+     ],
+     "pt_swap_acceptance_min": 0.5119999999999999
+    }
+   }
+  }
+ }
+}

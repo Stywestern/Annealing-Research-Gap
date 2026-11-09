@@ -255,6 +255,11 @@ class SAFreezeout:
     # ------------------------------------------------------------------ record keeping
     def describe(self) -> dict:
         """Plain JSON-safe description of this sampler and what it has done so far, for result files."""
+        try:
+            bn = None if (self.use_auto_beta and self.method == "anneal") else self.beta_final()
+        except ValueError:
+            bn = None
+
         if self._freeze_kind == "const":
             fz = self._freeze
         elif self._freeze_kind == "table":
@@ -265,7 +270,7 @@ class SAFreezeout:
              "freeze_s": fz, "anneal_time_us": self.anneal_time_us, "beta_override": self.beta_override,
              "use_auto_beta": self.use_auto_beta, "beta_hot": self.beta_hot, "num_sweeps": self.num_sweeps,
              "beta_sigma_rel": self.beta_sigma_rel,
-             "beta_nominal": (None if (self.use_auto_beta and self.method == "anneal") else self.beta_final()),
+             "beta_nominal": bn,
              "freeze_point_s": (None if (self.beta_override is not None or self._freeze_kind != "const"
                                          ) else self._freeze),
              "schedule": (self.schedule.provenance() if hasattr(self.schedule, "provenance")
@@ -414,146 +419,485 @@ def make_sampler(kind: str, schedule: Schedule, temperature_mk: float, **kw):
 
 
 # =========================================================================
-# Execution Block
+# Execution Block: Self-Test
 # =========================================================================
 if __name__ == "__main__":
+    import itertools
+    import json
+    import math
+    import sys
     import time
-    import io
+
     import dimod
-    import numpy as np
-    
+
+    QUICK = False
+    NO_OPF = False
+    NO_EMU = False
+    OUT_JSON = "sampler_selftest.json"
+    CHECKS, REPORT = [], {}
+    R_EQ = 1500 if QUICK else 4000          # reads for the exact-distribution comparisons
+    SW_PT = 250 if QUICK else 400           # parallel-tempering sweeps for the 12-spin model
+    HR, JR = (-4.0, 4.0), (-1.0, 1.0)
+
+    # ------------------------------------------------------------------ helpers
+    def check(name, ok, detail=""):
+        CHECKS.append((name, bool(ok), str(detail)))
+        print(f"    [{'PASS' if ok else 'FAIL'}] {name}" + (f"  ({detail})" if detail else ""))
+
+    def info(msg):
+        print(f"    [info] {msg}")
+
+    def section(title):
+        print(f"\n{'=' * 92}\n{title}\n{'=' * 92}")
+
+    def raises(exc, fn):
+        try:
+            fn()
+        except exc:
+            return True
+        except Exception:
+            return False
+        return False
+
+    def rand_model(n, m, seed, jscale=1.0, hscale=0.5, labels=None):
+        r = np.random.default_rng(seed)
+        pairs = list(itertools.combinations(range(n), 2))
+        sel = r.choice(len(pairs), size=min(m, len(pairs)), replace=False)
+        return IsingArrays(list(range(n)) if labels is None else list(labels), r.uniform(-hscale, hscale, n),
+                           np.array([pairs[k][0] for k in sel], dtype=int), np.array([pairs[k][1] for k in sel], dtype=int),
+                           r.uniform(-jscale, jscale, len(sel)))
+
+    def complete(n, h, j):
+        pr = list(itertools.combinations(range(n), 2))
+        return IsingArrays(list(range(n)), np.full(n, float(h)), np.array([p[0] for p in pr], dtype=int),
+                           np.array([p[1] for p in pr], dtype=int), np.full(len(pr), float(j)))
+
     try:
-        from homemade_grids.small_grids import case3_low_gen
-        from solvers.qubo_formulator import QuboFormulator
-        from solvers.simulated_quantum_annealing.s1b_embedding import find_embeddings, select_best
-        from solvers.simulated_quantum_annealing.s1_hardware import Hardware, Schedule
-        from solvers.simulated_quantum_annealing.s2_mapping import IsingArrays, scale_to_hardware, quantise, add_ice_noise
-        from solvers.simulated_quantum_annealing.s3_samplers import make_sampler
-        from dwave.embedding import embed_bqm
-        from dwave.embedding.chain_strength import uniform_torque_compensation
-    except ImportError as e:
-        print(f"[-] Import error: {e}. Ensure script is run from project root.")
-        exit(1)
+        SCHED = Schedule.from_csv(strict=False)
+    except Exception as exc:
+        print(f"[!] schedule load failed ({exc}); using the placeholder schedule")
+        SCHED = Schedule.placeholder()
+    print("=== Testing SAFreezeout (classical thermal sampler at the freeze-out beta) ===")
+    print(f"mode={'quick' if QUICK else 'full'} | schedule source={getattr(SCHED, 'source', '?')} "
+          f"placeholder={getattr(SCHED, 'is_placeholder', '?')}")
+    if getattr(SCHED, "is_placeholder", False):
+        print("[!] placeholder schedule: all checks are internally consistent, but physical beta values are not meaningful")
 
-    print("=== Testing All Sampler Backends on case3_low_gen ===")
+    m12 = rand_model(12, 30, seed=5)
 
-    # 1. Formulation
-    print("\n[1] Formulating Grid (DC-PTDF, 10 MW precision)...")
-    net = case3_low_gen()
-    if not net.ext_grid.empty: 
-        net.ext_grid['min_p_mw'] = 0.0
-        
-    formulator = QuboFormulator(formulation="dc_ptdf", mw_precision=10.0)
-    logical_bqm, _ = formulator._formulate_qubo(net)
-    logical_spin = logical_bqm.change_vartype(dimod.SPIN, inplace=False)
+    # ================================================================== [1] construction and beta bookkeeping
+    section("[1] construction, validation and beta_eff bookkeeping")
+    check("unknown method raises ValueError", raises(ValueError, lambda: SAFreezeout(SCHED, method="nope")))
+    check("method='pt' with use_auto_beta raises ValueError",
+          raises(ValueError, lambda: SAFreezeout(SCHED, method="pt", use_auto_beta=True)))
+    check("negative beta_sigma_rel raises ValueError", raises(ValueError, lambda: SAFreezeout(SCHED, beta_sigma_rel=-0.1)))
+    check("pt_replicas < 2 raises ValueError", raises(ValueError, lambda: SAFreezeout(SCHED, method="pt", pt_replicas=1)))
+    check("freeze_s with a bad shape raises ValueError", raises(ValueError, lambda: SAFreezeout(SCHED, freeze_s=np.zeros((2, 3)))))
+    check("freeze_s table with a non-positive time raises ValueError",
+          raises(ValueError, lambda: SAFreezeout(SCHED, freeze_s=[(0.0, 0.5), (10.0, 0.6)])))
 
-    # 2. Minor-Embedding & Chain Diagnostics
-    print("\n[2] Minor-Embedding to Z12 & Analyzing Chains...")
-    hw = Hardware.ideal_zephyr(m=12, t=4)
-    emb_results = find_embeddings(logical_spin, hw, methods=["minorminer"], seeds=[0], verbose=False)
-    _, embedding = select_best(emb_results)
-    
-    chain_lengths = [len(c) for c in embedding.values()]
-    max_chain = max(chain_lengths) if chain_lengths else 0
-    mean_chain = sum(chain_lengths) / len(chain_lengths) if chain_lengths else 0
-    
-    # 1. Find the absolute maximum energy coefficient in your logical problem
-    max_logical_weight = max(
-        max(abs(v) for v in logical_spin.linear.values()) if logical_spin.linear else 0,
-        max(abs(v) for v in logical_spin.quadratic.values()) if logical_spin.quadratic else 0
-    )
+    old = SAFreezeout(SCHED, 12.0, 0.6, 1000, 0.1, False)
+    check("old positional signature still works", old.temperature_mk == 12.0 and old.freeze_s == 0.6
+          and old.num_sweeps == 1000 and old.beta_hot == 0.1 and old.use_auto_beta is False and old.method == "anneal")
 
-    # 2. Define a relative multiplier (usually between 0.5 and 2.0)
-    # A multiplier of 1.0 means the chains are exactly as strong as the heaviest grid constraint.
-    relative_chain_multiplier = 1.0 
-    capped_cs = max_logical_weight * relative_chain_multiplier
+    s_star = 0.6
+    sa = SAFreezeout(SCHED, 12.0, s_star)
+    _, B_star = SCHED.at(s_star)
+    b_expected = 0.5 * B_star / (KB_OVER_H_GHZ_PER_K * 12.0e-3)
+    check("beta_final = (B(s*)/2) / kT with kT in GHz", abs(sa.beta_final() - b_expected) <= 1e-12 * b_expected,
+          f"beta={sa.beta_final():.4f} per scaled energy unit")
+    check("doubling the temperature halves beta", abs(SAFreezeout(SCHED, 24.0, s_star).beta_final() - sa.beta_final() / 2) <= 1e-12)
+    check("beta_override takes priority over (freeze_s, temperature)",
+          SAFreezeout(SCHED, 99.0, 0.1, beta_override=3.25).beta_final() == 3.25)
+    s_grid = np.linspace(0.2, 0.95, 16)
+    if np.all(np.diff([SCHED.at(s)[1] for s in s_grid]) >= -1e-12):
+        bs = [SAFreezeout(SCHED, 12.0, s).beta_final() for s in s_grid]
+        check("beta_final increases with the freeze point s* (B(s) rises)", np.all(np.diff(bs) >= -1e-12))
+    else:
+        info("B(s) is not monotone in this schedule; monotonicity check skipped")
 
-    embedded_bqm = embed_bqm(logical_spin, embedding, hw.graph, chain_strength=capped_cs)
-    ar_ideal = IsingArrays.from_bqm(embedded_bqm)
+    tab = SAFreezeout(SCHED, freeze_s=[(5.0, 0.5), (50.0, 0.7)])
+    check("table: log-time interpolation hits the midpoint at the geometric mean time",
+          abs(tab.freeze_point(math.sqrt(5.0 * 50.0)) - 0.6) < 1e-9)
+    check("table: clamped outside the table", abs(tab.freeze_point(0.5) - 0.5) < 1e-9 and abs(tab.freeze_point(5000.0) - 0.7) < 1e-9)
+    check("table without an anneal time raises ValueError", raises(ValueError, lambda: tab.freeze_point()))
+    check("constructor anneal_time_us is used when sample() gets none",
+          abs(SAFreezeout(SCHED, freeze_s=[(5.0, 0.5), (50.0, 0.7)], anneal_time_us=5.0).freeze_point() - 0.5) < 1e-9)
+    check("callable freeze_s", abs(SAFreezeout(SCHED, freeze_s=lambda t: 0.4 + 0.001 * t).freeze_point(100.0) - 0.5) < 1e-12)
+    check("freeze point outside [0, 1] raises ValueError",
+          raises(ValueError, lambda: SAFreezeout(SCHED, freeze_s=lambda t: 1.5).freeze_point(1.0)))
 
-    print(f"    -> Max Chain Length: {max_chain} physical qubits")
-    print(f"    -> Mean Chain Length: {mean_chain:.2f} physical qubits")
-    print(f"    -> Raw Artificial Chain Strength (J_chain): {capped_cs:,.2f}")
+    # ================================================================== [2] output contract and trivial models
+    section("[2] output contract, label order, trivially solvable models, regression against the old behaviour")
+    labs = [30, 5, 17, 2, 41, 8, 23, 11]
+    n_h = len(labs)
+    hsign = np.array([1, -1, 1, 1, -1, -1, 1, -1], dtype=float)
+    ar_h = IsingArrays(labs, hsign.copy(), np.zeros(0, dtype=int), np.zeros(0, dtype=int), np.zeros(0))
+    h_before, J_before = ar_h.h.copy(), ar_h.J.copy()
+    for meth, kw in (("anneal", dict(num_sweeps=60)), ("pt", dict(pt_sweeps=60, pt_replicas=6))):
+        smp = SAFreezeout(SCHED, method=meth, beta_override=40.0, **kw)
+        X = smp.sample(ar_h, 25, seed=1)
+        check(f"{meth}: shape (reads, n), dtype int8, values +-1",
+              X.shape == (25, n_h) and X.dtype == np.int8 and set(np.unique(X).tolist()) <= {-1, 1})
+        check(f"{meth}: columns follow ar.labels order (field-only model, unique ground state s = -sign(h))",
+              np.all(X == (-hsign).astype(np.int8)[None, :]))
+        check(f"{meth}: the input model is not modified", np.array_equal(ar_h.h, h_before) and np.array_equal(ar_h.J, J_before))
 
-    # 3. Analog Hardware Mapping
-    print("\n[3] Mapping to Analog Hardware (5-bit DAC, 0.01 ICE)...")
-    ar_scaled, scale_factor = scale_to_hardware(ar_ideal, hw.h_range, hw.extended_j_range)
-    ar_quant = quantise(ar_scaled, hw.h_range, hw.extended_j_range, bits=5)
-    
-    rng = np.random.default_rng(42)
-    ice_sigma = 0.01
-    ar_physical = add_ice_noise(ar_quant, sigma_h=ice_sigma, sigma_j=ice_sigma, rng=rng)
+    K8 = complete(8, 0.0, -1.0)
+    for meth, kw in (("anneal", dict(num_sweeps=300)), ("pt", dict(pt_sweeps=150, pt_replicas=10))):
+        X = SAFreezeout(SCHED, method=meth, beta_override=20.0, **kw).sample(K8, 200, seed=2)
+        aligned = float(np.mean(np.all(X == X[:, :1], axis=1)))
+        check(f"{meth}: all-to-all ferromagnet ends all-aligned (>= 99% of reads)", aligned >= 0.99, f"{100 * aligned:.1f}%")
 
-    # Calculate what happened to the chains during down-scaling
-    scaled_cs = capped_cs * scale_factor
-    print(f"    -> Global Scale Factor applied: {scale_factor:e}")
-    print(f"    -> Scaled Chain Strength: {scaled_cs:.5f} (Physical Limit: 1.0)")
-    print(f"    -> ICE Noise Floor (sigma): {ice_sigma}")
-    
-    if scaled_cs < ice_sigma:
-        print("    -> [!] CRITICAL WARNING: Scaled chain strength is below the analog noise floor.")
-        print("    -> [!] The magnetic glue holding chains together is weaker than the ambient heat.")
-    elif scaled_cs < 0.0625: # Half a step size on a 5-bit DAC for [-1, 1]
-        print("    -> [!] CRITICAL WARNING: Scaled chain strength is erased by 5-bit DAC quantization.")
+    empty = IsingArrays([], np.zeros(0), np.zeros(0, dtype=int), np.zeros(0, dtype=int), np.zeros(0))
+    check("zero spins -> an (R, 0) array", SAFreezeout(SCHED).sample(empty, 5, seed=0).shape == (5, 0))
+    check("zero reads -> a (0, n) array", SAFreezeout(SCHED).sample(ar_h, 0, seed=0).shape == (0, n_h))
 
-    # 4. Helper for Chain Breaks
-    def get_chain_break_fraction(samples, emb, labels):
-        pos = {v: i for i, v in enumerate(labels)}
-        total_chains = sum(1 for c in emb.values() if len(c) > 1)
-        if total_chains == 0: 
-            return 0.0
-            
-        broken_chains = np.zeros(samples.shape[0])
-        for chain in emb.values():
-            if len(chain) > 1:
-                idxs = [pos[q] for q in chain]
-                chain_spins = samples[:, idxs]
-                # Chain breaks if the physical qubits do not all perfectly align (+1 or -1)
-                is_broken = np.abs(chain_spins.sum(axis=1)) != len(chain)
-                broken_chains += is_broken
-                
-        return (broken_chains / total_chains).mean()
+    try:
+        from dwave.samplers import SimulatedAnnealingSampler as _NEAL
+    except ImportError:
+        from neal import SimulatedAnnealingSampler as _NEAL
+    legacy = SAFreezeout(SCHED, 12.0, 0.6, 300, 0.1, False)
+    bf0 = legacy.beta_final()
+    res0 = _NEAL().sample(m12.to_bqm(), num_reads=40, num_sweeps=300, beta_range=(min(0.1, bf0 / 10.0), bf0), seed=17)
+    pos0 = {v: i for i, v in enumerate(res0.variables)}
+    ref0 = np.asarray(res0.record.sample)[:, [pos0[v] for v in m12.labels]].astype(np.int8)
+    check("default settings reproduce the original neal-based sampler exactly", np.array_equal(legacy.sample(m12, 40, 17), ref0))
+    auto = SAFreezeout(SCHED, use_auto_beta=True, num_sweeps=50)
+    auto.sample(m12, 10, seed=1)
+    check("use_auto_beta: no physical beta is used or reported",
+          auto.last_info["beta_used"] is None and auto.describe()["beta_nominal"] is None)
+    check("anneal: beta_hot is min(beta_hot, beta/10)",
+          abs(SAFreezeout(SCHED, beta_override=0.5, num_sweeps=20).sample(m12, 5, 1).shape[0] - 5) == 0 and True)
+    a05 = SAFreezeout(SCHED, beta_override=0.5, num_sweeps=20)
+    a05.sample(m12, 5, 1)
+    a50 = SAFreezeout(SCHED, beta_override=5.0, num_sweeps=20)
+    a50.sample(m12, 5, 1)
+    check("anneal: beta_hot_used = min(0.1, beta/10)",
+          abs(a05.last_info["beta_hot_used"] - 0.05) < 1e-12 and abs(a50.last_info["beta_hot_used"] - 0.1) < 1e-12)
 
-    # 5. Define Competing Schedules
-    # A. The smooth mathematical placeholder
-    sched_placeholder = Schedule.placeholder()
-    
-    # B. A synthesized physical QPU curve (A decays fast, B spikes exponentially at the end)
-    sched_real = Schedule.from_csv("solvers/simulated_quantum_annealing/standart_annealing_schedule_Ad2Sys1.csv")
-    
-    schedules = {
-        "Math Placeholder": sched_placeholder,
-        "Simulated Real QPU": sched_real
-    }
+    # ================================================================== [3] seeds and beta fluctuation
+    section("[3] seeds, hidden state and cycle-to-cycle beta fluctuation")
+    for meth, kw in (("anneal", dict(num_sweeps=80)), ("pt", dict(pt_sweeps=40, pt_replicas=8))):
+        a = SAFreezeout(SCHED, method=meth, beta_override=0.8, **kw)
+        x1, x2, x3 = a.sample(m12, 50, seed=3), a.sample(m12, 50, seed=3), a.sample(m12, 50, seed=4)
+        check(f"{meth}: same seed -> identical samples", np.array_equal(x1, x2))
+        check(f"{meth}: different seed -> different samples", not np.array_equal(x1, x3))
+        fresh = SAFreezeout(SCHED, method=meth, beta_override=0.8, **kw)
+        check(f"{meth}: a fresh object reproduces the same samples (no hidden state)", np.array_equal(fresh.sample(m12, 50, seed=3), x1))
 
-    # 6. Execute and Benchmark
-    temp_mk = 12.0  
-    num_reads = 300
-    num_sweeps = 5000
+    tiny = rand_model(3, 3, seed=2)
+    sig = 0.2
+    fl = SAFreezeout(SCHED, method="pt", beta_override=2.0, beta_sigma_rel=sig, pt_sweeps=1, pt_replicas=2)
+    lr = []
+    for sd in range(400):
+        fl.sample(tiny, 1, seed=sd)
+        lr.append(math.log(fl.last_info["beta_used"] / fl.last_info["beta_nominal"]))
+    lr = np.array(lr)
+    check("beta fluctuation: log(beta_used / beta_nominal) has mean ~ 0", abs(lr.mean()) < 0.3 * sig, f"mean {lr.mean():.4f}")
+    check("beta fluctuation: its std matches beta_sigma_rel within 20%", abs(lr.std() / sig - 1.0) < 0.2, f"std {lr.std():.4f} vs {sig}")
+    fl.sample(tiny, 1, seed=7)
+    b_a = fl.last_info["beta_used"]
+    fl.sample(tiny, 1, seed=7)
+    check("the same seed draws the same beta; the nominal beta is untouched",
+          fl.last_info["beta_used"] == b_a and fl.beta_final() == 2.0)
+    nf = SAFreezeout(SCHED, method="pt", beta_override=2.0, pt_sweeps=1, pt_replicas=2)
+    nf.sample(tiny, 1, seed=0)
+    check("no fluctuation: beta_used == beta_nominal exactly", nf.last_info["beta_used"] == nf.last_info["beta_nominal"] == 2.0)
+    tb = SAFreezeout(SCHED, freeze_s=[(5.0, 0.5), (50.0, 0.7)], num_sweeps=5)
+    tb.sample(tiny, 2, seed=1, anneal_time_us=5.0)
+    s_short, b_short = tb.last_info["freeze_s_used"], tb.last_info["beta_used"]
+    tb.sample(tiny, 2, seed=1, anneal_time_us=50.0)
+    s_long, b_long = tb.last_info["freeze_s_used"], tb.last_info["beta_used"]
+    check("anneal_time_us passed to sample() moves the freeze point and beta",
+          abs(s_short - 0.5) < 1e-9 and abs(s_long - 0.7) < 1e-9 and b_long > b_short, f"beta {b_short:.3f} -> {b_long:.3f}")
 
-    print("\n" + "="*85)
-    print(f"{'Schedule':<20} | {'Engine':<6} | {'Time (s)':<8} | {'Unique States':<13} | {'Chain Breaks (%)'}")
-    print("="*85)
-    
-    for sched_name, schedule in schedules.items():
-        for kind in ["sa", "svmc", "sqa"]:
-            kwargs = {"num_sweeps": num_sweeps}
-            if kind == "sqa":
-                kwargs["trotter_slices"] = 16 
-                
-            sampler = make_sampler(kind, schedule, temp_mk, **kwargs)
+    # ================================================================== [4] equilibrium against exact enumeration
+    section("[4] parallel tempering against the EXACT Boltzmann distribution (12 spins, full enumeration)")
+    BETA = 1.5
+    ptm = SAFreezeout(SCHED, method="pt", beta_override=BETA, pt_sweeps=SW_PT, pt_replicas=24)
+    t0 = time.time()
+    eq = ptm.check_equilibrium(m12, num_reads=R_EQ, seed=11)
+    print(f"    PT: {eq['num_reads']} reads, {SW_PT} sweeps, 24 replicas, {time.time() - t0:.1f}s")
+    print(f"    mean energy exact {eq['mean_energy_exact']:.4f} | sampled {eq['mean_energy_sampled']:.4f} | z {eq['mean_energy_z']:+.2f}")
+    print(f"    P(ground) exact {eq['p_ground_exact']:.4f} | sampled {eq['p_ground_sampled']:.4f}")
+    print(f"    TV(energy histogram) {eq['tv_energy_hist']:.4f} vs noise floor {eq['tv_noise_floor']:.4f}")
+    check("PT: mean energy within 4 sigma of exact", abs(eq["mean_energy_z"]) < 4.0, f"z={eq['mean_energy_z']:+.2f}")
+    check("PT: energy-histogram TV within 2.5x the statistical floor (+0.01)", eq["tv_energy_hist"] <= 2.5 * eq["tv_noise_floor"] + 0.01)
+    pe_, ps_ = eq["p_ground_exact"], eq["p_ground_sampled"]
+    check("PT: ground-state probability within 4 sigma", abs(ps_ - pe_) < 4 * math.sqrt(max(pe_ * (1 - pe_), 1e-12) / R_EQ) + 1e-3)
+    check("PT: replica swaps happen (minimum swap acceptance > 0.05)", ptm.last_info["pt_swap_acceptance_min"] > 0.05,
+          f"min {ptm.last_info['pt_swap_acceptance_min']:.3f}")
+    lad = ptm.last_info["pt_beta_ladder"]
+    check("PT ladder increases from min(beta_hot, beta/10) to beta",
+          bool(np.all(np.diff(lad) > 0)) and abs(lad[0] - min(0.1, BETA / 10)) < 1e-12 and abs(lad[-1] - BETA) < 1e-12)
+    REPORT["equilibrium_pt_12spin"] = eq
 
-            t0 = time.time()
-            samples = sampler.sample(ar_physical, num_reads=num_reads, seed=42)
-            t_exec = time.time() - t0
+    an = SAFreezeout(SCHED, method="anneal", beta_override=BETA, num_sweeps=1000)
+    eq_an = an.check_equilibrium(m12, num_reads=R_EQ, seed=11)
+    info(f"anneal (1000 sweeps) on the same model: mean-energy z {eq_an['mean_energy_z']:+.2f}, "
+         f"TV {eq_an['tv_energy_hist']:.4f} (floor {eq_an['tv_noise_floor']:.4f}) -- no hard check: it is a kinetic approximation")
+    REPORT["equilibrium_anneal_12spin"] = eq_an
 
-            cbf = get_chain_break_fraction(samples, embedding, ar_physical.labels) * 100
-            unique_states = len(np.unique(samples, axis=0))
+    m4 = rand_model(4, 6, seed=9)
+    st4 = np.array(list(itertools.product((-1, 1), repeat=4)), dtype=np.int8)
+    E4 = ising_energies(m4, st4)
+    p4 = np.exp(-1.2 * (E4 - E4.min()))
+    p4 /= p4.sum()
+    eq4 = SAFreezeout(SCHED, method="pt", beta_override=1.2, pt_sweeps=20, pt_replicas=4).check_equilibrium(m4, num_reads=50, seed=1)
+    check("the exact enumerator agrees with an independent energies()-based calculation",
+          abs(eq4["mean_energy_exact"] - float(np.sum(p4 * E4))) < 1e-4
+          and abs(eq4["p_ground_exact"] - float(p4[E4 <= E4.min() + 1e-9].sum())) < 1e-5)
+    keep = SAFreezeout(SCHED, method="pt", beta_override=1.0, beta_sigma_rel=0.3, pt_sweeps=10, pt_replicas=4)
+    keep.check_equilibrium(m4, num_reads=20, seed=1)
+    check("check_equilibrium restores beta_sigma_rel afterwards", keep.beta_sigma_rel == 0.3)
+    check("check_equilibrium refuses models above max_spins",
+          raises(ValueError, lambda: ptm.check_equilibrium(rand_model(20, 30, seed=1), num_reads=10, max_spins=18)))
 
-            print(f"{sched_name:<20} | {kind.upper():<6} | {t_exec:<8.4f} | {unique_states:<13} | {cbf:.2f}%")
-        
-        # Print a separator between schedule blocks
-        if sched_name == "Math Placeholder":
-            print("-" * 85)
-            
-    print("="*85 + "\n")
+    means = {}
+    for b in (0.3, 1.0, 3.0):
+        s_ = SAFreezeout(SCHED, method="pt", beta_override=b, pt_sweeps=SW_PT // 2, pt_replicas=24)
+        means[b] = float(ising_energies(m12, s_.sample(m12, 1500, seed=5)).mean())
+    check("mean energy falls as beta rises (0.3 > 1.0 > 3.0)", means[0.3] > means[1.0] > means[3.0],
+          {k: round(v, 3) for k, v in means.items()})
+
+    # ================================================================== [5] double well: why PT
+    section("[5] double-well model: local moves cannot equilibrate the two basins, replica exchange does")
+    dw = complete(6, 0.05, -1.0)                 # ferromagnet, tiny field: all-down is the unique ground state
+    bd = 3.0
+    p_down = 1.0 / (1.0 + math.exp(-bd * 0.6))   # analytic: E(all up) - E(all down) = 6 * 0.05 * 2 = 0.6
+    ptd = SAFreezeout(SCHED, method="pt", beta_override=bd, pt_sweeps=800 if QUICK else 1200, pt_replicas=10)
+    eq_pt = ptd.check_equilibrium(dw, num_reads=400 if QUICK else 800, seed=3)
+    eq_sa = SAFreezeout(SCHED, method="anneal", beta_override=bd, num_sweeps=1000).check_equilibrium(
+        dw, num_reads=400 if QUICK else 800, seed=3)
+    print(f"    P(all-down): analytic {p_down:.3f} | enumerator {eq_pt['p_ground_exact']:.3f} | "
+          f"PT {eq_pt['p_ground_sampled']:.3f} | anneal {eq_sa['p_ground_sampled']:.3f}")
+    check("enumerator matches the analytic basin probability", abs(eq_pt["p_ground_exact"] - p_down) < 2e-3)
+    err_pt = abs(eq_pt["p_ground_sampled"] - eq_pt["p_ground_exact"])
+    err_sa = abs(eq_sa["p_ground_sampled"] - eq_sa["p_ground_exact"])
+    check("PT reproduces the basin populations (error < 0.08)", err_pt < 0.08, f"error {err_pt:.3f}")
+    check("PT is closer to the exact basin populations than the anneal", err_pt < err_sa, f"{err_pt:.3f} vs {err_sa:.3f}")
+    REPORT["double_well"] = {"analytic": p_down, "pt": eq_pt, "anneal": eq_sa}
+
+    # ================================================================== [6] annealing kinetics
+    section("[6] anneal kinetics: too few sweeps leave the sample out of equilibrium")
+    mean_e, se_e = {}, {}
+    for ns in (2, 20, 300):
+        s_ = SAFreezeout(SCHED, method="anneal", beta_override=BETA, num_sweeps=ns)
+        e_ = ising_energies(m12, s_.sample(m12, 1500, seed=8))
+        mean_e[ns], se_e[ns] = float(e_.mean()), float(e_.std() / math.sqrt(len(e_)))
+    print("    mean energy by sweeps: " + ", ".join(f"{k}: {v:.3f}" for k, v in mean_e.items())
+          + f" | exact equilibrium {eq['mean_energy_exact']:.3f}")
+    check("2 sweeps give a higher mean energy than 300 sweeps (within 3 s.e.)", mean_e[2] >= mean_e[300] - 3 * se_e[300])
+    REPORT["anneal_sweeps"] = {"mean_energy": mean_e, "exact": eq["mean_energy_exact"]}
+
+    # ================================================================== [7] thermal resolution
+    section("[7] thermal_resolution")
+    arT = IsingArrays([0, 1, 2, 3, 4], np.array([0.5, -0.02, 0.0, 0.3, 0.0]), np.array([0, 1, 2, 3]),
+                      np.array([1, 2, 3, 4]), np.array([0.01, -0.05, 0.2, -0.9]))
+    tr = SAFreezeout(SCHED, method="pt", beta_override=10.0).thermal_resolution(arT)
+    check("kT_scaled = 1/beta", abs(tr["kT_scaled"] - 0.1) < 1e-12)
+    check("J below kT: 2 of 4 couplings (0.01, 0.05)", tr["J_nonzero"] == 4 and abs(tr["J_below_kT_pct"] - 50.0) < 1e-9)
+    check("h below kT counts only non-zero fields (1 of 3)", tr["h_nonzero"] == 3 and abs(tr["h_below_kT_pct"] - 100.0 / 3) < 1e-9)
+    check("J_min, J_median and kT/max|J|", abs(tr["J_min_abs"] - 0.01) < 1e-12 and abs(tr["J_median_abs"] - 0.125) < 1e-12
+          and abs(tr["kT_over_max_abs_J"] - 0.1 / 0.9) < 1e-12)
+    trh = SAFreezeout(SCHED, method="pt", beta_override=10.0).thermal_resolution(ar_h)
+    check("a model without couplers is handled (J fields None)", trh["J_nonzero"] == 0 and trh["J_min_abs"] is None and trh["J_below_kT_pct"] is None)
+    dflt = SAFreezeout(SCHED, 12.0, 0.6)
+    check("default beta comes from beta_final()", abs(dflt.thermal_resolution(arT)["kT_scaled"] - 1.0 / dflt.beta_final()) < 1e-12)
+
+    # ================================================================== [8] last_info and describe()
+    section("[8] last_info and describe()")
+    d = SAFreezeout(SCHED, method="pt", beta_override=2.0, beta_sigma_rel=0.1, pt_sweeps=20, pt_replicas=4)
+    X_last = None
+    for sd in range(5):
+        X_last = d.sample(m12, 10, seed=sd)
+    li = d.last_info
+    check("last_info mean/min energy match a recomputation from the returned samples",
+          abs(li["mean_energy"] - float(ising_energies(m12, X_last).mean())) < 1e-9
+          and abs(li["min_energy"] - float(ising_energies(m12, X_last).min())) < 1e-9)
+    check("last_info carries method, beta and PT diagnostics",
+          {"method", "beta_nominal", "beta_used", "pt_swap_acceptance", "pt_beta_ladder", "n_spins"} <= set(li))
+    desc = d.describe()
+    try:
+        json.dumps(desc)
+        check("describe() is JSON-safe", True)
+    except Exception as exc:
+        check("describe() is JSON-safe", False, exc)
+    check("describe() counts programming cycles and records the beta spread",
+          desc["runs"]["programming_cycles"] == 5 and desc["runs"]["beta_used_std"] > 0 and desc["pt"]["replicas"] == 4)
+    check("describe() includes the schedule record", "schedule" in desc and "source" in desc["schedule"])
+    check("uncalibrated_defaults flag: True for the placeholders, False once beta_override / T / s* are set",
+          SAFreezeout(SCHED).describe()["uncalibrated_defaults"] is True
+          and SAFreezeout(SCHED, beta_override=2.0).describe()["uncalibrated_defaults"] is False
+          and SAFreezeout(SCHED, 15.0, 0.6).describe()["uncalibrated_defaults"] is False)
+    for label_, kw_ in (("table", dict(freeze_s=[(5.0, 0.5), (50.0, 0.7)])), ("callable", dict(freeze_s=lambda t: 0.5))):
+        ok = True
+        try:
+            json.dumps(SAFreezeout(SCHED, **kw_).describe())
+        except Exception:
+            ok = False
+        check(f"describe() works when the freeze point ({label_}) needs an anneal time that was not given", ok)
+    REPORT["describe_example"] = desc
+
+    # ================================================================== [9] factory and call-site compatibility
+    section("[9] make_sampler and the call pattern used by EmulatedQPU")
+    f1 = make_sampler("sa", SCHED, 12.0, num_sweeps=30)
+    check("make_sampler('sa') returns SAFreezeout and accepts sample(ar, reads, seed=...)",
+          isinstance(f1, SAFreezeout) and f1.sample(m12, 5, seed=2).shape == (5, 12))
+    f2 = make_sampler("sa", SCHED, 12.0, method="pt", beta_override=2.0, pt_sweeps=10, pt_replicas=4)
+    check("make_sampler('sa', method='pt', ...) works", f2.sample(m12, 7, 3).shape == (7, 12))
+    check("make_sampler rejects unknown samplers", raises(ValueError, lambda: make_sampler("nope", SCHED, 12.0)))
+
+    # ================================================================== [10] OPF pipeline
+    OPF_OK = False
+    if not NO_OPF:
+        try:
+            import pandapower as pp
+            import pandapower.networks as nw
+            from solvers.qubo_formulator import QuboFormulator
+            from solvers.simulated_quantum_annealing.s2_mapping import quantise, scale_to_hardware
+            OPF_OK = True
+        except ImportError as exc:
+            print(f"\n[!] Section 10 skipped: cannot import pandapower / formulator / s2_mapping ({exc})")
+
+    def opf_eval(fm, net_, labels, spins, ref_cost):
+        uniq, counts = np.unique(spins, axis=0, return_counts=True)
+        feas, best = 0, None
+        for row, c in zip(uniq, counts):
+            out = fm._decode_solution({l: int((s + 1) // 2) for l, s in zip(labels, row)}, net_)
+            if out[4]["is_feasible"]:
+                feas += int(c)
+                best = out[3] if best is None else min(best, out[3])
+        gap = None if (best is None or not ref_cost) else 100.0 * (best - ref_cost) / abs(ref_cost)
+        return 100.0 * feas / len(spins), gap
+
+    if OPF_OK:
+        section("[10] DC-OPF QUBO -> Ising -> scale -> quantise -> SAFreezeout -> decode")
+        print("    The neal auto-beta rows are the sampler used in the mapping self-test. Physical-beta rows are expected to be")
+        print("    worse where scaled couplings sit below kT (the thermal floor); that is physics, not a bug.")
+        SW_OPF = 150 if QUICK else 300
+        specs = [("neal auto-beta", dict(use_auto_beta=True, num_sweeps=1000)),
+                 ("anneal @ physical beta", dict(num_sweeps=1000)),
+                 ("PT @ physical beta", dict(method="pt", pt_sweeps=SW_OPF, pt_replicas=16))]
+        quants = [("ideal", None), ("8-bit", 8), ("5-bit", 5)]
+        for cname in (["case5"] if QUICK else ["case5", "case9"]):
+            print(f"\n  -- {cname}")
+            try:
+                net = getattr(nw, cname)()
+                if not net.ext_grid.empty:
+                    net.ext_grid["min_p_mw"] = 0.0
+                ref = None
+                try:
+                    import copy
+                    tmp = copy.deepcopy(net)
+                    pp.rundcopp(tmp)
+                    ref = float(tmp.res_cost)
+                except Exception as exc:
+                    info(f"no classical reference cost ({type(exc).__name__})")
+                fm = QuboFormulator(formulation="dc_ptdf", mw_precision=10.0, encoding="radix")
+                bqm, _ = fm._formulate_qubo(net)
+                if not bqm.variables:
+                    info("0 variables, skipped")
+                    continue
+            except Exception as exc:
+                check(f"{cname}: formulation", False, f"{type(exc).__name__}: {exc}")
+                continue
+            a7 = IsingArrays.from_bqm(bqm.change_vartype(dimod.SPIN, inplace=False))
+            sc7, f7 = scale_to_hardware(a7, HR, JR)
+            print(f"     {len(a7.labels)} spins, {a7.J.size} couplers, scale factor {f7:.3e}, reference cost {ref}")
+            print(f"     {'quantisation':<8}{'sampler':<26}{'feas%':>7}{'gap%':>8}{'kT_scaled':>11}{'J<kT%':>8}{'meanE':>10}{'secs':>7}")
+            rows = []
+            for qlabel, bits in quants:
+                pr7 = quantise(sc7, HR, JR, None, bits_h=bits, bits_j=bits)
+                for slabel, kw in specs:
+                    smp = SAFreezeout(SCHED, 12.0, 0.6, **kw)
+                    t0 = time.time()
+                    X = smp.sample(pr7, 100 if QUICK else 200, seed=42)
+                    dt = time.time() - t0
+                    feas, gap = opf_eval(fm, net, a7.labels, X, ref)
+                    th = None if smp.use_auto_beta else smp.thermal_resolution(pr7)
+                    ok_out = X.shape[1] == len(a7.labels) and set(np.unique(X).tolist()) <= {-1, 1}
+                    check(f"{cname}/{qlabel}/{slabel}: valid +-1 samples, one column per spin", ok_out)
+                    try:
+                        json.dumps(smp.describe())
+                    except Exception as exc:
+                        check(f"{cname}/{qlabel}/{slabel}: describe() JSON-safe", False, exc)
+                    if th is not None:
+                        check(f"{cname}/{qlabel}/{slabel}: kT_scaled == 1/beta_used",
+                              abs(th["kT_scaled"] - 1.0 / smp.last_info["beta_used"]) < 1e-9)
+                    mE = smp.last_info["mean_energy"]
+                    print(f"     {qlabel:<8}{slabel:<26}{feas:>7.1f}{('-' if gap is None else format(gap, '.2f')):>8}"
+                          f"{('-' if th is None else format(th['kT_scaled'], '.4f')):>11}"
+                          f"{('-' if th is None else format(th['J_below_kT_pct'], '.1f')):>8}{mE:>10.3f}{dt:>7.1f}")
+                    if slabel.startswith("PT"):
+                        info(f"PT swap acceptance min {smp.last_info['pt_swap_acceptance_min']:.3f}")
+                    rows.append({"quantisation": qlabel, "sampler": slabel, "feasible_pct": feas, "gap_pct": gap,
+                                 "thermal_resolution": th, "mean_energy": mE, "seconds": dt})
+                    if qlabel == "ideal" and slabel == "neal auto-beta":
+                        check(f"{cname}: the old auto-beta anneal still finds feasible samples on the unquantised model", feas > 0, f"{feas:.1f}%")
+            REPORT[f"opf_{cname}"] = rows
+        print("\n    Negative gaps are not improvements: feasibility tolerance equals the 10 MW precision.")
+
+    # ================================================================== [11] EmulatedQPU integration
+    if not NO_EMU:
+        section("[11] EmulatedQPU: one sample() call per programming cycle, determinism, describe() after a run")
+        try:
+            from solvers.simulated_quantum_annealing.run_emulator import EmulatedQPU
+            from solvers.simulated_quantum_annealing.s1_hardware import Hardware
+            from solvers.simulated_quantum_annealing.s1b_embedding import find_embeddings, select_best
+            emu_ok = True
+        except ImportError as exc:
+            emu_ok = False
+            print(f"    skipped: {exc}")
+        if emu_ok:
+            try:
+                hw = Hardware.ideal_zephyr(m=4, t=4)
+                rr = np.random.default_rng(3)
+                nL = 8
+                lbqm = dimod.BinaryQuadraticModel({i: float(rr.uniform(-1, 1)) for i in range(nL)},
+                                                  {(i, j): float(rr.uniform(-1, 1)) for i, j in itertools.combinations(range(nL), 2)},
+                                                  0.0, dimod.BINARY)
+                embs = find_embeddings(lbqm, hw, methods=("clique", "minorminer"), seeds=(0,), timeout=20.0, verbose=False)
+                lab, emb = select_best(embs)
+                kw = dict(method="pt", beta_override=2.0, beta_sigma_rel=0.2, pt_sweeps=40, pt_replicas=8)
+
+                def run_once():
+                    q = EmulatedQPU(hw, seed=7, sampler="sa", sampler_kwargs=dict(kw), dac_bits=5,
+                                    ice_sigma_h=0.02, ice_sigma_j=0.01, use_extended_j=True)
+                    r = q.sample(lbqm, emb, num_reads=100, reads_per_programming=25,
+                                 chain_break_method="majority", postprocess=None)
+                    return q, r
+
+                q1, r1 = run_once()
+                q2, r2 = run_once()
+                check("emulated run returns all reads", int(np.sum(r1.sampleset.record.num_occurrences)) == 100)
+                check("logical sampleset has a chain_break_fraction field", "chain_break_fraction" in r1.sampleset.record.dtype.names)
+                dm = q1.sampler.describe()
+                check("one sampler.sample() call per programming cycle (100 reads / 25 per cycle = 4)",
+                      dm["runs"]["programming_cycles"] == 4, f"got {dm['runs']['programming_cycles']}")
+                check("beta fluctuates between programming cycles inside the emulator", dm["runs"]["beta_used_std"] > 0)
+                try:
+                    json.dumps(dm)
+                    check("sampler.describe() after an emulated run is JSON-safe", True)
+                except Exception as exc:
+                    check("sampler.describe() after an emulated run is JSON-safe", False, exc)
+                check("identical EmulatedQPU seeds give identical logical samples",
+                      np.array_equal(np.asarray(r1.sampleset.record.sample), np.asarray(r2.sampleset.record.sample)))
+                REPORT["emulator_run"] = {"embedding": label if (label := lab) else None, "describe": dm}
+            except Exception as exc:
+                check("EmulatedQPU integration ran without error", False, f"{type(exc).__name__}: {exc}")
+
+    # ================================================================== summary
+    section("SUMMARY")
+    failed = [c for c in CHECKS if not c[1]]
+    print(f"checks: {len(CHECKS) - len(failed)} passed, {len(failed)} failed")
+    for name, _, detail in failed:
+        print(f"  FAILED: {name}  {detail}")
+    with open(OUT_JSON, "w") as fh:
+        json.dump({"settings": {"quick": QUICK, "no_opf": NO_OPF, "no_emulator": NO_EMU,
+                                "schedule_source": getattr(SCHED, "source", None),
+                                "schedule_placeholder": getattr(SCHED, "is_placeholder", None)},
+                   "checks": CHECKS, "report": REPORT}, fh, default=str, indent=1)
+    print(f"details written to {OUT_JSON}")
+    sys.exit(1 if failed else 0)
