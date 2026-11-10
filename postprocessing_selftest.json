@@ -1,0 +1,1266 @@
+{
+ "settings": {
+  "quick": false,
+  "no_opf": false,
+  "no_emulator": false,
+  "no_greedy_compare": false,
+  "defaults": {
+   "tol_rel": 1e-09,
+   "tol_abs": null,
+   "max_steps": null,
+   "tie_break": "first",
+   "seed": 0,
+   "two_flip": false,
+   "two_flip_rounds": 20,
+   "pair_chunk": 32,
+   "refresh_every": 64
+  }
+ },
+ "checks": [
+  [
+   "unknown tie_break raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "negative tolerance raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "max_steps < 1 raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "two_flip_rounds < 1 raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "settings() round-trips the constructor arguments",
+   true,
+   ""
+  ],
+  [
+   "describe() of a fresh engine is JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "output: shape (reads, n), dtype int8, values +-1",
+   true,
+   ""
+  ],
+  [
+   "the input array is not modified",
+   true,
+   ""
+  ],
+  [
+   "energy never increases, read by read",
+   true,
+   ""
+  ],
+  [
+   "report counter energy_increased_reads == 0",
+   true,
+   ""
+  ],
+  [
+   "every output is a one-flip local minimum (independent dense check)",
+   true,
+   ""
+  ],
+  [
+   "report: reads_not_converged == 0 and one_flip_local_minima_pct == 100",
+   true,
+   ""
+  ],
+  [
+   "report energies match a recomputation",
+   true,
+   ""
+  ],
+  [
+   "report Hamming statistics match a recomputation",
+   true,
+   ""
+  ],
+  [
+   "flips returned equals the number of spins that changed when each is flipped at most once",
+   true,
+   "flips=744, hamming total=732"
+  ],
+  [
+   "idempotent: descending a local minimum changes nothing",
+   true,
+   ""
+  ],
+  [
+   "tol_used == tol_rel * model scale",
+   true,
+   "scale 5.691"
+  ],
+  [
+   "field-only model: columns follow ar.labels (result is -sign(h) in column order)",
+   true,
+   ""
+  ],
+  [
+   "zero spins -> (R, 0) array and zero flips",
+   true,
+   ""
+  ],
+  [
+   "zero reads -> (0, n) array and zero flips",
+   true,
+   ""
+  ],
+  [
+   "BINARY (0/1) samples are rejected",
+   true,
+   ""
+  ],
+  [
+   "wrong column count is rejected",
+   true,
+   ""
+  ],
+  [
+   "1-D samples are rejected",
+   true,
+   ""
+  ],
+  [
+   "module-level steepest_descent agrees with the engine (same output, same flip count)",
+   true,
+   ""
+  ],
+  [
+   "refresh_every=1 reproduces the naive reference exactly",
+   true,
+   "100.0% of reads identical"
+  ],
+  [
+   "incremental fields (refresh_every=64) agree with exact fields on >= 99% of reads",
+   true,
+   "100.0%"
+  ],
+  [
+   "exhaustive: no single flip improves any output (12 spins)",
+   true,
+   ""
+  ],
+  [
+   "exhaustive: every output has energy <= its start",
+   true,
+   ""
+  ],
+  [
+   "aligned ferromagnet with coefficients ~1e5: zero flips (no spurious moves from roundoff)",
+   true,
+   ""
+  ],
+  [
+   "highly degenerate +-1e5 model: all reads converge, no cycling, no energy increase",
+   true,
+   "flips 537, max steps 9"
+  ],
+  [
+   "degenerate model: outputs are one-flip local minima",
+   true,
+   ""
+  ],
+  [
+   "max_steps=1: not-converged reads are reported",
+   true,
+   "80 of 80"
+  ],
+  [
+   "per-call max_steps override takes effect and is reported",
+   true,
+   ""
+  ],
+  [
+   "absolute tolerance override: huge tolerance -> no flips; tol_used reported",
+   true,
+   ""
+  ],
+  [
+   "hand example: (+,+) is a one-flip minimum (energy 0.5)",
+   true,
+   ""
+  ],
+  [
+   "hand example: the pair move reaches (-,-) with energy -3.5",
+   true,
+   ""
+  ],
+  [
+   "pair-gain formula g_i + g_j - 2 J_ij s_i s_j matches the true energy change of the double flip",
+   true,
+   "max deviation 7.11e-15"
+  ],
+  [
+   "two_flip: outputs are minima for all single flips AND all coupled-pair flips (exhaustive)",
+   true,
+   ""
+  ],
+  [
+   "two_flip: final energy <= one-flip-only energy, read by read",
+   true,
+   ""
+  ],
+  [
+   "two_flip converged within its rounds",
+   true,
+   "rounds 3, pair moves 33"
+  ],
+  [
+   "penalty model: two-flip never satisfies fewer reads than one-flip",
+   true,
+   ""
+  ],
+  [
+   "first: all identical starts end in one identical state",
+   true,
+   ""
+  ],
+  [
+   "random: identical starts spread over several minima",
+   true,
+   "33 distinct"
+  ],
+  [
+   "random: reproducible for the same seed, different for another seed",
+   true,
+   ""
+  ],
+  [
+   "random: outputs are still one-flip local minima",
+   true,
+   ""
+  ],
+  [
+   "dwave-greedy outputs are one-flip minima by our independent check",
+   true,
+   ""
+  ],
+  [
+   "same final state on >= 90% of reads, or mean energy equal to 1e-6 relative",
+   true,
+   "identical 100.0%, mean energy ours -45.02350 vs dwave-greedy -45.02350"
+  ],
+  [
+   "configuration starts at the defaults",
+   true,
+   ""
+  ],
+  [
+   "cumulative counters add up over calls",
+   true,
+   "calls 2, reads 55"
+  ],
+  [
+   "last_call describes the second call",
+   true,
+   ""
+  ],
+  [
+   "last_report() returns a copy",
+   true,
+   ""
+  ],
+  [
+   "a custom label creates its own engine",
+   true,
+   ""
+  ],
+  [
+   "postprocess_report() is JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "reset_reports() zeroes the statistics",
+   true,
+   ""
+  ],
+  [
+   "configure() rejects unknown settings",
+   true,
+   ""
+  ],
+  [
+   "configure() rejects an invalid value and leaves the config unchanged",
+   true,
+   ""
+  ],
+  [
+   "configure(two_flip=True) changes the defaults",
+   true,
+   ""
+  ],
+  [
+   "new engines pick the configuration up and report it",
+   true,
+   ""
+  ],
+  [
+   "configuration restored to the defaults",
+   true,
+   ""
+  ],
+  [
+   "recomputed energies match the BQM (offset included)",
+   true,
+   ""
+  ],
+  [
+   "energies do not increase",
+   true,
+   ""
+  ],
+  [
+   "num_occurrences preserved",
+   true,
+   ""
+  ],
+  [
+   "extra vectors preserved (chain_break_fraction)",
+   true,
+   ""
+  ],
+  [
+   "sampleset.info preserved and the call report added",
+   true,
+   ""
+  ],
+  [
+   "every output row is a one-flip local minimum of the logical model",
+   true,
+   ""
+  ],
+  [
+   "a BINARY bqm is rejected",
+   true,
+   ""
+  ],
+  [
+   "a BINARY sampleset is rejected",
+   true,
+   ""
+  ],
+  [
+   "the report for this call is available under 'logical_sampleset'",
+   true,
+   ""
+  ],
+  [
+   "sampler output has far lower energy than random states (z > 3)",
+   true,
+   "z=158.0"
+  ],
+  [
+   "sampler + descent beats random + descent (z > 3): the annealer, not the descent, supplies the quality",
+   true,
+   "z=32.9"
+  ],
+  [
+   "descent moves sampler output less than it moves random starts (mean Hamming distance)",
+   true,
+   "1.04 vs 20.10"
+  ],
+  [
+   "fewer sampler reads needed descent than random reads",
+   true,
+   "65.8% vs 100.0%"
+  ],
+  [
+   "descent never raised the energy of a sampler read",
+   true,
+   ""
+  ],
+  [
+   "colder sampler -> lower raw mean energy (beta 0.5 > 2 > 6)",
+   true,
+   "{0.5: -38.01, 2.0: -65.54, 6.0: -67.01}"
+  ],
+  [
+   "more sweeps -> lower raw mean energy (2 > 30 > max)",
+   true,
+   "{2: -47.64, 30: -65.28, 300: -66.83}"
+  ],
+  [
+   "case5/ideal: valid +-1 outputs, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/ideal: descent never raised the energy of a sampler read",
+   true,
+   ""
+  ],
+  [
+   "case5/ideal: sampler + descent has lower ideal energy than random + descent (z > 3)",
+   false,
+   "z=1.0"
+  ],
+  [
+   "case5/ideal: sampler + descent is at least as feasible as random + descent",
+   true,
+   "93.0% vs 90.0%"
+  ],
+  [
+   "case5/ideal: descent moves the sampler's reads less than random starts",
+   true,
+   "2.45 vs 4.30"
+  ],
+  [
+   "case5/8-bit: valid +-1 outputs, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case5/8-bit: descent never raised the energy of a sampler read",
+   true,
+   ""
+  ],
+  [
+   "case5/8-bit: sampler + descent has lower ideal energy than random + descent (z > 3)",
+   false,
+   "z=2.9"
+  ],
+  [
+   "case5/8-bit: sampler + descent is at least as feasible as random + descent",
+   true,
+   "92.7% vs 90.0%"
+  ],
+  [
+   "case5/8-bit: descent moves the sampler's reads less than random starts",
+   true,
+   "2.37 vs 4.30"
+  ],
+  [
+   "case9/ideal: valid +-1 outputs, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/ideal: descent never raised the energy of a sampler read",
+   true,
+   ""
+  ],
+  [
+   "case9/ideal: sampler + descent has lower ideal energy than random + descent (z > 3)",
+   false,
+   "z=2.3"
+  ],
+  [
+   "case9/ideal: sampler + descent is at least as feasible as random + descent",
+   true,
+   "91.7% vs 86.7%"
+  ],
+  [
+   "case9/ideal: descent moves the sampler's reads less than random starts",
+   true,
+   "2.53 vs 5.14"
+  ],
+  [
+   "case9/8-bit: valid +-1 outputs, one column per spin",
+   true,
+   ""
+  ],
+  [
+   "case9/8-bit: descent never raised the energy of a sampler read",
+   true,
+   ""
+  ],
+  [
+   "case9/8-bit: sampler + descent has lower ideal energy than random + descent (z > 3)",
+   true,
+   "z=3.3"
+  ],
+  [
+   "case9/8-bit: sampler + descent is at least as feasible as random + descent",
+   true,
+   "93.0% vs 86.7%"
+  ],
+  [
+   "case9/8-bit: descent moves the sampler's reads less than random starts",
+   true,
+   "2.47 vs 5.14"
+  ],
+  [
+   "calls recorded per stage: None -> (0, 0)",
+   true,
+   ""
+  ],
+  [
+   "calls recorded per stage: physical -> (1, 0)",
+   true,
+   ""
+  ],
+  [
+   "calls recorded per stage: logical -> (0, 1)",
+   true,
+   ""
+  ],
+  [
+   "calls recorded per stage: both -> (1, 1)",
+   true,
+   ""
+  ],
+  [
+   "EmulationResult.info flips agree with the stages used",
+   true,
+   ""
+  ],
+  [
+   "the report carries the settings that produced the result",
+   true,
+   ""
+  ],
+  [
+   "the emulator-run report is JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "logical descent lowers (or keeps) the energy of every read relative to no postprocessing",
+   true,
+   "mean -4.1707 -> -4.2252"
+  ],
+  [
+   "'both' mean logical energy is no worse than no postprocessing (within 3 s.e.)",
+   true,
+   "-4.2252 vs -4.1707"
+  ],
+  [
+   "physical descent does not increase the reported chain-break fraction (it repairs chains)",
+   true,
+   "0.0000 -> 0.0000"
+  ],
+  [
+   "identical seeds reproduce the postprocessed result exactly",
+   true,
+   ""
+  ],
+  [
+   "OPF/emulator: logical descent lowers (or keeps) the energy of every read",
+   true,
+   "mean 83085.229 -> 22320.020"
+  ],
+  [
+   "OPF/emulator: emulator output + logical descent has lower logical energy than random + descent (z > 3)",
+   false,
+   "z=-4.5"
+  ],
+  [
+   "OPF/emulator: emulator output + logical descent is at least as feasible as random + descent",
+   true,
+   "96.5% vs 89.5%"
+  ],
+  [
+   "OPF/emulator: postprocess='physical' is at least as feasible as the random-start baseline",
+   false,
+   "11.5% vs 89.5%"
+  ],
+  [
+   "OPF/emulator: postprocess='both' is at least as feasible as the random-start baseline",
+   true,
+   "96.0% vs 89.5%"
+  ]
+ ],
+ "report": {
+  "pair_moves_penalty_model": {
+   "one_flip_satisfied_pct": 71.5,
+   "two_flip_satisfied_pct": 100.0
+  },
+  "dwave_greedy_compare": {
+   "identical_pct": 100.0,
+   "mean_energy_ours": -45.02350118134897,
+   "mean_energy_dwave": -45.02350118134897
+  },
+  "synthetic_60spin": {
+   "beta": 4.0,
+   "ref_energy": -68.61720156508974,
+   "mean_energy": {
+    "random": 0.9949835123754949,
+    "random_descent": -59.88293631674927,
+    "sampler": -66.92052927114646,
+    "sampler_descent": -67.22351864799111
+   },
+   "hamming_mean": {
+    "random_descent": 20.0975,
+    "sampler_descent": 1.0425
+   },
+   "z_sampler_descent_vs_random_descent": 32.86606009530122
+  },
+  "opf_case5": [
+   {
+    "programming": "ideal",
+    "population": "random + descent",
+    "feasible_pct": 90.0,
+    "gap_pct": -2.29161491810315,
+    "mean_ideal_energy": -421155.6973855573
+   },
+   {
+    "programming": "ideal",
+    "population": "sampler (raw)",
+    "feasible_pct": 22.0,
+    "gap_pct": -1.6051120141635844,
+    "mean_ideal_energy": -412603.0496474105
+   },
+   {
+    "programming": "ideal",
+    "population": "sampler + descent",
+    "feasible_pct": 93.0,
+    "gap_pct": -2.29161491810315,
+    "mean_ideal_energy": -421327.5929548507
+   },
+   {
+    "programming": "ideal",
+    "population": "neal SA (reference)",
+    "feasible_pct": 98.66666666666667,
+    "gap_pct": -1.948363466133367,
+    "mean_ideal_energy": -422225.12301277556
+   },
+   {
+    "programming": "8-bit",
+    "population": "random + descent",
+    "feasible_pct": 90.0,
+    "gap_pct": -2.29161491810315,
+    "mean_ideal_energy": -421155.6973855573
+   },
+   {
+    "programming": "8-bit",
+    "population": "sampler (raw)",
+    "feasible_pct": 23.0,
+    "gap_pct": -0.28931478161275026,
+    "mean_ideal_energy": -413111.0064838957
+   },
+   {
+    "programming": "8-bit",
+    "population": "sampler + descent",
+    "feasible_pct": 92.66666666666667,
+    "gap_pct": -1.6623205894918816,
+    "mean_ideal_energy": -421659.90044834884
+   },
+   {
+    "programming": "8-bit",
+    "population": "neal SA (reference)",
+    "feasible_pct": 98.66666666666667,
+    "gap_pct": -1.948363466133367,
+    "mean_ideal_energy": -422225.12301277556
+   }
+  ],
+  "opf_case9": [
+   {
+    "programming": "ideal",
+    "population": "random + descent",
+    "feasible_pct": 86.66666666666667,
+    "gap_pct": 0.11931289314138162,
+    "mean_ideal_energy": -339499.2401316616
+   },
+   {
+    "programming": "ideal",
+    "population": "sampler (raw)",
+    "feasible_pct": 33.666666666666664,
+    "gap_pct": 0.09534829146271308,
+    "mean_ideal_energy": -331586.00448504713
+   },
+   {
+    "programming": "ideal",
+    "population": "sampler + descent",
+    "feasible_pct": 91.66666666666667,
+    "gap_pct": 0.09534829146271308,
+    "mean_ideal_energy": -339870.4537743891
+   },
+   {
+    "programming": "ideal",
+    "population": "neal SA (reference)",
+    "feasible_pct": 98.0,
+    "gap_pct": 0.11931289314138162,
+    "mean_ideal_energy": -340464.7978280069
+   },
+   {
+    "programming": "8-bit",
+    "population": "random + descent",
+    "feasible_pct": 86.66666666666667,
+    "gap_pct": 0.11931289314138162,
+    "mean_ideal_energy": -339499.2401316616
+   },
+   {
+    "programming": "8-bit",
+    "population": "sampler (raw)",
+    "feasible_pct": 35.0,
+    "gap_pct": 0.21996422019178943,
+    "mean_ideal_energy": -331020.4116748583
+   },
+   {
+    "programming": "8-bit",
+    "population": "sampler + descent",
+    "feasible_pct": 93.0,
+    "gap_pct": 0.09534829146271308,
+    "mean_ideal_energy": -339986.69012542727
+   },
+   {
+    "programming": "8-bit",
+    "population": "neal SA (reference)",
+    "feasible_pct": 98.0,
+    "gap_pct": 0.11931289314138162,
+    "mean_ideal_energy": -340464.7978280069
+   }
+  ],
+  "emulator_synthetic": {
+   "None": {
+    "mean_E": -4.170705508192602,
+    "cb": 0.0,
+    "report": {
+     "config": {
+      "tol_rel": 1e-09,
+      "tol_abs": null,
+      "max_steps": null,
+      "tie_break": "first",
+      "seed": 0,
+      "two_flip": false,
+      "two_flip_rounds": 20,
+      "pair_chunk": 32,
+      "refresh_every": 64
+     },
+     "engines": {}
+    }
+   },
+   "physical": {
+    "mean_E": -4.170705508192602,
+    "cb": 0.0,
+    "report": {
+     "config": {
+      "tol_rel": 1e-09,
+      "tol_abs": null,
+      "max_steps": null,
+      "tie_break": "first",
+      "seed": 0,
+      "two_flip": false,
+      "two_flip_rounds": 20,
+      "pair_chunk": 32,
+      "refresh_every": 64
+     },
+     "engines": {
+      "steepest_descent": {
+       "class": "GreedyDescent",
+       "label": "steepest_descent",
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "cumulative": {
+        "calls": 1,
+        "reads": 120,
+        "flips": 0,
+        "pair_moves": 0,
+        "reads_changed": 0,
+        "reads_not_converged": 0,
+        "energy_drop_sum": 0.0,
+        "seconds": 0.00046781599849055056,
+        "energy_drop_mean_per_read": 0.0,
+        "reads_changed_pct": 0.0
+       },
+       "last_call": {
+        "label": "steepest_descent",
+        "call": 1,
+        "n_reads": 120,
+        "n_spins": 12,
+        "settings": {
+         "tol_rel": 1e-09,
+         "tol_abs": null,
+         "max_steps": null,
+         "tie_break": "first",
+         "seed": 0,
+         "two_flip": false,
+         "two_flip_rounds": 20,
+         "pair_chunk": 32,
+         "refresh_every": 64
+        },
+        "tol_used": 1.4333465542982844e-09,
+        "scale": 1.4333465542982842,
+        "max_steps_used": 120,
+        "flips": 0,
+        "pair_moves": 0,
+        "two_flip_rounds_used": 0,
+        "two_flip_converged": null,
+        "reads_changed": 0,
+        "reads_changed_pct": 0.0,
+        "steps_mean": 0.0,
+        "steps_max": 0,
+        "reads_not_converged": 0,
+        "one_flip_local_minima_pct": 100.0,
+        "energy_before_mean": -5.299594662405998,
+        "energy_before_min": -5.391060453721117,
+        "energy_after_mean": -5.299594662405998,
+        "energy_after_min": -5.391060453721117,
+        "energy_drop_mean": 0.0,
+        "energy_increased_reads": 0,
+        "hamming_mean": 0.0,
+        "hamming_mean_frac": 0.0,
+        "hamming_max": 0,
+        "seconds": 0.00046781599849055056
+       }
+      }
+     }
+    }
+   },
+   "logical": {
+    "mean_E": -4.225224047558018,
+    "cb": 0.0,
+    "report": {
+     "config": {
+      "tol_rel": 1e-09,
+      "tol_abs": null,
+      "max_steps": null,
+      "tie_break": "first",
+      "seed": 0,
+      "two_flip": false,
+      "two_flip_rounds": 20,
+      "pair_chunk": 32,
+      "refresh_every": 64
+     },
+     "engines": {
+      "steepest_descent": {
+       "class": "GreedyDescent",
+       "label": "steepest_descent",
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "cumulative": {
+        "calls": 0,
+        "reads": 0,
+        "flips": 0,
+        "pair_moves": 0,
+        "reads_changed": 0,
+        "reads_not_converged": 0,
+        "energy_drop_sum": 0.0,
+        "seconds": 0.0,
+        "energy_drop_mean_per_read": null,
+        "reads_changed_pct": null
+       },
+       "last_call": {}
+      },
+      "logical_sampleset": {
+       "class": "GreedyDescent",
+       "label": "logical_sampleset",
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "cumulative": {
+        "calls": 1,
+        "reads": 120,
+        "flips": 39,
+        "pair_moves": 0,
+        "reads_changed": 19,
+        "reads_not_converged": 0,
+        "energy_drop_sum": 6.5422247238498885,
+        "seconds": 0.0010054190006485442,
+        "energy_drop_mean_per_read": 0.05451853936541574,
+        "reads_changed_pct": 15.833333333333334
+       },
+       "last_call": {
+        "label": "logical_sampleset",
+        "call": 1,
+        "n_reads": 120,
+        "n_spins": 8,
+        "settings": {
+         "tol_rel": 1e-09,
+         "tol_abs": null,
+         "max_steps": null,
+         "tie_break": "first",
+         "seed": 0,
+         "two_flip": false,
+         "two_flip_rounds": 20,
+         "pair_chunk": 32,
+         "refresh_every": 64
+        },
+        "tol_used": 1.7078760051449733e-09,
+        "scale": 1.7078760051449733,
+        "max_steps_used": 80,
+        "flips": 39,
+        "pair_moves": 0,
+        "two_flip_rounds_used": 0,
+        "two_flip_converged": null,
+        "reads_changed": 19,
+        "reads_changed_pct": 15.833333333333332,
+        "steps_mean": 0.325,
+        "steps_max": 3,
+        "reads_not_converged": 0,
+        "one_flip_local_minima_pct": 100.0,
+        "energy_before_mean": -3.20759023034241,
+        "energy_before_min": -3.299056021657529,
+        "energy_after_mean": -3.2621087697078264,
+        "energy_after_min": -3.299056021657529,
+        "energy_drop_mean": 0.05451853936541574,
+        "energy_increased_reads": 0,
+        "hamming_mean": 0.325,
+        "hamming_mean_frac": 0.040625,
+        "hamming_max": 3,
+        "seconds": 0.0010054190006485442
+       }
+      }
+     }
+    }
+   },
+   "both": {
+    "mean_E": -4.225224047558018,
+    "cb": 0.0,
+    "report": {
+     "config": {
+      "tol_rel": 1e-09,
+      "tol_abs": null,
+      "max_steps": null,
+      "tie_break": "first",
+      "seed": 0,
+      "two_flip": false,
+      "two_flip_rounds": 20,
+      "pair_chunk": 32,
+      "refresh_every": 64
+     },
+     "engines": {
+      "steepest_descent": {
+       "class": "GreedyDescent",
+       "label": "steepest_descent",
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "cumulative": {
+        "calls": 1,
+        "reads": 120,
+        "flips": 0,
+        "pair_moves": 0,
+        "reads_changed": 0,
+        "reads_not_converged": 0,
+        "energy_drop_sum": 0.0,
+        "seconds": 0.00040227300087281037,
+        "energy_drop_mean_per_read": 0.0,
+        "reads_changed_pct": 0.0
+       },
+       "last_call": {
+        "label": "steepest_descent",
+        "call": 1,
+        "n_reads": 120,
+        "n_spins": 12,
+        "settings": {
+         "tol_rel": 1e-09,
+         "tol_abs": null,
+         "max_steps": null,
+         "tie_break": "first",
+         "seed": 0,
+         "two_flip": false,
+         "two_flip_rounds": 20,
+         "pair_chunk": 32,
+         "refresh_every": 64
+        },
+        "tol_used": 1.4333465542982844e-09,
+        "scale": 1.4333465542982842,
+        "max_steps_used": 120,
+        "flips": 0,
+        "pair_moves": 0,
+        "two_flip_rounds_used": 0,
+        "two_flip_converged": null,
+        "reads_changed": 0,
+        "reads_changed_pct": 0.0,
+        "steps_mean": 0.0,
+        "steps_max": 0,
+        "reads_not_converged": 0,
+        "one_flip_local_minima_pct": 100.0,
+        "energy_before_mean": -5.299594662405998,
+        "energy_before_min": -5.391060453721117,
+        "energy_after_mean": -5.299594662405998,
+        "energy_after_min": -5.391060453721117,
+        "energy_drop_mean": 0.0,
+        "energy_increased_reads": 0,
+        "hamming_mean": 0.0,
+        "hamming_mean_frac": 0.0,
+        "hamming_max": 0,
+        "seconds": 0.00040227300087281037
+       }
+      },
+      "logical_sampleset": {
+       "class": "GreedyDescent",
+       "label": "logical_sampleset",
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "cumulative": {
+        "calls": 1,
+        "reads": 120,
+        "flips": 39,
+        "pair_moves": 0,
+        "reads_changed": 19,
+        "reads_not_converged": 0,
+        "energy_drop_sum": 6.5422247238498885,
+        "seconds": 0.0009448579985473771,
+        "energy_drop_mean_per_read": 0.05451853936541574,
+        "reads_changed_pct": 15.833333333333334
+       },
+       "last_call": {
+        "label": "logical_sampleset",
+        "call": 1,
+        "n_reads": 120,
+        "n_spins": 8,
+        "settings": {
+         "tol_rel": 1e-09,
+         "tol_abs": null,
+         "max_steps": null,
+         "tie_break": "first",
+         "seed": 0,
+         "two_flip": false,
+         "two_flip_rounds": 20,
+         "pair_chunk": 32,
+         "refresh_every": 64
+        },
+        "tol_used": 1.7078760051449733e-09,
+        "scale": 1.7078760051449733,
+        "max_steps_used": 80,
+        "flips": 39,
+        "pair_moves": 0,
+        "two_flip_rounds_used": 0,
+        "two_flip_converged": null,
+        "reads_changed": 19,
+        "reads_changed_pct": 15.833333333333332,
+        "steps_mean": 0.325,
+        "steps_max": 3,
+        "reads_not_converged": 0,
+        "one_flip_local_minima_pct": 100.0,
+        "energy_before_mean": -3.20759023034241,
+        "energy_before_min": -3.299056021657529,
+        "energy_after_mean": -3.2621087697078264,
+        "energy_after_min": -3.299056021657529,
+        "energy_drop_mean": 0.05451853936541574,
+        "energy_increased_reads": 0,
+        "hamming_mean": 0.325,
+        "hamming_mean_frac": 0.040625,
+        "hamming_max": 3,
+        "seconds": 0.0009448579985473771
+       }
+      }
+     }
+    }
+   }
+  },
+  "emulator_opf_case5": {
+   "embedding": "minorminer_seed0",
+   "baseline_feasible_pct": 89.5,
+   "rows": {
+    "None": {
+     "feasible_pct": 11.5,
+     "gap_pct": 18.818349378038494,
+     "mean_logical_energy": 83085.22857787262
+    },
+    "physical": {
+     "feasible_pct": 11.5,
+     "gap_pct": 18.818349378038494,
+     "mean_logical_energy": 82930.13197308405
+    },
+    "logical": {
+     "feasible_pct": 96.5,
+     "gap_pct": 0.9120653002814896,
+     "mean_logical_energy": 22320.01986724629
+    },
+    "both": {
+     "feasible_pct": 96.0,
+     "gap_pct": 3.143199738085078,
+     "mean_logical_energy": 22356.741518688537
+    }
+   },
+   "report_both": {
+    "config": {
+     "tol_rel": 1e-09,
+     "tol_abs": null,
+     "max_steps": null,
+     "tie_break": "first",
+     "seed": 0,
+     "two_flip": false,
+     "two_flip_rounds": 20,
+     "pair_chunk": 32,
+     "refresh_every": 64
+    },
+    "engines": {
+     "steepest_descent": {
+      "class": "GreedyDescent",
+      "label": "steepest_descent",
+      "settings": {
+       "tol_rel": 1e-09,
+       "tol_abs": null,
+       "max_steps": null,
+       "tie_break": "first",
+       "seed": 0,
+       "two_flip": false,
+       "two_flip_rounds": 20,
+       "pair_chunk": 32,
+       "refresh_every": 64
+      },
+      "cumulative": {
+       "calls": 1,
+       "reads": 200,
+       "flips": 6,
+       "pair_moves": 0,
+       "reads_changed": 5,
+       "reads_not_converged": 0,
+       "energy_drop_sum": 73305.56014249567,
+       "seconds": 0.0017580050007381942,
+       "energy_drop_mean_per_read": 366.5278007124783,
+       "reads_changed_pct": 2.5
+      },
+      "last_call": {
+       "label": "steepest_descent",
+       "call": 1,
+       "n_reads": 200,
+       "n_spins": 97,
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "tol_used": 0.0007523074537000901,
+       "scale": 752307.4537000901,
+       "max_steps_used": 970,
+       "flips": 6,
+       "pair_moves": 0,
+       "two_flip_rounds_used": 0,
+       "two_flip_converged": null,
+       "reads_changed": 5,
+       "reads_changed_pct": 2.5,
+       "steps_mean": 0.03,
+       "steps_max": 2,
+       "reads_not_converged": 0,
+       "one_flip_local_minima_pct": 100.0,
+       "energy_before_mean": -7984922.19481486,
+       "energy_before_min": -8294313.172384134,
+       "energy_after_mean": -7985288.722615571,
+       "energy_after_min": -8294313.172384134,
+       "energy_drop_mean": 366.5278007124783,
+       "energy_increased_reads": 0,
+       "hamming_mean": 0.03,
+       "hamming_mean_frac": 0.0003092783505154639,
+       "hamming_max": 2,
+       "seconds": 0.0017580050007381942
+      }
+     },
+     "logical_sampleset": {
+      "class": "GreedyDescent",
+      "label": "logical_sampleset",
+      "settings": {
+       "tol_rel": 1e-09,
+       "tol_abs": null,
+       "max_steps": null,
+       "tie_break": "first",
+       "seed": 0,
+       "two_flip": false,
+       "two_flip_rounds": 20,
+       "pair_chunk": 32,
+       "refresh_every": 64
+      },
+      "cumulative": {
+       "calls": 1,
+       "reads": 200,
+       "flips": 668,
+       "pair_moves": 0,
+       "reads_changed": 199,
+       "reads_not_converged": 0,
+       "energy_drop_sum": 12114678.090879098,
+       "seconds": 0.0025003139999171253,
+       "energy_drop_mean_per_read": 60573.390454395485,
+       "reads_changed_pct": 99.5
+      },
+      "last_call": {
+       "label": "logical_sampleset",
+       "call": 1,
+       "n_reads": 200,
+       "n_spins": 31,
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "tol_used": 0.0010603390303643239,
+       "scale": 1060339.0303643239,
+       "max_steps_used": 310,
+       "flips": 668,
+       "pair_moves": 0,
+       "two_flip_rounds_used": 0,
+       "two_flip_converged": null,
+       "reads_changed": 199,
+       "reads_changed_pct": 99.5,
+       "steps_mean": 3.34,
+       "steps_max": 8,
+       "reads_not_converged": 0,
+       "one_flip_local_minima_pct": 100.0,
+       "energy_before_mean": -359526.6872535938,
+       "energy_before_min": -419403.81087099866,
+       "energy_after_mean": -420100.0777079892,
+       "energy_after_min": -424499.03062712436,
+       "energy_drop_mean": 60573.390454395485,
+       "energy_increased_reads": 0,
+       "hamming_mean": 3.33,
+       "hamming_mean_frac": 0.10741935483870968,
+       "hamming_max": 8,
+       "seconds": 0.0025003139999171253
+      }
+     }
+    }
+   }
+  }
+ }
+}

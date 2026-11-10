@@ -85,9 +85,8 @@ def embed_layout(src: nx.Graph, tgt: nx.Graph, seed: int = 0, timeout: float = 1
 
 
 def max_embeddable_clique(tgt: nx.Graph) -> int:
-    """How large a complete graph CAN possibly embed in tgt, per busclique's own cache -- answers
-    "why doesn't my clique fit" in milliseconds, with no search or timeout, before trying anything
-    else. Returns 0 if busclique is unavailable or the target has no cached clique capacity."""
+    """How large a complete graph CAN possibly embed in tgt, per busclique's own cache.
+    Returns 0 if busclique is unavailable or the target has no cached clique capacity."""
     try:
         from minorminer.busclique import busgraph_cache
     except ImportError:

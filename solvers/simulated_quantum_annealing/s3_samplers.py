@@ -43,9 +43,9 @@ class SAFreezeout:
 
     method = "anneal" : neal SA from beta_hot to beta_eff over num_sweeps (the original behaviour). It equals a
                         Boltzmann sample at beta_eff only if the schedule is long enough to equilibrate.
-    method = "pt"     : parallel tempering with pt_replicas replicas on a geometric ladder from beta_hot' to
+    method = "pt"     : parallel tempering with pt_replicas on a geometric ladder from beta_hot' to
                         beta_eff; each read is an independent chain and returns its coldest replica. Targets
-                        the Boltzmann distribution at beta_eff directly. Check it with check_equilibrium().
+                        the Boltzmann distribution at beta_eff directly.
 
     beta_eff source (first match):
       beta_override           explicit beta_eff in 1/scaled-energy (e.g. from an effective-temperature fit)
@@ -339,16 +339,6 @@ class SQASampler:
         K = 0.5 * ln coth( A/(2 kT P) ),
     and each slice weighted by exp(-(B/2) H_ising / (kT P)).  Spins fluctuate along the slices, which is
     how tunnelling and quantum correlations enter (the SVMC rotor model has neither).
-
-    What this is:  a genuine quantum model (samples the quantum Boltzmann distribution at every point of
-                   the schedule, with the real A(s), B(s) and temperature); scales ~linearly in qubits.
-    What it is not: real-time Schrodinger/Lindblad dynamics. Monte Carlo sweeps are a stand-in for
-                   anneal time (num_sweeps is a calibration parameter), and there is no open-system
-                   decoherence/relaxation model beyond the thermal bath in the sampling.
-    Accuracy knob: Trotter error. Need P large enough that (B/2)/(kT P) is not >> 1 near freeze-out;
-                   test convergence by doubling trotter_slices on a small instance.
-    Returns slice 0 of each replica stack (no post-selection on the best slice).
-    Cost ~ num_sweeps * trotter_slices * n_qubits * num_reads.
     """
 
     def __init__(self, schedule: Schedule, temperature_mk: float = 12.0, num_sweeps: int = 300,

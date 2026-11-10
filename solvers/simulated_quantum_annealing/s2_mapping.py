@@ -62,6 +62,7 @@ def scale_to_hardware(ar: IsingArrays, h_range, j_range, is_chain: np.ndarray | 
     non-chain J vs j_range, chain J vs chain_j_range (defaults to j_range) and, if given, the signed sum of
     couplings on every qubit vs per_qubit_coupling_range. Take that range from the real solver's properties
     (Hardware.properties) if it reports one; do not guess it. Returns (scaled, factor)."""
+
     if chain_j_range is None:
         chain_j_range = j_range
     if is_chain is None:
@@ -84,8 +85,7 @@ def _per_qubit_sums(ar: IsingArrays) -> np.ndarray:
 
 
 def _quantise_values(x: np.ndarray, lo: float, hi: float, bits: int) -> np.ndarray:
-    """Uniform grid of step (hi-lo)/2**bits anchored at ZERO (a zero coefficient stays exactly zero), clipped to
-    the programmable range. The earlier version could round past the range (e.g. J=+1 -> 1.03 on (-2, 1))."""
+    """Uniform grid of step (hi-lo)/2**bits anchored at ZERO (a zero coefficient stays exactly zero), clipped to the programmable range."""
     step = (hi - lo) / (2 ** bits)
     return np.clip(np.round(x / step) * step, lo, hi)
 
@@ -95,6 +95,7 @@ def quantise(ar: IsingArrays, h_range, j_range, bits: int | None, is_chain: np.n
     """DAC model. `bits` applies to both h and J; bits_h / bits_j override it for one of them (h and J do not
     have the same resolution on real devices). None for a part -> that part is left unquantised.
     Chain couplers are quantised against chain_j_range, the rest against j_range."""
+
     bh = bits if bits_h is None else bits_h
     bj = bits if bits_j is None else bits_j
     if bh is None and bj is None:
@@ -112,7 +113,7 @@ def quantise(ar: IsingArrays, h_range, j_range, bits: int | None, is_chain: np.n
 
 
 class SystematicICE:
-    """The FIXED part of the control errors: one offset per physical qubit and per coupler, drawn once and then
+    """The control errors: one offset per physical qubit and per coupler, drawn once and then
     reused for every programming and every problem, because a real device's systematic error belongs to the
     hardware. Offsets are keyed by qubit label (integers, as on dwave_networkx Zephyr graphs), so they do not
     depend on call order. sigma values are calibration parameters, not known constants."""
