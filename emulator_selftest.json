@@ -1,0 +1,1400 @@
+{
+ "settings": {
+  "quick": false,
+  "no_opf": false,
+  "no_ablation": false,
+  "no_quantum": false,
+  "schedule_source": "standart_annealing_schedule_Ad2Sys1.csv",
+  "schedule_placeholder": false
+ },
+ "checks": [
+  [
+   "default construction: physical temperature used and recorded as such",
+   true,
+   "12.0 mK (physical)"
+  ],
+  [
+   "a fitted effective temperature on the hardware is used and recorded",
+   true,
+   ""
+  ],
+  [
+   "temperature_mk overrides both",
+   true,
+   ""
+  ],
+  [
+   "schedule object is used as given",
+   true,
+   ""
+  ],
+  [
+   "a missing schedule file raises when strict (default)",
+   true,
+   ""
+  ],
+  [
+   "strict_schedule=False falls back to the placeholder and says so",
+   true,
+   ""
+  ],
+  [
+   "default schedule path loads",
+   true,
+   "standart_annealing_schedule_Ad2Sys1.csv"
+  ],
+  [
+   "unknown sampler raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "systematic must be a SystematicICE (TypeError)",
+   true,
+   ""
+  ],
+  [
+   "unknown postprocess setting raises TypeError",
+   true,
+   ""
+  ],
+  [
+   "postprocess settings reach both descent engines",
+   true,
+   ""
+  ],
+  [
+   "per_qubit_coupling_range='from_hardware' without properties raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "per_qubit_coupling_range='from_hardware' reads the solver properties",
+   true,
+   ""
+  ],
+  [
+   "the SA sampler takes anneal_time_us, SVMC does not",
+   true,
+   ""
+  ],
+  [
+   "invalid input raises ValueError: postprocess='nope'",
+   true,
+   ""
+  ],
+  [
+   "invalid input raises ValueError: chain_break_method='nope'",
+   true,
+   ""
+  ],
+  [
+   "invalid input raises ValueError: num_reads=0",
+   true,
+   ""
+  ],
+  [
+   "invalid input raises ValueError: reads_per_programming=0",
+   true,
+   ""
+  ],
+  [
+   "invalid input raises ValueError: embedding without a chain for a variable",
+   true,
+   ""
+  ],
+  [
+   "invalid input raises ValueError: embedding with a qubit outside the graph",
+   true,
+   ""
+  ],
+  [
+   "anneal_time_us with a sampler that does not take it raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "failed calls consumed no random numbers and did not count as runs",
+   true,
+   ""
+  ],
+  [
+   "result is a valid EmulationResult (BINARY, right variables, energies equal the QUBO energies)",
+   true,
+   ""
+  ],
+  [
+   "one row per read with majority vote",
+   true,
+   ""
+  ],
+  [
+   "raw_sampleset present and identical to sampleset when postprocess is None",
+   true,
+   ""
+  ],
+  [
+   "stages is None and target_sampleset is None unless requested",
+   true,
+   ""
+  ],
+  [
+   "embedding_stats of the result equals embedding_stats(embedding)",
+   true,
+   ""
+  ],
+  [
+   "automatic chain strength equals an independent uniform-torque-compensation value",
+   true,
+   "0.5230"
+  ],
+  [
+   "info is strictly JSON-serialisable",
+   true,
+   ""
+  ],
+  [
+   "info has the new record keys",
+   true,
+   "[]"
+  ],
+  [
+   "scale factor agrees across result, info and mapping diagnostics",
+   true,
+   ""
+  ],
+  [
+   "binding constraint is one of the known limits",
+   true,
+   "chain_J_range"
+  ],
+  [
+   "embedding footprint and run record agree (chain couplers, physical qubits)",
+   true,
+   "12 qubits, 4 chain couplers"
+  ],
+  [
+   "programming cycles: ceil(60 / 20) = 3, reads add up, every cycle has its own sampler seed",
+   true,
+   ""
+  ],
+  [
+   "timing: all stages present and their sum does not exceed the total",
+   true,
+   "total 0.032s (wall 0.040s), sampling 0.027s"
+  ],
+  [
+   "run record: index 1, emulator seed, started time, RNG state before the run",
+   true,
+   ""
+  ],
+  [
+   "stage summaries: only 'raw' without postprocessing; no descent runs recorded",
+   true,
+   ""
+  ],
+  [
+   "stage summary mean equals a recomputation",
+   true,
+   ""
+  ],
+  [
+   "thermal resolution reported for the SA sampler and kT_scaled = 1 / beta_nominal",
+   true,
+   "kT_scaled 0.07570339679373139"
+  ],
+  [
+   "provenance snapshot is the emulator's provenance at the end of the run",
+   true,
+   ""
+  ],
+  [
+   "a second run on the same emulator gets run index 2 and different random draws",
+   true,
+   ""
+  ],
+  [
+   "same seed -> identical samples in every stage",
+   true,
+   ""
+  ],
+  [
+   "same seed -> identical per-cycle sampler seeds and betas",
+   true,
+   ""
+  ],
+  [
+   "a different seed gives different samples",
+   true,
+   ""
+  ],
+  [
+   "heavy chain breaks were present in the repeat test",
+   true,
+   "raw chain-break mean 0.069"
+  ],
+  [
+   "weighted-random chain resolution + gauge + systematic ICE + descent: identical on repeat",
+   true,
+   ""
+  ],
+  [
+   "the global numpy random state is restored after a run",
+   true,
+   ""
+  ],
+  [
+   "the global python random state is restored after a run",
+   true,
+   ""
+  ],
+  [
+   "interleaving another emulator between runs changes nothing (no shared state)",
+   true,
+   ""
+  ],
+  [
+   "each emulator counts only its own descent calls",
+   true,
+   "A2 physical calls 2"
+  ],
+  [
+   "the emulator does not touch the module-level engines of s4_postprocess",
+   true,
+   ""
+  ],
+  [
+   "sampler=sa (anneal): valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "sampler=sa (anneal): provenance names SAFreezeout",
+   true,
+   ""
+  ],
+  [
+   "sampler=svmc: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "sampler=svmc: no thermal diagnostics for SVMC",
+   true,
+   ""
+  ],
+  [
+   "sampler=svmc: provenance names SVMCSampler",
+   true,
+   ""
+  ],
+  [
+   "sampler=sqa: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "sampler=sqa: no thermal diagnostics for SQA",
+   true,
+   ""
+  ],
+  [
+   "sampler=sqa: provenance records the Trotter slices",
+   true,
+   ""
+  ],
+  [
+   "sampler=sa, method=pt, hot beta, beta_sigma_rel=0.1: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "sampler=sa, method=pt, hot beta, beta_sigma_rel=0.1: beta fluctuates across programming cycles",
+   true,
+   "[0.633, 0.738, 0.623]"
+  ],
+  [
+   "sampler=sa, method=pt, hot beta, beta_sigma_rel=0.1: nominal beta is constant at 0.6",
+   true,
+   ""
+  ],
+  [
+   "dac_bits=None: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "dac_bits=None: no quantisation steps reported",
+   true,
+   ""
+  ],
+  [
+   "dac_bits=5: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "dac_bits=5: steps are range / 2**5 (h 8/32, J 2/32)",
+   true,
+   ""
+  ],
+  [
+   "dac_bits_h=8, dac_bits_j=3: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "dac_bits_h=8, dac_bits_j=3: separate steps: h 8/256, J 2/8",
+   true,
+   ""
+  ],
+  [
+   "dac_bits_h=8, dac_bits_j=3: recorded in info",
+   true,
+   ""
+  ],
+  [
+   "ice sigmas = 0: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "ice sigmas = 0: recorded as zero",
+   true,
+   ""
+  ],
+  [
+   "ice_sigma_j_chain=0.01: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "ice_sigma_j_chain=0.01: recorded in info and provenance",
+   true,
+   ""
+  ],
+  [
+   "use_extended_j=False: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "use_extended_j=False: chain J range equals the ordinary J range",
+   true,
+   ""
+  ],
+  [
+   "use_extended_j=False: the extended range gives a scale factor at least as large",
+   true,
+   "3.824 vs 1.912"
+  ],
+  [
+   "systematic ICE: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "systematic ICE: provenance records the systematic ICE settings",
+   true,
+   ""
+  ],
+  [
+   "systematic ICE: configuration hash differs from the baseline",
+   true,
+   ""
+  ],
+  [
+   "per_qubit_coupling_range=(-0.2, 0.2): valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "per_qubit_coupling_range=(-0.2, 0.2): the limit is considered and lowers the scale factor",
+   true,
+   "0.2699 < 3.824"
+  ],
+  [
+   "postprocess_settings two_flip + postprocess=logical: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "postprocess_settings two_flip + postprocess=logical: the logical run used two_flip",
+   true,
+   ""
+  ],
+  [
+   "temperature_mk=24: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "temperature_mk=24: kT_scaled doubles relative to 12 mK",
+   true,
+   ""
+  ],
+  [
+   "hardware with effective temperature 20 mK: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "hardware with effective temperature 20 mK: effective temperature recorded and used",
+   true,
+   ""
+  ],
+  [
+   "placeholder schedule object: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "placeholder schedule object: placeholder flag is set in info and provenance",
+   true,
+   ""
+  ],
+  [
+   "chain_strength=1.0 (explicit): valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "chain_strength=1.0 (explicit): used as given, not capped",
+   true,
+   ""
+  ],
+  [
+   "chain_strength=100 (explicit): valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "prefactor=2.828 (twice the default): valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "prefactor=2.828 (twice the default): chain strength scales with the prefactor",
+   true,
+   "2.0000"
+  ],
+  [
+   "relative_chain_multiplier=0.05: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "relative_chain_multiplier=0.05: capped, range ordered, never above the uncapped value",
+   true,
+   "range (np.float64(0.0273), np.float64(0.0545)), uncapped 0.5230"
+  ],
+  [
+   "num_reads=7, reads_per_programming=3: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "num_reads=7, reads_per_programming=3: cycles of 3, 3, 1 reads",
+   true,
+   ""
+  ],
+  [
+   "num_reads=7, reads_per_programming=3: 7 rows",
+   true,
+   ""
+  ],
+  [
+   "num_reads=50, reads_per_programming=1000: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "num_reads=50, reads_per_programming=1000: a single cycle",
+   true,
+   ""
+  ],
+  [
+   "num_reads=1, reads_per_programming=1: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "num_reads=1, reads_per_programming=1: one row, one cycle",
+   true,
+   ""
+  ],
+  [
+   "keep_target=True: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "keep_target=True: target is a SPIN sampleset over all physical qubits",
+   true,
+   ""
+  ],
+  [
+   "spin_reversal=True: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "spin_reversal=True: every programming cycle was gauged",
+   true,
+   ""
+  ],
+  [
+   "anneal_time_us=5 (SA, constant freeze point): valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "anneal_time_us=5 (SA, constant freeze point): recorded",
+   true,
+   ""
+  ],
+  [
+   "freeze_s table, anneal_time_us=5: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "freeze_s table, anneal_time_us=5: freeze point 0.5 in every cycle",
+   true,
+   ""
+  ],
+  [
+   "freeze_s table, anneal_time_us=5: thermal diagnostics present (value or recorded error)",
+   true,
+   "{'error': 'ValueError: freeze_s depends on the anneal time: pass anneal_time_us "
+  ],
+  [
+   "freeze_s table, anneal_time_us=50: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "freeze_s table, anneal_time_us=50: freeze point 0.7 in every cycle",
+   true,
+   ""
+  ],
+  [
+   "include_provenance=False: valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "include_provenance=False: no provenance snapshot in info",
+   true,
+   ""
+  ],
+  [
+   "keep_stages=True (postprocess=None): valid result and strictly JSON-safe info",
+   true,
+   ""
+  ],
+  [
+   "keep_stages=True (postprocess=None): all four stages returned",
+   true,
+   ""
+  ],
+  [
+   "keep_stages=True (postprocess=None): the selected stage is raw",
+   true,
+   ""
+  ],
+  [
+   "a much larger chain strength lowers the scale factor (chain J binds)",
+   true,
+   "0.02 < 2"
+  ],
+  [
+   "a longer anneal time (later freeze point) gives a larger beta",
+   true,
+   "10.081 -> 16.715"
+  ],
+  [
+   "a table freeze point without anneal_time_us raises ValueError at sampling",
+   true,
+   ""
+  ],
+  [
+   "cold sampler finds the exact ground state in >= 90% of reads: plain",
+   true,
+   "100.0%"
+  ],
+  [
+   "gauge flags match the setting: plain",
+   true,
+   ""
+  ],
+  [
+   "cold sampler finds the exact ground state in >= 90% of reads: with spin reversal",
+   true,
+   "100.0%"
+  ],
+  [
+   "gauge flags match the setting: with spin reversal",
+   true,
+   ""
+  ],
+  [
+   "cold sampler finds the exact ground state in >= 90% of reads: spin reversal + weak systematic ICE",
+   true,
+   "100.0%"
+  ],
+  [
+   "gauge flags match the setting: spin reversal + weak systematic ICE",
+   true,
+   ""
+  ],
+  [
+   "majority: valid result",
+   true,
+   ""
+  ],
+  [
+   "majority: one row per read",
+   true,
+   ""
+  ],
+  [
+   "weighted: valid result",
+   true,
+   ""
+  ],
+  [
+   "weighted: one row per read",
+   true,
+   ""
+  ],
+  [
+   "minimize_energy: valid result",
+   true,
+   ""
+  ],
+  [
+   "minimize_energy: one row per read",
+   true,
+   ""
+  ],
+  [
+   "discard: valid result",
+   true,
+   ""
+  ],
+  [
+   "discard keeps at most the reads and only unbroken ones",
+   true,
+   "57 of 60 kept"
+  ],
+  [
+   "the raw chain-break fraction equals an independent recomputation, read by read",
+   true,
+   "mean 0.0375 vs reported 0.0375"
+  ],
+  [
+   "chain_breaks.raw_mean matches",
+   true,
+   ""
+  ],
+  [
+   "after physical descent: reported fraction equals a recomputation on the descended physical samples",
+   true,
+   ""
+  ],
+  [
+   "postprocess=None: the same seed gives the same result with and without keep_stages",
+   true,
+   ""
+  ],
+  [
+   "postprocess=None: the selected stage is 'raw' and equals stages['raw']",
+   true,
+   ""
+  ],
+  [
+   "postprocess=None: raw_sampleset equals stages['raw']",
+   true,
+   ""
+  ],
+  [
+   "postprocess=None: flips tuple equals the engines' reports",
+   true,
+   "(0, 0)"
+  ],
+  [
+   "postprocess=None: descent runs recorded for the stages used",
+   true,
+   "[]"
+  ],
+  [
+   "postprocess=None: JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "postprocess=physical: the same seed gives the same result with and without keep_stages",
+   true,
+   ""
+  ],
+  [
+   "postprocess=physical: the selected stage is 'physical' and equals stages['physical']",
+   true,
+   ""
+  ],
+  [
+   "postprocess=physical: raw_sampleset equals stages['raw']",
+   true,
+   ""
+  ],
+  [
+   "postprocess=physical: flips tuple equals the engines' reports",
+   true,
+   "(56, 0)"
+  ],
+  [
+   "postprocess=physical: descent runs recorded for the stages used",
+   true,
+   "['physical']"
+  ],
+  [
+   "postprocess=physical: JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: the same seed gives the same result with and without keep_stages",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: the selected stage is 'logical' and equals stages['logical']",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: raw_sampleset equals stages['raw']",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: flips tuple equals the engines' reports",
+   true,
+   "(0, 69)"
+  ],
+  [
+   "postprocess=logical: descent runs recorded for the stages used",
+   true,
+   "['logical']"
+  ],
+  [
+   "postprocess=logical: JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "postprocess=both: the same seed gives the same result with and without keep_stages",
+   true,
+   ""
+  ],
+  [
+   "postprocess=both: the selected stage is 'both' and equals stages['both']",
+   true,
+   ""
+  ],
+  [
+   "postprocess=both: raw_sampleset equals stages['raw']",
+   true,
+   ""
+  ],
+  [
+   "postprocess=both: flips tuple equals the engines' reports",
+   true,
+   "(56, 32)"
+  ],
+  [
+   "postprocess=both: descent runs recorded for the stages used",
+   true,
+   "['both', 'physical']"
+  ],
+  [
+   "postprocess=both: JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "all stages have one row per read",
+   true,
+   ""
+  ],
+  [
+   "logical descent never raises the logical energy of a read",
+   true,
+   "mean -3.7442 -> -4.1883"
+  ],
+  [
+   "'both' is never worse than the physically descended stage",
+   true,
+   "mean -4.0513 -> -4.1735"
+  ],
+  [
+   "stage summary for 'raw' equals a recomputation",
+   true,
+   ""
+  ],
+  [
+   "stage summary for 'physical' equals a recomputation",
+   true,
+   ""
+  ],
+  [
+   "stage summary for 'logical' equals a recomputation",
+   true,
+   ""
+  ],
+  [
+   "stage summary for 'both' equals a recomputation",
+   true,
+   ""
+  ],
+  [
+   "engine counters: physical engine 1 call, logical engine 2 calls (stage 'logical' and 'both')",
+   true,
+   ""
+  ],
+  [
+   "every descent run reports zero energy increases",
+   true,
+   ""
+  ],
+  [
+   "provenance sections: hardware, schedule, sampler, postprocessing (physical + logical), mapping, emulator",
+   true,
+   ""
+  ],
+  [
+   "strictly JSON-safe",
+   true,
+   ""
+  ],
+  [
+   "emulator section: seed, creation time, runs, temperature and source, hash, software",
+   true,
+   "hash 699ee160b996"
+  ],
+  [
+   "hardware and schedule sections come from the submodules' own provenance methods",
+   true,
+   ""
+  ],
+  [
+   "same configuration -> same hash (also across seeds: the seed is not part of the configuration)",
+   true,
+   ""
+  ],
+  [
+   "every setting that defines the emulator changes the hash",
+   true,
+   "unchanged: []"
+  ],
+  [
+   "running does not change the hash; runs_completed advances",
+   true,
+   ""
+  ],
+  [
+   "the sampler record counts the programming cycles of the run",
+   true,
+   "{'programming_cycles': 3, 'beta_used_mean': 13.209446898726279, 'beta_used_std': 0.0, 'beta_used_min': 13.209446898726279, 'beta_used_max': 13.209446898726279}"
+  ],
+  [
+   "physical and logical engine records exist and are independent",
+   true,
+   ""
+  ],
+  [
+   "the snapshot stored in the result matches the emulator after the run",
+   true,
+   ""
+  ],
+  [
+   "every stage holds all reads",
+   true,
+   ""
+  ],
+  [
+   "the selected stage (logical) has feasible samples",
+   true,
+   "95.5%"
+  ],
+  [
+   "best feasible solution is feasible by the formulator's own decoder",
+   true,
+   ""
+  ],
+  [
+   "the case5 record was written and reloads",
+   true,
+   ""
+  ],
+  [
+   "the record carries the emulator provenance and its hash",
+   true,
+   ""
+  ],
+  [
+   "the ablation produced a row for every configuration",
+   true,
+   ""
+  ]
+ ],
+ "report": {
+  "settings_matrix": [
+   {
+    "configuration": "sampler=sa (anneal)",
+    "rows": 60,
+    "mean_energy": -4.052471536158933,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.012230873107910156
+   },
+   {
+    "configuration": "sampler=svmc",
+    "rows": 60,
+    "mean_energy": -4.132485111997205,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.03484773635864258
+   },
+   {
+    "configuration": "sampler=sqa",
+    "rows": 60,
+    "mean_energy": -4.109851832478514,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.04297685623168945
+   },
+   {
+    "configuration": "sampler=sa, method=pt, hot beta, beta_sigma_rel=0.1",
+    "rows": 60,
+    "mean_energy": -3.741164424692749,
+    "chain_break_raw": 0.008333333333333333,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.023967981338500977
+   },
+   {
+    "configuration": "dac_bits=None",
+    "rows": 60,
+    "mean_energy": -4.061212254705496,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.01215052604675293
+   },
+   {
+    "configuration": "dac_bits=5",
+    "rows": 60,
+    "mean_energy": -4.11347164514534,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.013610601425170898
+   },
+   {
+    "configuration": "dac_bits_h=8, dac_bits_j=3",
+    "rows": 60,
+    "mean_energy": -4.12953754529599,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.013162612915039062
+   },
+   {
+    "configuration": "ice sigmas = 0",
+    "rows": 60,
+    "mean_energy": -4.0853441248612485,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.012347698211669922
+   },
+   {
+    "configuration": "ice_sigma_j_chain=0.01",
+    "rows": 60,
+    "mean_energy": -4.1152012964775935,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.01363825798034668
+   },
+   {
+    "configuration": "use_extended_j=False",
+    "rows": 60,
+    "mean_energy": -4.054865834255295,
+    "chain_break_raw": 0.0,
+    "scale_factor": 1.912041838293016,
+    "seconds": 0.014786481857299805
+   },
+   {
+    "configuration": "systematic ICE",
+    "rows": 60,
+    "mean_energy": -4.100598049205086,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.016362428665161133
+   },
+   {
+    "configuration": "per_qubit_coupling_range=(-0.2, 0.2)",
+    "rows": 60,
+    "mean_energy": -3.889538638592496,
+    "chain_break_raw": 0.0020833333333333333,
+    "scale_factor": 0.26990038248850773,
+    "seconds": 0.014277458190917969
+   },
+   {
+    "configuration": "postprocess_settings two_flip + postprocess=logical",
+    "rows": 60,
+    "mean_energy": -4.1439400932686725,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.01421356201171875
+   },
+   {
+    "configuration": "temperature_mk=24",
+    "rows": 60,
+    "mean_energy": -4.065396320105435,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.01393890380859375
+   },
+   {
+    "configuration": "hardware with effective temperature 20 mK",
+    "rows": 60,
+    "mean_energy": -4.176488957195191,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.012282371520996094
+   },
+   {
+    "configuration": "placeholder schedule object",
+    "rows": 60,
+    "mean_energy": -4.078672150600158,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.011254072189331055
+   },
+   {
+    "configuration": "chain_strength=1.0 (explicit)",
+    "rows": 60,
+    "mean_energy": -3.8517572878953192,
+    "chain_break_raw": 0.0,
+    "scale_factor": 2.0,
+    "seconds": 0.01359415054321289
+   },
+   {
+    "configuration": "chain_strength=100 (explicit)",
+    "rows": 60,
+    "mean_energy": -1.215671144689928,
+    "chain_break_raw": 0.0,
+    "scale_factor": 0.02,
+    "seconds": 0.012176275253295898
+   },
+   {
+    "configuration": "prefactor=2.828 (twice the default)",
+    "rows": 60,
+    "mean_energy": -3.6713892627165,
+    "chain_break_raw": 0.0,
+    "scale_factor": 1.912041838293016,
+    "seconds": 0.013410329818725586
+   },
+   {
+    "configuration": "relative_chain_multiplier=0.05",
+    "rows": 60,
+    "mean_energy": -4.247392398727839,
+    "chain_break_raw": 0.0,
+    "scale_factor": 4.224219235682917,
+    "seconds": 0.011649370193481445
+   },
+   {
+    "configuration": "num_reads=7, reads_per_programming=3",
+    "rows": 7,
+    "mean_energy": -4.048129857176116,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.011285543441772461
+   },
+   {
+    "configuration": "num_reads=50, reads_per_programming=1000",
+    "rows": 50,
+    "mean_energy": -4.032708645168421,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.010723352432250977
+   },
+   {
+    "configuration": "num_reads=1, reads_per_programming=1",
+    "rows": 1,
+    "mean_energy": -3.0762990073729553,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.009925603866577148
+   },
+   {
+    "configuration": "keep_target=True",
+    "rows": 60,
+    "mean_energy": -4.052471536158933,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.013407707214355469
+   },
+   {
+    "configuration": "spin_reversal=True",
+    "rows": 60,
+    "mean_energy": -4.141013799591003,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.011861085891723633
+   },
+   {
+    "configuration": "anneal_time_us=5 (SA, constant freeze point)",
+    "rows": 60,
+    "mean_energy": -4.052471536158933,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.011673927307128906
+   },
+   {
+    "configuration": "freeze_s table, anneal_time_us=5",
+    "rows": 60,
+    "mean_energy": -4.037214265913868,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.025428295135498047
+   },
+   {
+    "configuration": "freeze_s table, anneal_time_us=50",
+    "rows": 60,
+    "mean_energy": -4.087982955789334,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.011906862258911133
+   },
+   {
+    "configuration": "include_provenance=False",
+    "rows": 60,
+    "mean_energy": -4.052471536158933,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.005270481109619141
+   },
+   {
+    "configuration": "keep_stages=True (postprocess=None)",
+    "rows": 60,
+    "mean_energy": -4.052471536158933,
+    "chain_break_raw": 0.0,
+    "scale_factor": 3.824083676586032,
+    "seconds": 0.01651597023010254
+   }
+  ],
+  "stage_energies": {
+   "raw": -3.7441860976676202,
+   "physical": -4.051272363541851,
+   "logical": -4.188276795608315,
+   "both": -4.173497894828435
+  },
+  "case5_stages": {
+   "raw": {
+    "feasible_pct": 11.0,
+    "feasible_ci95_pct": [
+     7.377190160716047,
+     16.092798300912985
+    ],
+    "n_reads": 200,
+    "best_feasible_cost": 17929.325,
+    "gap_to_classical_pct": 2.5711139848021065,
+    "mean_logical_energy": 94548.8062990733
+   },
+   "physical": {
+    "feasible_pct": 11.0,
+    "feasible_ci95_pct": [
+     7.377190160716047,
+     16.092798300912985
+    ],
+    "n_reads": 200,
+    "best_feasible_cost": 17929.325,
+    "gap_to_classical_pct": 2.5711139848021065,
+    "mean_logical_energy": 94305.6447273473
+   },
+   "logical": {
+    "feasible_pct": 95.5,
+    "feasible_ci95_pct": [
+     91.67024063390322,
+     97.61477282752958
+    ],
+    "n_reads": 200,
+    "best_feasible_cost": 17489.325,
+    "gap_to_classical_pct": 0.053936670357032576,
+    "mean_logical_energy": 22093.212969075325
+   },
+   "both": {
+    "feasible_pct": 95.5,
+    "feasible_ci95_pct": [
+     91.67024063390322,
+     97.61477282752958
+    ],
+    "n_reads": 200,
+    "best_feasible_cost": 17489.325,
+    "gap_to_classical_pct": 0.053936670357032576,
+    "mean_logical_energy": 22096.10478672572
+   }
+  },
+  "case5_ablation": [
+   {
+    "configuration": "baseline (dac 8, ICE 0.01/0.005)",
+    "raw_feasible_pct": 5.5,
+    "raw_ci95": [
+     3.09850208013701,
+     9.57879244659355
+    ],
+    "logical_feasible_pct": 98.0,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 26.277372262773724,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.06274193548387096,
+    "seconds": 0.1477494239807129,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "no ICE",
+    "raw_feasible_pct": 13.0,
+    "raw_ci95": [
+     9.028141365225629,
+     18.36646307273012
+    ],
+    "logical_feasible_pct": 95.0,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 26.277372262773724,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.0625806451612903,
+    "seconds": 0.14437627792358398,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "no DAC",
+    "raw_feasible_pct": 10.0,
+    "raw_ci95": [
+     6.5669941171571224,
+     14.940686356308552
+    ],
+    "logical_feasible_pct": 96.5,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 0.0,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.06048387096774192,
+    "seconds": 0.15273118019104004,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "no ICE, no DAC",
+    "raw_feasible_pct": 9.5,
+    "raw_ci95": [
+     6.166261364986359,
+     14.360265114397636
+    ],
+    "logical_feasible_pct": 97.0,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 0.0,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.06241935483870966,
+    "seconds": 0.15756702423095703,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "no ICE, no DAC, ordinary J range for chains",
+    "raw_feasible_pct": 9.5,
+    "raw_ci95": [
+     6.166261364986359,
+     14.360265114397636
+    ],
+    "logical_feasible_pct": 97.0,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 0.0,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.06241935483870966,
+    "seconds": 0.15059137344360352,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "no ICE, no DAC, neal auto-beta (no physical kT)",
+    "raw_feasible_pct": 6.5,
+    "raw_ci95": [
+     3.837598764975976,
+     10.802003749917946
+    ],
+    "logical_feasible_pct": 89.5,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 0.0,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.056935483870967724,
+    "seconds": 0.09762072563171387,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "chain strength x0.5",
+    "raw_feasible_pct": 0.0,
+    "raw_ci95": [
+     0.0,
+     1.8846005918320894
+    ],
+    "logical_feasible_pct": 97.5,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 26.277372262773724,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.14387096774193547,
+    "seconds": 0.18817400932312012,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "chain strength x2",
+    "raw_feasible_pct": 5.5,
+    "raw_ci95": [
+     3.09850208013701,
+     9.57879244659355
+    ],
+    "logical_feasible_pct": 90.0,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 26.277372262773724,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.0033870967741935487,
+    "seconds": 0.14078664779663086,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "hotter sampler, 24 mK",
+    "raw_feasible_pct": 9.5,
+    "raw_ci95": [
+     6.166261364986359,
+     14.360265114397636
+    ],
+    "logical_feasible_pct": 95.5,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 26.277372262773724,
+    "kT_scaled": 0.15140679358746278,
+    "chain_break_raw": 0.06354838709677417,
+    "seconds": 0.15989160537719727,
+    "binding_constraint": "problem_J_range"
+   },
+   {
+    "configuration": "PT at the physical beta",
+    "raw_feasible_pct": 11.0,
+    "raw_ci95": [
+     7.377190160716047,
+     16.092798300912985
+    ],
+    "logical_feasible_pct": 100.0,
+    "scale_factor": 8.116883116883117e-06,
+    "problem_J_zeroed_pct": 26.277372262773724,
+    "kT_scaled": 0.07570339679373139,
+    "chain_break_raw": 0.06596774193548385,
+    "seconds": 0.923973560333252,
+    "binding_constraint": "problem_J_range"
+   }
+  ]
+ }
+}
