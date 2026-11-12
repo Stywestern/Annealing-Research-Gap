@@ -1,0 +1,1596 @@
+{
+ "settings": {
+  "quick": false,
+  "no_quantum": false,
+  "no_extra_cases": false,
+  "schedule_source": "standart_annealing_schedule_Ad2Sys1.csv",
+  "schedule_placeholder": false
+ },
+ "checks": [
+  [
+   "is a QuboFormulator",
+   true,
+   ""
+  ],
+  [
+   "default hardware is the Z12 (Advantage2-like) target",
+   true,
+   "ideal_zephyr_Z(12,4)"
+  ],
+  [
+   "defaults: sampler svmc, postprocess both, relative_chain_multiplier 1.0, embedding timeout 120, seeds (0, 1, 2)",
+   true,
+   ""
+  ],
+  [
+   "defaults: select key (physical, max_chain), emulator record included, dac 5 bits",
+   true,
+   ""
+  ],
+  [
+   "formulator keyword arguments pass through",
+   true,
+   ""
+  ],
+  [
+   "formulation='dc' is the dc_ptdf alias",
+   true,
+   ""
+  ],
+  [
+   "an invalid formulation raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "a custom hardware profile is kept",
+   true,
+   ""
+  ],
+  [
+   "the extra-argument dictionaries are copied at construction",
+   true,
+   ""
+  ],
+  [
+   "_settings() is JSON-safe and documents the selection rule",
+   true,
+   ""
+  ],
+  [
+   "_settings() reflects the constructor",
+   true,
+   ""
+  ],
+  [
+   "_safe converts numpy scalars / arrays, tuples and non-string keys",
+   true,
+   ""
+  ],
+  [
+   "_wilson(50, 100) is about [40.4, 59.6]",
+   true,
+   "[40.38, 59.62]"
+  ],
+  [
+   "_wilson(0, 100): lower bound 0, upper about 3.7",
+   true,
+   "[0, 3.699]"
+  ],
+  [
+   "_wilson(100, 100): upper bound 100",
+   true,
+   "[96.30, 100.00]"
+  ],
+  [
+   "_wilson(0, 0) is [None, None]",
+   true,
+   ""
+  ],
+  [
+   "flags: everything within tolerance -> all satisfied",
+   true,
+   ""
+  ],
+  [
+   "flags: imbalance above tolerance -> balance violated only",
+   true,
+   ""
+  ],
+  [
+   "flags: line violation above tolerance -> lines violated only",
+   true,
+   ""
+  ],
+  [
+   "flags: balance and lines fine but infeasible -> bounds violated",
+   true,
+   ""
+  ],
+  [
+   "flags: explicit balance_ok / lines_ok / bounds_ok keys take priority",
+   true,
+   ""
+  ],
+  [
+   "flags: an empty dictionary does not crash",
+   true,
+   ""
+  ],
+  [
+   "at-risk fraction: one of two non-zero coefficients is below the 5-bit step (0.5)",
+   true,
+   ""
+  ],
+  [
+   "at-risk fraction is None without a DAC",
+   true,
+   ""
+  ],
+  [
+   "at-risk fraction of an empty model is 0.0",
+   true,
+   ""
+  ],
+  [
+   "stage quality: percentages, interval, costs and violations",
+   true,
+   ""
+  ],
+  [
+   "stage quality without a feasible read: zero percent, no costs",
+   true,
+   ""
+  ],
+  [
+   "decode_set: read counts (total and feasible) equal an independent recount",
+   true,
+   "132 of 247 reads feasible"
+  ],
+  [
+   "decode_set: number of distinct decoded states",
+   true,
+   ""
+  ],
+  [
+   "decode_set: lowest-energy feasible state and its cost",
+   true,
+   ""
+  ],
+  [
+   "decode_set: lowest-cost feasible state",
+   true,
+   ""
+  ],
+  [
+   "decode_set: best_any is the lowest-energy state of the whole set",
+   true,
+   ""
+  ],
+  [
+   "decode_set: violation counts among infeasible reads equal an independent recount",
+   true,
+   "{'balance': 114, 'lines': 3, 'bounds': 1}"
+  ],
+  [
+   "decode_set: every infeasible read violates at least one constraint class",
+   true,
+   ""
+  ],
+  [
+   "stage quality of the decoded set matches the counts",
+   true,
+   ""
+  ],
+  [
+   "status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "case5 default-ish run: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case5 default-ish run: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "solver name",
+   true,
+   "emulated_qpu_sa_dc_ptdf"
+  ],
+  [
+   "a cost was reported and the solution is feasible",
+   true,
+   ""
+  ],
+  [
+   "reported cost equals the cost recomputed from the reported dispatch",
+   true,
+   "17389.325 vs 17389.330"
+  ],
+  [
+   "generation equals load after the slack rebalance",
+   true,
+   "1000.0 vs 1000.0"
+  ],
+  [
+   "dispatch respects the asset limits",
+   true,
+   "worst violation 0.00e+00 MW"
+  ],
+  [
+   "line flows are within the limits plus the feasibility tolerance",
+   true,
+   "max excess 3.812 MW, tolerance 10.0"
+  ],
+  [
+   "max_line_loading_percent equals a recomputation from the line flows",
+   true,
+   "101.588"
+  ],
+  [
+   "timing: parts do not exceed the total, total matches the wall clock",
+   true,
+   "total 0.1512s, parts 0.139s, wall 0.152s"
+  ],
+  [
+   "problem complexity agrees with the hardware metrics (logical qubits)",
+   true,
+   "31"
+  ],
+  [
+   "resolved QUBO penalties are recorded in the complexity block (the qubo_parameters entries stay None when automatic)",
+   true,
+   "balance 4, qubo_parameters balance None"
+  ],
+  [
+   "hardware feasibility report: at-risk fraction, mapping diagnostics and thermal resolution",
+   true,
+   "at-risk 0.4742, binding problem_J_range"
+  ],
+  [
+   "solver_settings equals the constructor settings",
+   true,
+   ""
+  ],
+  [
+   "hardware metrics: overhead = mean chain length = physical / logical",
+   true,
+   "124 qubits for 31 variables"
+  ],
+  [
+   "hardware metrics: multi-qubit + single-qubit variables = logical, chain qubits = physical",
+   true,
+   ""
+  ],
+  [
+   "hardware metrics: target name and topology",
+   true,
+   ""
+  ],
+  [
+   "embedding exploration: the winner is one of the successful attempts and its footprint matches the hardware metrics",
+   true,
+   ""
+  ],
+  [
+   "chain-length variance equals a recomputation from the footprint histogram",
+   true,
+   "0.0"
+  ],
+  [
+   "chain strength: capped by default (multiplier 1.0), applied range ordered, never above the uncapped value",
+   true,
+   "range [np.float64(17606.6053), 107862.9952], uncapped 1.079e+05"
+  ],
+  [
+   "mapping: scale factor and binding constraint agree between hardware metrics, report and record",
+   true,
+   ""
+  ],
+  [
+   "temperature used: physical 12 mK",
+   true,
+   ""
+  ],
+  [
+   "emulator block: provenance seed / run count / temperature source / 12-character hash",
+   true,
+   "hash ece1e3c0248f"
+  ],
+  [
+   "emulator block: hardware and schedule provenance equal the submodules' own",
+   true,
+   ""
+  ],
+  [
+   "emulator record: selected stage 'both', two programming cycles, no embedded provenance copy",
+   true,
+   ""
+  ],
+  [
+   "sampler stats equal the emulator record (energies, deltas, flips, chain breaks)",
+   true,
+   ""
+  ],
+  [
+   "stage quality (raw): 80 reads, percentage = counts, Wilson interval brackets it",
+   true,
+   "2.5% [0.7, 8.7]"
+  ],
+  [
+   "stage quality (final): 80 reads, percentage = counts, Wilson interval brackets it",
+   true,
+   "88.8% [80.0, 94.0]"
+  ],
+  [
+   "the reported solution is the lowest-energy feasible read of the final stage and the best-cost read is not worse",
+   true,
+   ""
+  ],
+  [
+   "the final stage is at least as feasible as the raw emulator output",
+   true,
+   ""
+  ],
+  [
+   "reads checked / unique states equal the stage quality",
+   true,
+   ""
+  ],
+  [
+   "postprocess=None (the raw emulation): status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "postprocess=None (the raw emulation): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "postprocess=None (the raw emulation): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "postprocess=None (the raw emulation): selected stage is raw; raw and final stage quality are identical",
+   true,
+   ""
+  ],
+  [
+   "postprocess=None (the raw emulation): no flips, zero energy improvement",
+   true,
+   ""
+  ],
+  [
+   "postprocess=None (the raw emulation): no descent runs in the record",
+   true,
+   ""
+  ],
+  [
+   "postprocess=physical: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "postprocess=physical: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "postprocess=physical: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "postprocess=physical: selected stage is physical; only the physical engine flipped",
+   true,
+   "flips (9, 0)"
+  ],
+  [
+   "postprocess=physical: the record has the physical descent run",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "postprocess=logical: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "postprocess=logical: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: selected stage is logical; only the logical engine flipped",
+   true,
+   "flips (0, 257)"
+  ],
+  [
+   "postprocess=logical: the descent lowers the mean logical energy",
+   true,
+   "97009.75"
+  ],
+  [
+   "postprocess=both: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "postprocess=both: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "postprocess=both: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "postprocess=both: selected stage is both; both descent runs are recorded",
+   true,
+   ""
+  ],
+  [
+   "sampler=svmc: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "sampler=svmc: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "sampler=svmc: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "sampler=svmc: solver name and sampler class",
+   true,
+   ""
+  ],
+  [
+   "sampler=svmc: no thermal diagnostics for SVMC",
+   true,
+   ""
+  ],
+  [
+   "sampler=sqa (8 Trotter slices): status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "sampler=sqa (8 Trotter slices): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "sampler=sqa (8 Trotter slices): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "sampler=sqa (8 Trotter slices): solver name and sampler class",
+   true,
+   ""
+  ],
+  [
+   "sampler=sqa (8 Trotter slices): the Trotter slices reach the sampler",
+   true,
+   "{'temperature_mk': 12.0, 'num_sweeps': 20, 'P': 8, 'global_moves': True, 'class': 'SQASampler'}"
+  ],
+  [
+   "sampler_kwargs: pt merged over num_sweeps: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "sampler_kwargs: pt merged over num_sweeps: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "sampler_kwargs: pt merged over num_sweeps: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs: pt merged over num_sweeps: method, beta override and the merged default num_sweeps are in the sampler provenance",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs: pt merged over num_sweeps: solver_settings records the extra sampler arguments",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs overrides num_sweeps: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "sampler_kwargs overrides num_sweeps: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "sampler_kwargs overrides num_sweeps: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs overrides num_sweeps: [override] the sampler runs the overridden sweeps",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs overrides num_sweeps: [override] num_sweeps_per_read reports the sweeps the sampler actually used",
+   false,
+   "reported 200, sampler 77"
+  ],
+  [
+   "emulator_kwargs override named arguments: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "emulator_kwargs override named arguments: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "emulator_kwargs override named arguments: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "emulator_kwargs override named arguments: the emulator used the overrides (provenance mapping)",
+   true,
+   ""
+  ],
+  [
+   "emulator_kwargs override named arguments: DAC steps in the metadata follow the overrides (h: 8/2^7, J: 2/2^6)",
+   true,
+   ""
+  ],
+  [
+   "emulator_kwargs override named arguments: temperature override recorded",
+   true,
+   ""
+  ],
+  [
+   "emulator_kwargs override named arguments: [override] hardware_metrics.dac_resolution_bits equals the DAC bits the emulator used",
+   false,
+   "reported 5, emulator 6"
+  ],
+  [
+   "emulator_kwargs override named arguments: [override] hardware_metrics ICE sigmas equal the ones the emulator used",
+   false,
+   "reported 0.01, emulator 0.03"
+  ],
+  [
+   "sample_kwargs: spin_reversal + anneal_time_us: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "sample_kwargs: spin_reversal + anneal_time_us: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "sample_kwargs: spin_reversal + anneal_time_us: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "sample_kwargs: spin_reversal + anneal_time_us: recorded in the emulator record, every cycle gauged",
+   true,
+   ""
+  ],
+  [
+   "sample_kwargs overrides num_reads: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "sample_kwargs overrides num_reads: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "sample_kwargs overrides num_reads: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "sample_kwargs overrides num_reads: the emulator returned 50 reads",
+   true,
+   ""
+  ],
+  [
+   "sample_kwargs overrides num_reads: [override] num_reads_requested reports the reads actually requested",
+   false,
+   "reported 80"
+  ],
+  [
+   "include_emulator_record=False: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "include_emulator_record=False: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "include_emulator_record=False: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "include_emulator_record=False: the emulator block is empty",
+   true,
+   ""
+  ],
+  [
+   "include_emulator_record=False: the rest of the metadata is intact",
+   true,
+   ""
+  ],
+  [
+   "relative_chain_multiplier=None (uncapped): status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "relative_chain_multiplier=None (uncapped): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "relative_chain_multiplier=None (uncapped): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "relative_chain_multiplier=None (uncapped): not capped; applied range equals the uncapped value",
+   true,
+   ""
+  ],
+  [
+   "relative_chain_multiplier=0.1: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "relative_chain_multiplier=0.1: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "relative_chain_multiplier=0.1: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "relative_chain_multiplier=0.1: capped; range ordered; never above the uncapped value",
+   true,
+   "[np.float64(1760.6605), np.float64(85044.5316)]"
+  ],
+  [
+   "dac_bits=None: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "dac_bits=None: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "dac_bits=None: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "dac_bits=None: no DAC: no steps, nothing zeroed, no legacy at-risk fraction",
+   true,
+   ""
+  ],
+  [
+   "dac_bits=5: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "dac_bits=5: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "dac_bits=5: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "dac_bits=5: 5-bit steps: h 8/32, J 2/32",
+   true,
+   ""
+  ],
+  [
+   "dac_bits=5: 5 bits erase at least as many problem couplings as 8 bits",
+   true,
+   "68.0% vs 18.9%"
+  ],
+  [
+   "systematic ICE + per-qubit coupling limit: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "systematic ICE + per-qubit coupling limit: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "systematic ICE + per-qubit coupling limit: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "systematic ICE + per-qubit coupling limit: recorded in the provenance mapping",
+   true,
+   ""
+  ],
+  [
+   "hardware with a fitted effective temperature: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "hardware with a fitted effective temperature: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "hardware with a fitted effective temperature: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "hardware with a fitted effective temperature: the effective temperature is used and recorded",
+   true,
+   ""
+  ],
+  [
+   "custom hardware Z4: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "custom hardware Z4: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "custom hardware Z4: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "custom hardware Z4: target name and topology follow the profile",
+   true,
+   "ideal_zephyr_Z(4,4)"
+  ],
+  [
+   "reads_per_programming=10: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "reads_per_programming=10: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "reads_per_programming=10: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "reads_per_programming=10: eight programming cycles",
+   true,
+   ""
+  ],
+  [
+   "chain_break_method=weighted: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "chain_break_method=weighted: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "chain_break_method=weighted: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "chain_break_method=weighted: recorded",
+   true,
+   ""
+  ],
+  [
+   "chain_break_method=minimize_energy: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "chain_break_method=minimize_energy: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "chain_break_method=minimize_energy: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "chain_break_method=minimize_energy: recorded",
+   true,
+   ""
+  ],
+  [
+   "mw_precision=20 (formulator argument): status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "mw_precision=20 (formulator argument): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "mw_precision=20 (formulator argument): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "mw_precision=20 (formulator argument): recorded and fewer logical qubits than at 10 MW",
+   true,
+   "25 vs 31"
+  ],
+  [
+   "tighten_bounds=False (formulator argument): status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "tighten_bounds=False (formulator argument): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "tighten_bounds=False (formulator argument): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "tighten_bounds=False (formulator argument): no presolve: at least as many logical qubits as with it",
+   true,
+   "32 vs 31"
+  ],
+  [
+   "tighten_bounds=False (formulator argument): info only",
+   true,
+   ""
+  ],
+  [
+   "num_reads=10, reads_per_programming=10: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "num_reads=10, reads_per_programming=10: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "num_reads=10, reads_per_programming=10: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "num_reads=10, reads_per_programming=10: ten reads, one cycle",
+   true,
+   ""
+  ],
+  [
+   "embedding: clique + minorminer + mm_from_clique: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "embedding: clique + minorminer + mm_from_clique: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "embedding: clique + minorminer + mm_from_clique: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "embedding: clique + minorminer + mm_from_clique: 5 attempts recorded, the winner minimises (physical, max_chain)",
+   true,
+   "winner minorminer_seed0"
+  ],
+  [
+   "embedding_select_key=(max_chain, physical): status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "embedding_select_key=(max_chain, physical): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "embedding_select_key=(max_chain, physical): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "embedding_select_key=(max_chain, physical): the winner minimises (max_chain, physical)",
+   true,
+   "winner minorminer_seed0"
+  ],
+  [
+   "embedding_methods=minorminer only: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "embedding_methods=minorminer only: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "embedding_methods=minorminer only: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "embedding_methods=minorminer only: the winner comes from minorminer",
+   true,
+   "minorminer_seed0"
+  ],
+  [
+   "chain_break_method=discard: fewer rows than reads were kept, and the result is consistent",
+   true,
+   "80 of 300 reads kept"
+  ],
+  [
+   "discard: kept reads count equals rows decoded",
+   true,
+   ""
+  ],
+  [
+   "discard: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "discard: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "embedding failure: status 'Failed: ... no embedding found ...' with the reason",
+   true,
+   "Failed: no embedding found (precheck: proven infeasible: 435 source edges > 280 target couplers (each source edge needs its own coupler between disjoi"
+  ],
+  [
+   "embedding failure: the reason names the precheck",
+   true,
+   "Failed: no embedding found (precheck: proven infeasible: 435 source edges > 280 target couplers (each source edge needs its own coupler between disjoi"
+  ],
+  [
+   "embedding failure: no cost, infeasible, empty hardware / emulator blocks, error type recorded",
+   true,
+   ""
+  ],
+  [
+   "embedding failure: the formulation-stage information survives",
+   true,
+   ""
+  ],
+  [
+   "embedding failure: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "embedding failure: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "invalid emulator argument: caught, status 'Failed: ...', error type TypeError",
+   true,
+   "Failed: GreedyDescent.__init__() got an unexpected keyword argument 'nope'"
+  ],
+  [
+   "invalid emulator argument: the embedding exploration done before the failure is kept",
+   true,
+   ""
+  ],
+  [
+   "invalid emulator argument: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "invalid emulator argument: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "invalid chain_break_method: caught, status 'Failed: ...', error type ValueError",
+   true,
+   "Failed: chain_break_method must be one of ('majority', 'discard', 'weighted', 'minimize_energy'), got 'nope'"
+  ],
+  [
+   "invalid chain_break_method: the embedding exploration done before the failure is kept",
+   true,
+   ""
+  ],
+  [
+   "invalid chain_break_method: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "invalid chain_break_method: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "unknown sampler: caught, status 'Failed: ...', error type ValueError",
+   true,
+   "Failed: unknown sampler 'nope'; use 'sa', 'svmc' or 'sqa'"
+  ],
+  [
+   "unknown sampler: the embedding exploration done before the failure is kept",
+   true,
+   ""
+  ],
+  [
+   "unknown sampler: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "unknown sampler: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "zero-variable QUBO: trivial success with the offset as cost",
+   true,
+   ""
+  ],
+  [
+   "zero-variable QUBO: feasible, no hardware / embedding / emulator blocks, complexity passed through, no line loading",
+   true,
+   ""
+  ],
+  [
+   "zero variables: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "zero variables: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (balance): status 'Infeasible' naming the violated constraint class",
+   true,
+   "Infeasible: no feasible sample among 79 decoded states (80 reads); lowest-energy sample violates: balance=True, lines=False, bounds=False"
+  ],
+  [
+   "forced infeasibility (balance): the lowest-energy sample is still reported, flagged infeasible",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (balance): stage quality shows zero feasible reads and counts the violations",
+   true,
+   "{'balance': 80, 'lines': 0, 'bounds': 0}"
+  ],
+  [
+   "forced infeasibility (balance): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "forced infeasibility (balance): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (lines): status 'Infeasible' naming the violated constraint class",
+   true,
+   "Infeasible: no feasible sample among 79 decoded states (80 reads); lowest-energy sample violates: balance=False, lines=True, bounds=False"
+  ],
+  [
+   "forced infeasibility (lines): the lowest-energy sample is still reported, flagged infeasible",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (lines): stage quality shows zero feasible reads and counts the violations",
+   true,
+   "{'balance': 0, 'lines': 80, 'bounds': 0}"
+  ],
+  [
+   "forced infeasibility (lines): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "forced infeasibility (lines): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (bounds): status 'Infeasible' naming the violated constraint class",
+   true,
+   "Infeasible: no feasible sample among 79 decoded states (80 reads); lowest-energy sample violates: balance=False, lines=False, bounds=True"
+  ],
+  [
+   "forced infeasibility (bounds): the lowest-energy sample is still reported, flagged infeasible",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (bounds): stage quality shows zero feasible reads and counts the violations",
+   true,
+   "{'balance': 0, 'lines': 0, 'bounds': 80}"
+  ],
+  [
+   "forced infeasibility (bounds): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "forced infeasibility (bounds): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "same seed -> identical solution",
+   true,
+   ""
+  ],
+  [
+   "same seed -> identical sampler stats, hardware metrics and stage energies",
+   true,
+   ""
+  ],
+  [
+   "a different seed changes the raw emulator output",
+   true,
+   "120305.02 vs 118498.76"
+  ],
+  [
+   "selection rule: the reported solution is the lowest-energy feasible read of an independently replicated run",
+   true,
+   "17419.325"
+  ],
+  [
+   "selection rule with half of the reads forced infeasible: the first feasible read in energy order is chosen",
+   true,
+   "1 lower-energy reads skipped"
+  ],
+  [
+   "one solver instance, three solves (case5, case9, case5): all succeed",
+   true,
+   "['Success', 'Success', 'Success']"
+  ],
+  [
+   "the logical size follows the network",
+   true,
+   "31 vs 26"
+  ],
+  [
+   "a repeated case5 solve on the reused instance gives the identical solution (no state leaks between solves)",
+   true,
+   ""
+  ],
+  [
+   "every solve starts the emulator fresh (run index 1, same seed)",
+   true,
+   ""
+  ],
+  [
+   "case4gs: Success with a feasible solution",
+   false,
+   "Infeasible: no feasible sample among 1 decoded states (80 reads); lowest-energy sample violates: bal"
+  ],
+  [
+   "case4gs: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case4gs: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "case5: Success with a feasible solution",
+   true,
+   "Success"
+  ],
+  [
+   "case5: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case5: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "case9: Success with a feasible solution",
+   true,
+   "Success"
+  ],
+  [
+   "case9: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case9: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "case14: Success with a feasible solution",
+   true,
+   "Success"
+  ],
+  [
+   "case14: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case14: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "case30: Success with a feasible solution",
+   true,
+   "Success"
+  ],
+  [
+   "case30: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case30: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "the example record was written and reloads",
+   true,
+   ""
+  ],
+  [
+   "the reloaded record keeps the embedding exploration, provenance hash and stage quality",
+   true,
+   ""
+  ]
+ ],
+ "report": {
+  "settings_matrix": [
+   {
+    "configuration": "postprocess=None (the raw emulation)",
+    "status": "Success",
+    "cost": 19269.325,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 2.5,
+    "seconds": 0.12583112716674805
+   },
+   {
+    "configuration": "postprocess=physical",
+    "status": "Success",
+    "cost": 19269.325,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 2.5,
+    "seconds": 0.13125133514404297
+   },
+   {
+    "configuration": "postprocess=logical",
+    "status": "Success",
+    "cost": 17389.325,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 88.75,
+    "seconds": 0.1354813575744629
+   },
+   {
+    "configuration": "postprocess=both",
+    "status": "Success",
+    "cost": 17389.325,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 88.75,
+    "seconds": 0.13583135604858398
+   },
+   {
+    "configuration": "sampler=svmc",
+    "status": "Success",
+    "cost": 17539.325,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 86.25,
+    "seconds": 0.14383339881896973
+   },
+   {
+    "configuration": "sampler=sqa (8 Trotter slices)",
+    "status": "Success",
+    "cost": 17629.325,
+    "raw_feasible_pct": 3.75,
+    "final_feasible_pct": 92.5,
+    "seconds": 0.14660215377807617
+   },
+   {
+    "configuration": "sampler_kwargs: pt merged over num_sweeps",
+    "status": "Success",
+    "cost": 17279.325,
+    "raw_feasible_pct": 11.25,
+    "final_feasible_pct": 76.25,
+    "seconds": 0.11839437484741211
+   },
+   {
+    "configuration": "sampler_kwargs overrides num_sweeps",
+    "status": "Success",
+    "cost": 17329.325,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 93.75,
+    "seconds": 0.12091803550720215
+   },
+   {
+    "configuration": "emulator_kwargs override named arguments",
+    "status": "Success",
+    "cost": 17629.325,
+    "raw_feasible_pct": 6.25,
+    "final_feasible_pct": 95.0,
+    "seconds": 0.14007854461669922
+   },
+   {
+    "configuration": "sample_kwargs: spin_reversal + anneal_time_us",
+    "status": "Success",
+    "cost": 17399.325,
+    "raw_feasible_pct": 6.25,
+    "final_feasible_pct": 91.25,
+    "seconds": 0.13614654541015625
+   },
+   {
+    "configuration": "sample_kwargs overrides num_reads",
+    "status": "Success",
+    "cost": 17389.325,
+    "raw_feasible_pct": 2.0,
+    "final_feasible_pct": 88.0,
+    "seconds": 0.1192178726196289
+   },
+   {
+    "configuration": "include_emulator_record=False",
+    "status": "Success",
+    "cost": 17389.325,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 88.75,
+    "seconds": 0.13190650939941406
+   },
+   {
+    "configuration": "relative_chain_multiplier=None (uncapped)",
+    "status": "Success",
+    "cost": 17519.325,
+    "raw_feasible_pct": 5.0,
+    "final_feasible_pct": 93.75,
+    "seconds": 0.146728515625
+   },
+   {
+    "configuration": "relative_chain_multiplier=0.1",
+    "status": "Success",
+    "cost": 19969.325,
+    "raw_feasible_pct": 0.0,
+    "final_feasible_pct": 48.75,
+    "seconds": 0.15230393409729004
+   },
+   {
+    "configuration": "dac_bits=None",
+    "status": "Success",
+    "cost": 17369.325,
+    "raw_feasible_pct": 7.5,
+    "final_feasible_pct": 90.0,
+    "seconds": 0.15207314491271973
+   },
+   {
+    "configuration": "dac_bits=5",
+    "status": "Success",
+    "cost": 17509.325,
+    "raw_feasible_pct": 6.25,
+    "final_feasible_pct": 90.0,
+    "seconds": 0.14598989486694336
+   },
+   {
+    "configuration": "systematic ICE + per-qubit coupling limit",
+    "status": "Success",
+    "cost": 17529.325,
+    "raw_feasible_pct": 3.75,
+    "final_feasible_pct": 90.0,
+    "seconds": 0.14545559883117676
+   },
+   {
+    "configuration": "hardware with a fitted effective temperature",
+    "status": "Success",
+    "cost": 17369.325,
+    "raw_feasible_pct": 3.75,
+    "final_feasible_pct": 93.75,
+    "seconds": 0.15653371810913086
+   },
+   {
+    "configuration": "custom hardware Z4",
+    "status": "Success",
+    "cost": 17389.325,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 88.75,
+    "seconds": 0.10892128944396973
+   },
+   {
+    "configuration": "reads_per_programming=10",
+    "status": "Success",
+    "cost": 17429.325,
+    "raw_feasible_pct": 7.5,
+    "final_feasible_pct": 88.75,
+    "seconds": 0.15479445457458496
+   },
+   {
+    "configuration": "chain_break_method=weighted",
+    "status": "Success",
+    "cost": 17389.325,
+    "raw_feasible_pct": 7.5,
+    "final_feasible_pct": 88.75,
+    "seconds": 0.14668631553649902
+   },
+   {
+    "configuration": "chain_break_method=minimize_energy",
+    "status": "Success",
+    "cost": 17379.325,
+    "raw_feasible_pct": 10.0,
+    "final_feasible_pct": 87.5,
+    "seconds": 0.16703128814697266
+   },
+   {
+    "configuration": "mw_precision=20 (formulator argument)",
+    "status": "Success",
+    "cost": 17219.325,
+    "raw_feasible_pct": 15.0,
+    "final_feasible_pct": 93.75,
+    "seconds": 0.1250607967376709
+   },
+   {
+    "configuration": "tighten_bounds=False (formulator argument)",
+    "status": "Success",
+    "cost": 17540.0,
+    "raw_feasible_pct": 7.5,
+    "final_feasible_pct": 87.5,
+    "seconds": 0.13643836975097656
+   },
+   {
+    "configuration": "num_reads=10, reads_per_programming=10",
+    "status": "Success",
+    "cost": 18669.325,
+    "raw_feasible_pct": 0.0,
+    "final_feasible_pct": 100.0,
+    "seconds": 0.09835338592529297
+   },
+   {
+    "configuration": "embedding: clique + minorminer + mm_from_clique",
+    "status": "Success",
+    "cost": 17889.325,
+    "raw_feasible_pct": 13.75,
+    "final_feasible_pct": 96.25,
+    "seconds": 4.661758899688721
+   },
+   {
+    "configuration": "embedding_select_key=(max_chain, physical)",
+    "status": "Success",
+    "cost": 17889.325,
+    "raw_feasible_pct": 13.75,
+    "final_feasible_pct": 96.25,
+    "seconds": 4.3772125244140625
+   },
+   {
+    "configuration": "embedding_methods=minorminer only",
+    "status": "Success",
+    "cost": 17889.325,
+    "raw_feasible_pct": 13.75,
+    "final_feasible_pct": 96.25,
+    "seconds": 2.3488144874572754
+   }
+  ],
+  "networks": [
+   {
+    "network": "case4gs",
+    "status": "Infeasible: no feasible sample among 1 decoded states (80 reads); lowest-energy sample violates: balance=True, lines=False, bounds=False",
+    "cost": 69000.0,
+    "classical_reference": null,
+    "gap_pct": null,
+    "raw_feasible_pct": 0.0,
+    "final_feasible_pct": 0.0
+   },
+   {
+    "network": "case5",
+    "status": "Success",
+    "cost": 17389.325,
+    "classical_reference": 17479.896925616482,
+    "gap_pct": -0.5181490829259388,
+    "raw_feasible_pct": 2.5,
+    "final_feasible_pct": 88.75
+   },
+   {
+    "network": "case9",
+    "status": "Success",
+    "cost": 5261.25,
+    "classical_reference": 5216.0266077472725,
+    "gap_pct": 0.8670084655158398,
+    "raw_feasible_pct": 21.25,
+    "final_feasible_pct": 88.75
+   },
+   {
+    "network": "case14",
+    "status": "Success",
+    "cost": 7794.003,
+    "classical_reference": 7642.593734939246,
+    "gap_pct": 1.9811240831573154,
+    "raw_feasible_pct": 21.25,
+    "final_feasible_pct": 97.5
+   },
+   {
+    "network": "case30",
+    "status": "Success",
+    "cost": 572.969,
+    "classical_reference": 565.2059663999223,
+    "gap_pct": 1.373487553488572,
+    "raw_feasible_pct": 38.75,
+    "final_feasible_pct": 98.75
+   }
+  ]
+ }
+}

@@ -857,7 +857,7 @@ if __name__ == "__main__":
         section("[12] EmulatedQPU: postprocess = None / physical / logical / both (reports read from the imported module copy)")
         try:
             import solvers.simulated_quantum_annealing.s4_postprocess as PPM
-            from solvers.simulated_quantum_annealing.run_emulator import EmulatedQPU
+            from solvers.simulated_quantum_annealing.emulated_qpu_solver import EmulatedQPU
             from solvers.simulated_quantum_annealing.s1b_embedding import find_embeddings, select_best
             emu_ok = True
         except ImportError as exc:

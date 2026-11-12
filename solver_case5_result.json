@@ -1,0 +1,850 @@
+{
+ "settings": {
+  "num_reads": 80,
+  "num_sweeps": 200,
+  "trotter_slices": 8,
+  "sampler": "sa",
+  "seed": 5,
+  "reads_per_programming": 40,
+  "chain_break_method": "majority",
+  "postprocess": "both",
+  "relative_chain_multiplier": 1.0,
+  "embedding_methods": [
+   "clique"
+  ],
+  "embedding_seeds": [
+   0
+  ],
+  "embedding_timeout": 30.0,
+  "embedding_select_key": [
+   "physical",
+   "max_chain"
+  ],
+  "dac_bits": 8,
+  "ice_sigma_h": 0.01,
+  "ice_sigma_j": 0.005,
+  "use_extended_j": true,
+  "sampler_kwargs": {},
+  "emulator_kwargs": {
+   "schedule": "Schedule(s=array([0.   , 0.001, 0.002, ..., 0.998, 0.999, 1.   ], shape=(1001,)), A=array([1.13148162e+01, 1.12235973e+01, 1.11318685e+01, ...,\n       3.70000000e-07, 3.50000000e-07, 3.30000000e-07], shape=(1001,)), B=array([ 0.55821572,  0.56273347,  0.56735012, ..., 14.68600029,\n       14.70992809, 14.73382979], shape=(1001,)), is_placeholder=False, source='standart_annealing_schedule_Ad2Sys1.csv')"
+  },
+  "sample_kwargs": {},
+  "selection_rule": "lowest-energy feasible read of the final stage (else lowest-energy read)"
+ },
+ "solution": {
+  "cost_eur_per_hr": 17389.325,
+  "generator_dispatch_mw": {
+   "0": {
+    "p_mw": 20.0
+   },
+   "1": {
+    "p_mw": 114.067
+   },
+   "2": {
+    "p_mw": 590.0
+   }
+  },
+  "static_generator_dispatch_mw": {
+   "0": {
+    "p_mw": 130.0
+   }
+  },
+  "slack_dispatch_mw": {
+   "0": {
+    "p_mw": 145.933
+   }
+  },
+  "grid_state": {
+   "max_line_loading_percent": 101.588,
+   "max_voltage_pu": 1.0,
+   "min_voltage_pu": 1.0,
+   "feasibility": {
+    "total_generation_mw": 1000.0,
+    "total_load_mw": 1000.0,
+    "raw_imbalance_mw": -5.933,
+    "cost_raw_dispatch_eur": 17152.024,
+    "max_line_violation_mw": 3.812,
+    "tolerance_mw": 10.0,
+    "is_feasible": true,
+    "line_flows_mw": {
+     "line_0": 330.872,
+     "line_1": 165.316,
+     "line_2": -346.188,
+     "line_3": 30.872,
+     "line_4": -155.061,
+     "line_5": -243.812
+    },
+    "bus_angles_rad": {
+     "0": 0.050256,
+     "1": -0.042719,
+     "2": -0.046053,
+     "3": 0.0,
+     "4": 0.072412
+    }
+   }
+  }
+ },
+ "metadata": {
+  "status": "Success",
+  "solver_name": "emulated_qpu_sa_dc_ptdf",
+  "execution_time_seconds": {
+   "total": 0.1512,
+   "formulation_cpu": 0.0192,
+   "embedding_cpu": 0.0469,
+   "sampling_analog_sim": 0.0581,
+   "decoding_cpu": 0.0147
+  },
+  "problem_complexity": {
+   "formulation": "dc_ptdf",
+   "encoding": "radix",
+   "classical_domain_input": {
+    "continuous_variables": 5,
+    "equality_constraints": 1,
+    "inequality_constraints": 4
+   },
+   "quantum_domain_qubo": {
+    "total_logical_qubits": 31,
+    "qubits_used_for_variables": 25,
+    "qubits_used_for_dispatch": 25,
+    "qubits_used_for_angles": 0,
+    "qubits_wasted_on_slack": 6,
+    "num_interactions": 435,
+    "density_percent": 93.55,
+    "offset": 4579214.461894909
+   },
+   "hardware_limits": {
+    "max_coefficient_magnitude": 2120678.0607,
+    "min_coefficient_magnitude": 199.235,
+    "dac_precision_warning": true,
+    "ising_max": 209893.7144,
+    "ising_min": 49.808756,
+    "ising_dynamic_range": 4213.99,
+    "ising_at_risk_percent": 71.24
+   },
+   "penalties": {
+    "balance": 4.0,
+    "line": {
+     "line_0": 3.0,
+     "line_1": 3.0,
+     "line_2": 3.0,
+     "line_3": 3.0,
+     "line_4": 3.0,
+     "line_5": 3.0
+    }
+   }
+  },
+  "hardware_feasibility_report": {
+   "at_risk_fraction": 0.4742,
+   "mapping": {
+    "n_qubits": 124,
+    "n_couplers": 749,
+    "n_chain_couplers": 93,
+    "scale_factor": 1.1372335926249122e-05,
+    "binding_constraint": "problem_J_range",
+    "limits_scale_factor": {
+     "h_range": 7.62290573969329e-05,
+     "problem_J_range": 1.1372335926249122e-05,
+     "chain_J_range": 1.854204025987326e-05
+    },
+    "dynamic_range_ideal": 3622.5700067620955,
+    "dynamic_range_programmed": 157.5,
+    "step_h": 0.03125,
+    "step_j": 0.0078125,
+    "problem_J_zeroed": 124,
+    "problem_J_zeroed_pct": 18.902439024390244,
+    "h_zeroed": 12,
+    "max_abs_rounding_err_h": 0.01501219539044605,
+    "max_abs_rounding_err_j": 0.0051506596945249394,
+    "out_of_range_after_quantise": 0,
+    "chain_strength_programmed_min": 0.19921875,
+    "problem_J_below_sigma_j_pct": 23.78048780487805,
+    "h_below_sigma_h_pct": 3.225806451612903
+   },
+   "thermal_resolution": {
+    "beta": 13.209446898726279,
+    "kT_scaled": 0.07570339679373139,
+    "J_nonzero": 625,
+    "J_median_abs": 0.03125,
+    "J_min_abs": 0.0078125,
+    "J_below_kT_pct": 67.84,
+    "h_nonzero": 112,
+    "h_below_kT_pct": 50.0,
+    "kT_over_max_abs_J": 0.06152403041014361
+   }
+  },
+  "qubo_parameters": {
+   "mw_precision": 10.0,
+   "penalty_balance": null,
+   "penalty_line": null
+  },
+  "solver_settings": {
+   "num_reads": 80,
+   "num_sweeps": 200,
+   "trotter_slices": 8,
+   "sampler": "sa",
+   "seed": 5,
+   "reads_per_programming": 40,
+   "chain_break_method": "majority",
+   "postprocess": "both",
+   "relative_chain_multiplier": 1.0,
+   "embedding_methods": [
+    "clique"
+   ],
+   "embedding_seeds": [
+    0
+   ],
+   "embedding_timeout": 30.0,
+   "embedding_select_key": [
+    "physical",
+    "max_chain"
+   ],
+   "dac_bits": 8,
+   "ice_sigma_h": 0.01,
+   "ice_sigma_j": 0.005,
+   "use_extended_j": true,
+   "sampler_kwargs": {},
+   "emulator_kwargs": {
+    "schedule": "Schedule(s=array([0.   , 0.001, 0.002, ..., 0.998, 0.999, 1.   ], shape=(1001,)), A=array([1.13148162e+01, 1.12235973e+01, 1.11318685e+01, ...,\n       3.70000000e-07, 3.50000000e-07, 3.30000000e-07], shape=(1001,)), B=array([ 0.55821572,  0.56273347,  0.56735012, ..., 14.68600029,\n       14.70992809, 14.73382979], shape=(1001,)), is_placeholder=False, source='standart_annealing_schedule_Ad2Sys1.csv')"
+   },
+   "sample_kwargs": {},
+   "selection_rule": "lowest-energy feasible read of the final stage (else lowest-energy read)"
+  },
+  "hardware_metrics": {
+   "qpu_target": "ideal_zephyr_Z(12,4)",
+   "topology": {
+    "type": "zephyr",
+    "shape": [
+     12,
+     4
+    ]
+   },
+   "logical_qubits": 31,
+   "physical_qubits": 124,
+   "qubit_overhead_factor": 4.0,
+   "max_chain_length": 4,
+   "mean_chain_length": 4.0,
+   "chain_length_variance": 0.0,
+   "multi_qubit_chains": 31,
+   "single_qubit_variables": 0,
+   "total_chain_qubits": 124,
+   "embedding_heuristic_winner": "clique",
+   "hardware_scale_factor": 1.1372335926249122e-05,
+   "binding_constraint": "problem_J_range",
+   "chain_strength_uncapped": 107862.99522432762,
+   "chain_strength_applied_range": [
+    17606.605272449102,
+    107862.99522432762
+   ],
+   "chain_strength_capped": true,
+   "relative_chain_multiplier": 1.0,
+   "dac_resolution_bits": 8,
+   "dac_step_h": 0.03125,
+   "dac_step_j": 0.0078125,
+   "problem_J_zeroed_pct": 18.902439024390244,
+   "dynamic_range_programmed": 157.5,
+   "ice_sigma_h": 0.01,
+   "ice_sigma_j": 0.005,
+   "temperature_used_mk": 12.0,
+   "temperature_source": "physical"
+  },
+  "embedding_exploration": {
+   "source_graph": {
+    "n_vars": 31,
+    "n_edges": 435,
+    "density": 0.9355
+   },
+   "target": "ideal_zephyr_Z(12,4): 4800 qubits, 45864 couplers, topology={'type': 'zephyr', 'shape': [12, 4]}",
+   "chosen": "clique",
+   "attempts": [
+    {
+     "label": "clique",
+     "method": "clique",
+     "seed": null,
+     "ok": true,
+     "seconds": 0.022,
+     "footprint": {
+      "logical": 31,
+      "physical": 124,
+      "max_chain": 4,
+      "min_chain": 4,
+      "mean_chain": 4.0,
+      "hist": {
+       "4": 31
+      },
+      "label": "clique",
+      "seconds": 0.022,
+      "chain_couplers": 93,
+      "device_qubits_used_pct": 2.583
+     }
+    }
+   ]
+  },
+  "emulator": {
+   "provenance": {
+    "hardware": {
+     "hardware": "ideal_zephyr_Z(12,4)",
+     "topology": {
+      "type": "zephyr",
+      "shape": [
+       12,
+       4
+      ]
+     },
+     "n_qubits": 4800,
+     "n_couplers": 45864,
+     "h_range": [
+      -4.0,
+      4.0
+     ],
+     "j_range": [
+      -1.0,
+      1.0
+     ],
+     "extended_j_range": [
+      -2.0,
+      1.0
+     ],
+     "temperature_mk": 12.0,
+     "effective_temperature_mk": null,
+     "temperature_used_by_beta_mk": 12.0,
+     "from_real_properties": false
+    },
+    "schedule": {
+     "source": "standart_annealing_schedule_Ad2Sys1.csv",
+     "is_placeholder": false,
+     "n_points": 1001,
+     "sha1": "9d20af09ab071c012c944001cd590b482326bd96",
+     "crossing_s": 0.265,
+     "A_range_ghz": [
+      3.3e-07,
+      11.31481618
+     ],
+     "B_range_ghz": [
+      0.55821572,
+      14.73382979
+     ]
+    },
+    "sampler": {
+     "class": "SAFreezeout",
+     "method": "anneal",
+     "temperature_mk": 12.0,
+     "freeze_s": 0.6,
+     "anneal_time_us": null,
+     "beta_override": null,
+     "use_auto_beta": false,
+     "beta_hot": 0.1,
+     "num_sweeps": 200,
+     "beta_sigma_rel": 0.0,
+     "beta_nominal": 13.209446898726279,
+     "freeze_point_s": 0.6,
+     "schedule": {
+      "source": "standart_annealing_schedule_Ad2Sys1.csv",
+      "is_placeholder": false,
+      "n_points": 1001,
+      "sha1": "9d20af09ab071c012c944001cd590b482326bd96",
+      "crossing_s": 0.265,
+      "A_range_ghz": [
+       3.3e-07,
+       11.31481618
+      ],
+      "B_range_ghz": [
+       0.55821572,
+       14.73382979
+      ]
+     },
+     "uncalibrated_defaults": true,
+     "runs": {
+      "programming_cycles": 2,
+      "beta_used_mean": 13.209446898726279,
+      "beta_used_std": 0.0,
+      "beta_used_min": 13.209446898726279,
+      "beta_used_max": 13.209446898726279
+     },
+     "last_call": {
+      "method": "anneal",
+      "num_reads": 40,
+      "n_spins": 124,
+      "beta_nominal": 13.209446898726279,
+      "beta_used": 13.209446898726279,
+      "anneal_time_us": null,
+      "freeze_s_used": 0.6,
+      "mean_energy": -91.2565429263154,
+      "min_energy": -93.73644869024258,
+      "num_sweeps": 200,
+      "beta_hot_used": 0.1
+     }
+    },
+    "postprocessing": {
+     "physical": {
+      "class": "GreedyDescent",
+      "label": "physical",
+      "settings": {
+       "tol_rel": 1e-09,
+       "tol_abs": null,
+       "max_steps": null,
+       "tie_break": "first",
+       "seed": 0,
+       "two_flip": false,
+       "two_flip_rounds": 20,
+       "pair_chunk": 32,
+       "refresh_every": 64
+      },
+      "cumulative": {
+       "calls": 1,
+       "reads": 80,
+       "flips": 9,
+       "pair_moves": 0,
+       "reads_changed": 9,
+       "reads_not_converged": 0,
+       "energy_drop_sum": 147703.27606850397,
+       "seconds": 0.004185138000138977,
+       "energy_drop_mean_per_read": 1846.2909508562996,
+       "reads_changed_pct": 11.25
+      },
+      "last_call": {
+       "label": "physical",
+       "call": 1,
+       "n_reads": 80,
+       "n_spins": 124,
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "tol_used": 0.0005708519361061126,
+       "scale": 570851.9361061126,
+       "max_steps_used": 1240,
+       "flips": 9,
+       "pair_moves": 0,
+       "two_flip_rounds_used": 0,
+       "two_flip_converged": null,
+       "reads_changed": 9,
+       "reads_changed_pct": 11.25,
+       "steps_mean": 0.1125,
+       "steps_max": 1,
+       "reads_not_converged": 0,
+       "one_flip_local_minima_pct": 100.0,
+       "energy_before_mean": -7962259.380580017,
+       "energy_before_min": -8179739.800427408,
+       "energy_after_mean": -7964105.671530873,
+       "energy_after_min": -8191605.815955604,
+       "energy_drop_mean": 1846.2909508562996,
+       "energy_increased_reads": 0,
+       "hamming_mean": 0.1125,
+       "hamming_mean_frac": 0.0009072580645161291,
+       "hamming_max": 1,
+       "seconds": 0.004185138000138977
+      }
+     },
+     "logical": {
+      "class": "GreedyDescent",
+      "label": "logical",
+      "settings": {
+       "tol_rel": 1e-09,
+       "tol_abs": null,
+       "max_steps": null,
+       "tie_break": "first",
+       "seed": 0,
+       "two_flip": false,
+       "two_flip_rounds": 20,
+       "pair_chunk": 32,
+       "refresh_every": 64
+      },
+      "cumulative": {
+       "calls": 1,
+       "reads": 80,
+       "flips": 257,
+       "pair_moves": 0,
+       "reads_changed": 80,
+       "reads_not_converged": 0,
+       "energy_drop_sum": 7760779.626053005,
+       "seconds": 0.0026555609993010876,
+       "energy_drop_mean_per_read": 97009.74532566257,
+       "reads_changed_pct": 100.0
+      },
+      "last_call": {
+       "label": "logical",
+       "call": 1,
+       "n_reads": 80,
+       "n_spins": 31,
+       "settings": {
+        "tol_rel": 1e-09,
+        "tol_abs": null,
+        "max_steps": null,
+        "tie_break": "first",
+        "seed": 0,
+        "two_flip": false,
+        "two_flip_rounds": 20,
+        "pair_chunk": 32,
+        "refresh_every": 64
+       },
+       "tol_used": 0.0010603390303643239,
+       "scale": 1060339.0303643239,
+       "max_steps_used": 310,
+       "flips": 257,
+       "pair_moves": 0,
+       "two_flip_rounds_used": 0,
+       "two_flip_converged": null,
+       "reads_changed": 80,
+       "reads_changed_pct": 100.0,
+       "steps_mean": 3.2125,
+       "steps_max": 8,
+       "reads_not_converged": 0,
+       "one_flip_local_minima_pct": 100.0,
+       "energy_before_mean": -325318.9430412868,
+       "energy_before_min": -422682.67774610594,
+       "energy_after_mean": -422328.6883669494,
+       "energy_after_min": -424975.16388517374,
+       "energy_drop_mean": 97009.74532566257,
+       "energy_increased_reads": 0,
+       "hamming_mean": 3.2125,
+       "hamming_mean_frac": 0.10362903225806451,
+       "hamming_max": 8,
+       "seconds": 0.0026555609993010876
+      }
+     }
+    },
+    "mapping": {
+     "dac_bits": 8,
+     "dac_bits_h": null,
+     "dac_bits_j": null,
+     "ice_sigma_h": 0.01,
+     "ice_sigma_j": 0.005,
+     "ice_sigma_j_chain": null,
+     "use_extended_j": true,
+     "h_range": [
+      -4.0,
+      4.0
+     ],
+     "j_range": [
+      -1.0,
+      1.0
+     ],
+     "chain_j_range": [
+      -2.0,
+      1.0
+     ],
+     "per_qubit_coupling_range": null,
+     "systematic_ice": null
+    },
+    "emulator": {
+     "class": "EmulatedQPU",
+     "created_utc": "2026-11-12T09:44:07+00:00",
+     "seed": 5,
+     "runs_completed": 1,
+     "temperature_used_mk": 12.0,
+     "temperature_source": "physical",
+     "config_hash": "ece1e3c0248f",
+     "software": {
+      "python": "3.10.12",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "networkx": "3.4.2",
+      "dimod": "0.12.22",
+      "dwave-system": "1.35.0",
+      "dwave-samplers": "1.8.0",
+      "dwave-networkx": "0.8.19",
+      "minorminer": "0.2.22",
+      "pandapower": "3.5.4"
+     }
+    }
+   },
+   "record": {
+    "sampler": "sa",
+    "dac_bits": 8,
+    "sigma_h": 0.01,
+    "sigma_j": 0.005,
+    "num_reads": 80,
+    "reads_per_programming": 40,
+    "chain_break_method": "majority",
+    "postprocess": "both",
+    "postprocess_flips": [
+     9,
+     257
+    ],
+    "placeholder_schedule": false,
+    "chain_strength_capped": true,
+    "chain_strength_range": [
+     17606.605272449102,
+     107862.99522432762
+    ],
+    "dac_bits_h": null,
+    "dac_bits_j": null,
+    "sigma_j_chain": null,
+    "spin_reversal": false,
+    "anneal_time_us": null,
+    "temperature_used_mk": 12.0,
+    "temperature_source": "physical",
+    "selected_stage": "both",
+    "scale_factor": 1.1372335926249122e-05,
+    "mapping": {
+     "n_qubits": 124,
+     "n_couplers": 749,
+     "n_chain_couplers": 93,
+     "scale_factor": 1.1372335926249122e-05,
+     "binding_constraint": "problem_J_range",
+     "limits_scale_factor": {
+      "h_range": 7.62290573969329e-05,
+      "problem_J_range": 1.1372335926249122e-05,
+      "chain_J_range": 1.854204025987326e-05
+     },
+     "dynamic_range_ideal": 3622.5700067620955,
+     "dynamic_range_programmed": 157.5,
+     "step_h": 0.03125,
+     "step_j": 0.0078125,
+     "problem_J_zeroed": 124,
+     "problem_J_zeroed_pct": 18.902439024390244,
+     "h_zeroed": 12,
+     "max_abs_rounding_err_h": 0.01501219539044605,
+     "max_abs_rounding_err_j": 0.0051506596945249394,
+     "out_of_range_after_quantise": 0,
+     "chain_strength_programmed_min": 0.19921875,
+     "problem_J_below_sigma_j_pct": 23.78048780487805,
+     "h_below_sigma_h_pct": 3.225806451612903
+    },
+    "thermal_resolution": {
+     "beta": 13.209446898726279,
+     "kT_scaled": 0.07570339679373139,
+     "J_nonzero": 625,
+     "J_median_abs": 0.03125,
+     "J_min_abs": 0.0078125,
+     "J_below_kT_pct": 67.84,
+     "h_nonzero": 112,
+     "h_below_kT_pct": 50.0,
+     "kT_over_max_abs_J": 0.06152403041014361
+    },
+    "embedding": {
+     "logical": 31,
+     "physical": 124,
+     "max_chain": 4,
+     "min_chain": 4,
+     "mean_chain": 4.0,
+     "hist": {
+      "4": 31
+     },
+     "chain_couplers": 93,
+     "device_qubits_used_pct": 2.583
+    },
+    "chain_breaks": {
+     "raw_mean": 0.045161290322580636,
+     "raw_reads_with_a_break_pct": 72.5,
+     "after_physical_descent_mean": 0.04314516129032257
+    },
+    "stages": {
+     "raw": {
+      "n_rows": 80,
+      "mean_energy": 117137.87618539103,
+      "min_energy": 19774.141480572136
+     },
+     "physical": {
+      "n_rows": 80,
+      "mean_energy": 117137.87618539103,
+      "min_energy": 19774.141480572136
+     },
+     "both": {
+      "n_rows": 80,
+      "mean_energy": 20128.130859728473,
+      "min_energy": 17481.655341504164
+     }
+    },
+    "postprocess_runs": {
+     "physical": {
+      "label": "physical",
+      "call": 1,
+      "n_reads": 80,
+      "n_spins": 124,
+      "settings": {
+       "tol_rel": 1e-09,
+       "tol_abs": null,
+       "max_steps": null,
+       "tie_break": "first",
+       "seed": 0,
+       "two_flip": false,
+       "two_flip_rounds": 20,
+       "pair_chunk": 32,
+       "refresh_every": 64
+      },
+      "tol_used": 0.0005708519361061126,
+      "scale": 570851.9361061126,
+      "max_steps_used": 1240,
+      "flips": 9,
+      "pair_moves": 0,
+      "two_flip_rounds_used": 0,
+      "two_flip_converged": null,
+      "reads_changed": 9,
+      "reads_changed_pct": 11.25,
+      "steps_mean": 0.1125,
+      "steps_max": 1,
+      "reads_not_converged": 0,
+      "one_flip_local_minima_pct": 100.0,
+      "energy_before_mean": -7962259.380580017,
+      "energy_before_min": -8179739.800427408,
+      "energy_after_mean": -7964105.671530873,
+      "energy_after_min": -8191605.815955604,
+      "energy_drop_mean": 1846.2909508562996,
+      "energy_increased_reads": 0,
+      "hamming_mean": 0.1125,
+      "hamming_mean_frac": 0.0009072580645161291,
+      "hamming_max": 1,
+      "seconds": 0.004185138000138977
+     },
+     "both": {
+      "label": "logical",
+      "call": 1,
+      "n_reads": 80,
+      "n_spins": 31,
+      "settings": {
+       "tol_rel": 1e-09,
+       "tol_abs": null,
+       "max_steps": null,
+       "tie_break": "first",
+       "seed": 0,
+       "two_flip": false,
+       "two_flip_rounds": 20,
+       "pair_chunk": 32,
+       "refresh_every": 64
+      },
+      "tol_used": 0.0010603390303643239,
+      "scale": 1060339.0303643239,
+      "max_steps_used": 310,
+      "flips": 257,
+      "pair_moves": 0,
+      "two_flip_rounds_used": 0,
+      "two_flip_converged": null,
+      "reads_changed": 80,
+      "reads_changed_pct": 100.0,
+      "steps_mean": 3.2125,
+      "steps_max": 8,
+      "reads_not_converged": 0,
+      "one_flip_local_minima_pct": 100.0,
+      "energy_before_mean": -325318.9430412868,
+      "energy_before_min": -422682.67774610594,
+      "energy_after_mean": -422328.6883669494,
+      "energy_after_min": -424975.16388517374,
+      "energy_drop_mean": 97009.74532566257,
+      "energy_increased_reads": 0,
+      "hamming_mean": 3.2125,
+      "hamming_mean_frac": 0.10362903225806451,
+      "hamming_max": 8,
+      "seconds": 0.0026555609993010876
+     }
+    },
+    "run": {
+     "index": 1,
+     "started_utc": "2026-11-12T09:44:07+00:00",
+     "emulator_seed": 5,
+     "rng_state_before": {
+      "bit_generator": "PCG64",
+      "state": {
+       "state": 304397142111423816445458517940380168174,
+       "inc": 233193750087604940414945475171846202189
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+     },
+     "timing_s": {
+      "embed_s": 0.007968588000039745,
+      "map_s": 0.0009228180006175535,
+      "sampling_s": 0.03793340499942133,
+      "chain_resolution_s": 0.0026372370002718526,
+      "physical_descent_s": 0.004200016999675427,
+      "logical_descent_s": 0.0031019930002003093,
+      "bookkeeping_s": 9.067799965123413e-05,
+      "total_s": 0.05781200099954731
+     },
+     "n_programming_cycles": 2,
+     "cycles": [
+      {
+       "cycle": 0,
+       "reads": 40,
+       "sampler_seed": 28291718,
+       "gauge": false,
+       "beta_used": 13.209446898726279,
+       "beta_nominal": 13.209446898726279,
+       "freeze_s_used": 0.6,
+       "mean_energy": -90.83599191088072,
+       "min_energy": -93.46408288890554
+      },
+      {
+       "cycle": 1,
+       "reads": 40,
+       "sampler_seed": 3406460,
+       "gauge": false,
+       "beta_used": 13.209446898726279,
+       "beta_nominal": 13.209446898726279,
+       "freeze_s_used": 0.6,
+       "mean_energy": -91.2565429263154,
+       "min_energy": -93.73644869024258
+      }
+     ],
+     "n_physical_qubits": 124,
+     "n_chain_couplers": 93
+    }
+   }
+  },
+  "algorithmic_metrics": {
+   "framework": "hardware_aware_analog_simulation",
+   "sampler_stats": {
+    "num_reads_requested": 80,
+    "num_sweeps_per_read": 200,
+    "rows_returned": 80,
+    "unique_logical_states": 79,
+    "selected_stage": "both",
+    "raw_energy_best_logical": 19774.14,
+    "raw_energy_mean_logical": 117137.88,
+    "final_energy_best_logical": 17481.66,
+    "final_energy_mean_logical": 20128.13,
+    "energy_improvement_delta_best": 2292.49,
+    "energy_improvement_delta_mean": 97009.75,
+    "mean_chain_break_fraction_raw": 0.0452,
+    "postprocess_physical_flips": 9,
+    "postprocess_logical_flips": 257,
+    "total_flips_executed": 266,
+    "reads_checked_for_feasibility": 79,
+    "feasible_read_found": true,
+    "stage_quality": {
+     "raw": {
+      "n_reads": 80,
+      "n_feasible": 2,
+      "feasible_pct": 2.5,
+      "feasible_ci95_pct": [
+       0.6882748898125228,
+       8.664600055322111
+      ],
+      "n_unique_states_decoded": 80,
+      "cost_of_lowest_energy_feasible": 19269.325,
+      "lowest_cost_among_feasible": 19269.325,
+      "violations_among_infeasible_reads": {
+       "balance": 77,
+       "lines": 24,
+       "bounds": 0
+      }
+     },
+     "final": {
+      "n_reads": 80,
+      "n_feasible": 71,
+      "feasible_pct": 88.75,
+      "feasible_ci95_pct": [
+       79.98158913432243,
+       93.96738130517298
+      ],
+      "n_unique_states_decoded": 79,
+      "cost_of_lowest_energy_feasible": 17389.325,
+      "lowest_cost_among_feasible": 17389.325,
+      "violations_among_infeasible_reads": {
+       "balance": 4,
+       "lines": 0,
+       "bounds": 5
+      }
+     }
+    }
+   }
+  }
+ }
+}

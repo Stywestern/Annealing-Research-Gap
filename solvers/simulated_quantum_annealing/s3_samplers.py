@@ -833,7 +833,7 @@ if __name__ == "__main__":
     if not NO_EMU:
         section("[11] EmulatedQPU: one sample() call per programming cycle, determinism, describe() after a run")
         try:
-            from solvers.simulated_quantum_annealing.run_emulator import EmulatedQPU
+            from solvers.simulated_quantum_annealing.emulated_qpu_solver import EmulatedQPU
             from solvers.simulated_quantum_annealing.s1_hardware import Hardware
             from solvers.simulated_quantum_annealing.s1b_embedding import find_embeddings, select_best
             emu_ok = True

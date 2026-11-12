@@ -1031,7 +1031,7 @@ if __name__ == "__main__":
     from homemade_grids.small_grids import case4_low_gen
     from solvers.simulated_quantum_annealing.s1_hardware import Hardware
     from solvers.simulated_quantum_annealing.s1b_embedding import find_embeddings, select_best
-    from solvers.simulated_quantum_annealing.run_emulator import EmulatedQPU
+    from solvers.simulated_quantum_annealing.emulated_qpu_solver import EmulatedQPU
 
     # ----------------------------------------------------------------------------------------------
     # Settings
