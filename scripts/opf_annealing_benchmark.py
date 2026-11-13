@@ -21,6 +21,7 @@ from solvers.qubo_formulator import QuboFormulator
 
 from solvers.classical_ip_solver import ClassicalIPSolver
 from solvers.simulated_annealing_solver import SimulatedAnnealingSolver
+from solvers.exact_discrete_solver import ExactDiscreteSolver
 from solvers.simulated_quantum_annealing.emulated_qpu_solver import EmulatedQPUSolver
 
 # Pipeline layout (one pass of run_pipeline):
@@ -210,11 +211,8 @@ def _run_step(label, filename, signature, problem_parameters, solve_fn, cache):
 #                                           Solver plug-ins
 ###############################################################################################################
 
-def solve_discrete_exact(net, formulator_config):
-    """PLACEHOLDER: exact optimum of the DISCRETISED problem (the best solution the chosen encoding and precision allow).
-    It is the reference against which the logical SA and the emulator should be judged: the gap between it and the
-    continuous classical optimum is pure discretisation error."""
-    raise NotImplementedError("discrete exact solver not written yet")
+def solve_discrete_exact(net, formulator_config, exact_config=None):
+    return ExactDiscreteSolver(**formulator_config, **(exact_config or {})).solve_opf(net)
 
 
 def solve_logical_sa(net, formulator_config, num_reads, num_sweeps, sa_config=None):
@@ -439,13 +437,11 @@ def run_pipeline(formulator_config, pristine_net, num_reads=500, num_sweeps=2000
     # 3a. Discrete exact: the true optimum of the discretised problem
     exact_payload = _run_step(
         f"Discrete Exact ({form_type})", os.path.join(output_dir, f"discrete_exact_{tail}.json"),
-        {"step": "discrete_exact", "network": net_id, "formulator_config": formulator_config},
+        {"step": "discrete_exact", "network": net_id, "formulator_config": formulator_config, "exact_config": exact_config},
         original_problem_parameters,
-        lambda: solve_discrete_exact(copy.deepcopy(pristine_net), formulator_config), cache)
+        lambda: solve_discrete_exact(copy.deepcopy(pristine_net), formulator_config, exact_config), cache)
     
     # 3b. Logical SA: search error of a classical annealer on the discretised problem
-    sa_config=dict(postprocess="logical")
-
     sa_payload = _run_step(
         f"Logical SA ({form_type})", os.path.join(output_dir, f"sa_{tail}.json"),
         {"step": "logical_sa", "network": net_id, "formulator_config": formulator_config,
