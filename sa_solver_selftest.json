@@ -1,0 +1,1176 @@
+{
+ "settings": {
+  "quick": false,
+  "no_brute_force": false,
+  "no_extra_cases": false
+ },
+ "checks": [
+  [
+   "is a QuboFormulator",
+   true,
+   ""
+  ],
+  [
+   "defaults: dc_ptdf, 500 reads, 3000 sweeps, seed 42, no postprocess, no decode cap",
+   true,
+   "dc_ptdf"
+  ],
+  [
+   "formulation='dc' is the dc_ptdf alias",
+   true,
+   ""
+  ],
+  [
+   "an invalid formulation raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "num_reads < 1 raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "num_sweeps < 1 raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "postprocess='nope' raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs containing 'num_reads' raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs containing 'num_sweeps' raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs containing 'seed' raises ValueError",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs are copied at construction",
+   true,
+   ""
+  ],
+  [
+   "formulator keyword arguments pass through",
+   true,
+   ""
+  ],
+  [
+   "the sampler is Ocean's simulated-annealing sampler",
+   true,
+   ""
+  ],
+  [
+   "seed=None is accepted",
+   true,
+   ""
+  ],
+  [
+   "_wilson(50, 100) is about [40.4, 59.6]",
+   true,
+   "[40.38, 59.62]"
+  ],
+  [
+   "_wilson(0, 100): lower bound 0, upper about 3.7",
+   true,
+   ""
+  ],
+  [
+   "_wilson(100, 100): upper bound 100",
+   true,
+   ""
+  ],
+  [
+   "_wilson(0, 0) is [None, None]",
+   true,
+   ""
+  ],
+  [
+   "_safe converts numpy scalars / arrays, tuples and non-string keys",
+   true,
+   ""
+  ],
+  [
+   "flags: everything within tolerance -> all satisfied",
+   true,
+   ""
+  ],
+  [
+   "flags: imbalance above tolerance -> balance violated only",
+   true,
+   ""
+  ],
+  [
+   "flags: line violation above tolerance -> lines violated only",
+   true,
+   ""
+  ],
+  [
+   "flags: balance and lines fine but infeasible -> bounds violated",
+   true,
+   ""
+  ],
+  [
+   "flags: explicit balance_ok / lines_ok / bounds_ok keys take priority",
+   true,
+   ""
+  ],
+  [
+   "flags: an empty dictionary does not crash",
+   true,
+   ""
+  ],
+  [
+   "energy stats are weighted by num_occurrences",
+   true,
+   "mean 2.25, std 0.8292"
+  ],
+  [
+   "fraction of reads at the lowest energy = 1/4",
+   true,
+   ""
+  ],
+  [
+   "stage quality: percentages, interval, costs, caps and violations",
+   true,
+   ""
+  ],
+  [
+   "stage quality without a feasible read: zero percent, no costs",
+   true,
+   ""
+  ],
+  [
+   "decode_set: total and feasible read counts equal an independent recount",
+   true,
+   "131 of 256 reads feasible"
+  ],
+  [
+   "decode_set: distinct states are aggregated (duplicates merged)",
+   true,
+   "120 distinct states from 130 rows"
+  ],
+  [
+   "decode_set: lowest-energy feasible state (energy and cost)",
+   true,
+   ""
+  ],
+  [
+   "decode_set: lowest-cost feasible state",
+   true,
+   ""
+  ],
+  [
+   "decode_set: best_any is the lowest-energy state of the set",
+   true,
+   ""
+  ],
+  [
+   "decode_set: violation counts among infeasible reads equal an independent recount",
+   true,
+   "{'balance': 123, 'lines': 1, 'bounds': 2}"
+  ],
+  [
+   "decode_set: infeasible states below the first feasible one",
+   true,
+   "0"
+  ],
+  [
+   "section ran to the end: [3] decoding against an independent recount (mixed feasible / infeasible sampleset, duplicates, decode cap)",
+   false,
+   "AttributeError: 'SimulatedAnnealingSolver' object has no attribute '_bus_pos' | AttributeError: 'SimulatedAnnealingSolver' object has no attribute '_bus_pos'"
+  ],
+  [
+   "status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "case5: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case5: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "solver name",
+   true,
+   "neal_simulated_annealing_dc_ptdf"
+  ],
+  [
+   "a cost was reported and the solution is feasible",
+   true,
+   ""
+  ],
+  [
+   "reported cost equals the cost recomputed from the reported dispatch",
+   true,
+   "17379.325 vs 17379.330"
+  ],
+  [
+   "generation equals load after the slack rebalance",
+   true,
+   ""
+  ],
+  [
+   "dispatch respects the asset limits",
+   true,
+   "worst violation 0.00e+00 MW"
+  ],
+  [
+   "line flows are within the limits plus the feasibility tolerance",
+   true,
+   "max excess 3.058 MW, tolerance 10.0"
+  ],
+  [
+   "max_line_loading_percent equals a recomputation from the line flows",
+   true,
+   "101.274"
+  ],
+  [
+   "DC formulation: flat voltages are reported (1.0 pu)",
+   true,
+   ""
+  ],
+  [
+   "timing: parts do not exceed the total, total matches the wall clock",
+   true,
+   "total 0.0375s, parts 0.037s, wall 0.041s"
+  ],
+  [
+   "no postprocessing: postprocess_cpu is zero",
+   true,
+   ""
+  ],
+  [
+   "problem complexity agrees with the hardware metrics (logical qubits)",
+   true,
+   "31"
+  ],
+  [
+   "a perfect logical solver: logical = physical qubits, chains of length 1, overhead 1.0, flagged as such",
+   true,
+   ""
+  ],
+  [
+   "hardware feasibility report says it does not apply",
+   true,
+   ""
+  ],
+  [
+   "the optimality gap is not claimed (None, not 0.0)",
+   true,
+   ""
+  ],
+  [
+   "qubo parameters are recorded",
+   true,
+   ""
+  ],
+  [
+   "solver_settings equals the constructor settings",
+   true,
+   ""
+  ],
+  [
+   "run record: start time, seeds, software versions",
+   true,
+   "{'dwave-samplers': '1.8.0', 'dimod': '0.12.22', 'numpy': '2.2.6'}"
+  ],
+  [
+   "legacy sampler_stats keys are still there",
+   true,
+   ""
+  ],
+  [
+   "stage_quality has the keys shared with the emulator wrapper",
+   true,
+   ""
+  ],
+  [
+   "no postprocessing: raw and final stage are the same object content",
+   true,
+   ""
+  ],
+  [
+   "80 reads; the percentage equals the counts; the Wilson interval brackets it",
+   true,
+   "100.0% [95.4, 100.0]"
+  ],
+  [
+   "the reported solution is the lowest-energy feasible read (stage cost and chosen energy agree)",
+   true,
+   ""
+  ],
+  [
+   "checked reads and distinct states are consistent",
+   true,
+   ""
+  ],
+  [
+   "energy statistics equal an independent replication (best / mean / worst)",
+   true,
+   "best 17404.33, mean 20809.89"
+  ],
+  [
+   "distinct-state count equals an independent aggregation",
+   true,
+   "80"
+  ],
+  [
+   "feasible read count equals an independent per-row decoding",
+   true,
+   "80 of 80"
+  ],
+  [
+   "selection rule: the chosen read has the lowest QUBO energy among all feasible reads",
+   true,
+   "17404.334200427053"
+  ],
+  [
+   "violation counts equal an independent per-row recount",
+   true,
+   "{'balance': 0, 'lines': 0, 'bounds': 0}"
+  ],
+  [
+   "postprocess=logical: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "postprocess=logical: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "postprocess=logical: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: selected stage logical; raw and final stage differ",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: descent does not raise the mean energy",
+   true,
+   "20809.89 -> 20809.22"
+  ],
+  [
+   "postprocess=logical: descent does not lower the feasible share",
+   true,
+   ""
+  ],
+  [
+   "postprocess=logical: postprocess_cpu was measured",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs: beta_range (0.1, 5.0): status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "sampler_kwargs: beta_range (0.1, 5.0): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "sampler_kwargs: beta_range (0.1, 5.0): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs: beta_range (0.1, 5.0): recorded in solver_settings",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs: beta_range (0.1, 5.0): the sampler used it (its own info)",
+   true,
+   "[0.1, 5.0]"
+  ],
+  [
+   "sampler_kwargs: linear schedule, 2 sweeps per beta: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "sampler_kwargs: linear schedule, 2 sweeps per beta: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "sampler_kwargs: linear schedule, 2 sweeps per beta: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "sampler_kwargs: linear schedule, 2 sweeps per beta: the schedule type reached the sampler",
+   true,
+   "linear"
+  ],
+  [
+   "max_decode=3: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "max_decode=3: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "max_decode=3: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "max_decode=3: only 3 distinct states decoded, cap flagged, all reads accounted for",
+   true,
+   "3 reads decoded"
+  ],
+  [
+   "seed=None: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "seed=None: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "seed=None: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "seed=None: a seed was generated and recorded",
+   true,
+   "181426015"
+  ],
+  [
+   "seed=None: the qubo parameters keep the seed as given (None)",
+   true,
+   ""
+  ],
+  [
+   "num_reads=1: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "num_reads=1: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "num_reads=1: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "num_reads=1: a single read",
+   true,
+   ""
+  ],
+  [
+   "num_sweeps=1 (barely annealed): returned a result (Success or Infeasible, never Failed)",
+   true,
+   "Success"
+  ],
+  [
+   "num_sweeps=1 (barely annealed): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "num_sweeps=1 (barely annealed): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "num_sweeps=1 (barely annealed): recorded",
+   true,
+   ""
+  ],
+  [
+   "num_reads=400, num_sweeps=1000: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "num_reads=400, num_sweeps=1000: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "num_reads=400, num_sweeps=1000: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "num_reads=400, num_sweeps=1000: 400 reads",
+   true,
+   ""
+  ],
+  [
+   "mw_precision=20: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "mw_precision=20: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "mw_precision=20: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "mw_precision=20: recorded and fewer logical qubits than at 10 MW",
+   true,
+   "25 vs 31"
+  ],
+  [
+   "tighten_bounds=False: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "tighten_bounds=False: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "tighten_bounds=False: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "tighten_bounds=False: no presolve: at least as many logical qubits",
+   true,
+   "32 vs 31"
+  ],
+  [
+   "tighten_bounds=False: info",
+   true,
+   "raw imbalance of the chosen solution 0.0 (the presolve run had -5.933)"
+  ],
+  [
+   "penalty_safety=2.0: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "penalty_safety=2.0: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "penalty_safety=2.0: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "penalty_safety=2.0: the penalty weights double",
+   true,
+   ""
+  ],
+  [
+   "encoding=unary: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "encoding=unary: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "encoding=unary: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "encoding=unary: encoding recorded",
+   true,
+   "176 logical qubits"
+  ],
+  [
+   "encoding=bounded: status is Success",
+   true,
+   "Success"
+  ],
+  [
+   "encoding=bounded: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "encoding=bounded: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "encoding=bounded: encoding recorded",
+   true,
+   "55 logical qubits"
+  ],
+  [
+   "formulation=dc_theta: returned a result (Success or Infeasible, never Failed)",
+   true,
+   "Success"
+  ],
+  [
+   "formulation=dc_theta: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "formulation=dc_theta: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "formulation=dc_theta: flat voltages are reported for dc_theta too",
+   true,
+   ""
+  ],
+  [
+   "formulation=dc_theta: the formulation is recorded",
+   true,
+   "61 logical qubits"
+  ],
+  [
+   "a formulation exception is caught: status 'Failed: boom', error type recorded, no raise",
+   true,
+   ""
+  ],
+  [
+   "failure: no cost, infeasible, empty dispatch",
+   true,
+   ""
+  ],
+  [
+   "failure: the hardware block is consistent (0 logical qubits)",
+   true,
+   ""
+  ],
+  [
+   "formulation failure: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "formulation failure: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "a decoding exception is caught",
+   true,
+   "Failed: decode broke"
+  ],
+  [
+   "failure after formulation: the formulation information survives",
+   true,
+   ""
+  ],
+  [
+   "decoding failure: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "decoding failure: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "an invalid sampler argument is caught and reported as a failed solve",
+   true,
+   "Failed: 'beta_range' should be a 2-tuple, or 2 element list of positive numbers. The latter value is"
+  ],
+  [
+   "invalid sampler argument: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "invalid sampler argument: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "zero-variable QUBO: trivial success with the offset as cost",
+   true,
+   ""
+  ],
+  [
+   "zero-variable QUBO: feasible, no sampler stats, complexity passed through, no line loading",
+   true,
+   ""
+  ],
+  [
+   "zero variables: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "zero variables: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (balance): status 'Infeasible' naming the violated constraint class",
+   true,
+   "Infeasible: no feasible sample among 80 decoded states (80 reads); lowest-energy sample violates: balance=True, lines=False, bounds=False"
+  ],
+  [
+   "forced infeasibility (balance): the lowest-energy sample is still reported, flagged infeasible",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (balance): zero feasible reads, violations counted, lowest-energy state flagged infeasible",
+   true,
+   "{'balance': 80, 'lines': 0, 'bounds': 0}"
+  ],
+  [
+   "forced infeasibility (balance): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "forced infeasibility (balance): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (lines): status 'Infeasible' naming the violated constraint class",
+   true,
+   "Infeasible: no feasible sample among 80 decoded states (80 reads); lowest-energy sample violates: balance=False, lines=True, bounds=False"
+  ],
+  [
+   "forced infeasibility (lines): the lowest-energy sample is still reported, flagged infeasible",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (lines): zero feasible reads, violations counted, lowest-energy state flagged infeasible",
+   true,
+   "{'balance': 0, 'lines': 80, 'bounds': 0}"
+  ],
+  [
+   "forced infeasibility (lines): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "forced infeasibility (lines): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (bounds): status 'Infeasible' naming the violated constraint class",
+   true,
+   "Infeasible: no feasible sample among 80 decoded states (80 reads); lowest-energy sample violates: balance=False, lines=False, bounds=True"
+  ],
+  [
+   "forced infeasibility (bounds): the lowest-energy sample is still reported, flagged infeasible",
+   true,
+   ""
+  ],
+  [
+   "forced infeasibility (bounds): zero feasible reads, violations counted, lowest-energy state flagged infeasible",
+   true,
+   "{'balance': 0, 'lines': 0, 'bounds': 80}"
+  ],
+  [
+   "forced infeasibility (bounds): solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "forced infeasibility (bounds): strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "same seed -> identical solution and sampler statistics",
+   true,
+   ""
+  ],
+  [
+   "a different seed changes the raw energies",
+   true,
+   "20423.69 vs 20521.91"
+  ],
+  [
+   "seed=None draws a new seed for every solver",
+   true,
+   "821588866 vs 1869937611"
+  ],
+  [
+   "feeding the recorded seed_used back in reproduces the run exactly",
+   true,
+   ""
+  ],
+  [
+   "postprocess='logical': same seed -> identical result",
+   true,
+   ""
+  ],
+  [
+   "one solver instance, three solves (case5, case9, case5): all succeed",
+   true,
+   "['Success', 'Success', 'Success']"
+  ],
+  [
+   "the logical size follows the network",
+   true,
+   "31 vs 26"
+  ],
+  [
+   "a repeated case5 solve on the reused instance is identical (no state leaks)",
+   true,
+   ""
+  ],
+  [
+   "replication: the final stage has the same number of reads as the raw stage",
+   true,
+   "120 reads"
+  ],
+  [
+   "replication: every read of the final stage is a one-flip local minimum of the QUBO (independent check)",
+   true,
+   ""
+  ],
+  [
+   "replication: the descent lowers or keeps the mean and the best energy",
+   true,
+   "mean 20938.25 -> 20936.01"
+  ],
+  [
+   "the metadata's final-stage energy statistics equal the replication",
+   true,
+   ""
+  ],
+  [
+   "final-stage feasible read count equals an independent per-row decoding",
+   true,
+   "116 of 120"
+  ],
+  [
+   "selection rule on the final stage: the chosen read has the lowest QUBO energy among feasible reads",
+   true,
+   ""
+  ],
+  [
+   "the raw stage reported in the metadata is the undescended output",
+   true,
+   ""
+  ],
+  [
+   "the solver found the exact ground state of the QUBO",
+   true,
+   "16305.44 vs 16305.44"
+  ],
+  [
+   "a good share of the reads reached the ground energy",
+   true,
+   "68.7%"
+  ],
+  [
+   "the reported solution has the exact lowest QUBO energy among FEASIBLE states",
+   true,
+   "16305.44247415349 vs exact 16305.442474153555"
+  ],
+  [
+   "infeasible states seen below the best feasible one never exceed the exact count",
+   true,
+   "solver 0, exact 0"
+  ],
+  [
+   "no feasible cost reported below the exact discrete optimum",
+   true,
+   "solver 17119.325 vs exact 17119.325"
+  ],
+  [
+   "case4gs: no classical reference (the DC-OPF itself failed); the solver returned a well-formed result",
+   true,
+   "Infeasible: no feasible sample among 1 decoded states (200 reads); lowest-energy sample violates: ba"
+  ],
+  [
+   "case4gs: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case4gs: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "case5: Success with a feasible solution (a classical reference exists)",
+   true,
+   "Success"
+  ],
+  [
+   "case5: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case5: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "case9: Success with a feasible solution (a classical reference exists)",
+   true,
+   "Success"
+  ],
+  [
+   "case9: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case9: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "case14: Success with a feasible solution (a classical reference exists)",
+   true,
+   "Success"
+  ],
+  [
+   "case14: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case14: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "case30: Success with a feasible solution (a classical reference exists)",
+   true,
+   "Success"
+  ],
+  [
+   "case30: solution and metadata have every documented key",
+   true,
+   "[]"
+  ],
+  [
+   "case30: strictly JSON-serialisable (no numpy types, no NaN)",
+   true,
+   ""
+  ],
+  [
+   "the example record was written and reloads",
+   true,
+   ""
+  ],
+  [
+   "the reloaded record keeps the stage quality and the seed",
+   true,
+   ""
+  ]
+ ],
+ "report": {
+  "settings_matrix": [
+   {
+    "configuration": "postprocess=logical",
+    "status": "Success",
+    "cost": 17379.325,
+    "raw_feasible_pct": 100.0,
+    "final_feasible_pct": 100.0,
+    "seconds": 0.04564356803894043
+   },
+   {
+    "configuration": "sampler_kwargs: beta_range (0.1, 5.0)",
+    "status": "Success",
+    "cost": 18449.325,
+    "raw_feasible_pct": 70.0,
+    "final_feasible_pct": 70.0,
+    "seconds": 0.02592754364013672
+   },
+   {
+    "configuration": "sampler_kwargs: linear schedule, 2 sweeps per beta",
+    "status": "Success",
+    "cost": 17519.325,
+    "raw_feasible_pct": 76.25,
+    "final_feasible_pct": 76.25,
+    "seconds": 0.030610322952270508
+   },
+   {
+    "configuration": "max_decode=3",
+    "status": "Success",
+    "cost": 17379.325,
+    "raw_feasible_pct": 100.0,
+    "final_feasible_pct": 100.0,
+    "seconds": 0.03523969650268555
+   },
+   {
+    "configuration": "seed=None",
+    "status": "Success",
+    "cost": 17369.325,
+    "raw_feasible_pct": 95.0,
+    "final_feasible_pct": 95.0,
+    "seconds": 0.036902666091918945
+   },
+   {
+    "configuration": "num_reads=1",
+    "status": "Success",
+    "cost": 22369.325,
+    "raw_feasible_pct": 100.0,
+    "final_feasible_pct": 100.0,
+    "seconds": 0.02257680892944336
+   },
+   {
+    "configuration": "num_sweeps=1 (barely annealed)",
+    "status": "Success",
+    "cost": 21369.325,
+    "raw_feasible_pct": 11.25,
+    "final_feasible_pct": 11.25,
+    "seconds": 0.027040481567382812
+   },
+   {
+    "configuration": "num_reads=400, num_sweeps=1000",
+    "status": "Success",
+    "cost": 17269.325,
+    "raw_feasible_pct": 98.75,
+    "final_feasible_pct": 98.75,
+    "seconds": 0.31594300270080566
+   },
+   {
+    "configuration": "mw_precision=20",
+    "status": "Success",
+    "cost": 17319.325,
+    "raw_feasible_pct": 96.25,
+    "final_feasible_pct": 96.25,
+    "seconds": 0.03132176399230957
+   },
+   {
+    "configuration": "tighten_bounds=False",
+    "status": "Success",
+    "cost": 17470.0,
+    "raw_feasible_pct": 96.25,
+    "final_feasible_pct": 96.25,
+    "seconds": 0.023421525955200195
+   },
+   {
+    "configuration": "penalty_safety=2.0",
+    "status": "Success",
+    "cost": 17799.325,
+    "raw_feasible_pct": 95.0,
+    "final_feasible_pct": 95.0,
+    "seconds": 0.035553693771362305
+   },
+   {
+    "configuration": "encoding=unary",
+    "status": "Success",
+    "cost": 18879.325,
+    "raw_feasible_pct": 100.0,
+    "final_feasible_pct": 100.0,
+    "seconds": 0.27200984954833984
+   },
+   {
+    "configuration": "encoding=bounded",
+    "status": "Success",
+    "cost": 18129.325,
+    "raw_feasible_pct": 100.0,
+    "final_feasible_pct": 100.0,
+    "seconds": 0.05735325813293457
+   },
+   {
+    "configuration": "formulation=dc_theta",
+    "status": "Success",
+    "cost": 17079.325,
+    "raw_feasible_pct": 15.0,
+    "final_feasible_pct": 15.0,
+    "seconds": 0.06969523429870605
+   }
+  ],
+  "brute_force": {
+   "precision": 100.0,
+   "n_variables": 12,
+   "ground_energy": 16305.442474153555,
+   "unique_ground": false,
+   "exact_best_feasible_cost": 17119.325,
+   "continuous_reference": 17479.896925616482,
+   "solver_best_feasible_cost": 17119.325
+  },
+  "networks": [
+   {
+    "network": "case4gs",
+    "status": "Infeasible: no feasible sample among 1 decoded states (200 reads); lowest-energy sample violates: balance=True, lines=False, bounds=False",
+    "cost": 69000.0,
+    "classical_reference": null,
+    "gap_pct": null,
+    "raw_feasible_pct": 0.0,
+    "lowest_energy_state_feasible": false
+   },
+   {
+    "network": "case5",
+    "status": "Success",
+    "cost": 17429.325,
+    "classical_reference": 17479.896925616482,
+    "gap_pct": -0.28931478161275026,
+    "raw_feasible_pct": 99.0,
+    "lowest_energy_state_feasible": true
+   },
+   {
+    "network": "case9",
+    "status": "Success",
+    "cost": 5221.0,
+    "classical_reference": 5216.0266077472725,
+    "gap_pct": 0.09534829146271308,
+    "raw_feasible_pct": 97.5,
+    "lowest_energy_state_feasible": true
+   },
+   {
+    "network": "case14",
+    "status": "Success",
+    "cost": 7834.05,
+    "classical_reference": 7642.593734939246,
+    "gap_pct": 2.50512158176724,
+    "raw_feasible_pct": 99.5,
+    "lowest_energy_state_feasible": true
+   },
+   {
+    "network": "case30",
+    "status": "Success",
+    "cost": 570.899,
+    "classical_reference": 565.2059663999223,
+    "gap_pct": 1.0072493813785164,
+    "raw_feasible_pct": 99.0,
+    "lowest_energy_state_feasible": true
+   }
+  ]
+ }
+}

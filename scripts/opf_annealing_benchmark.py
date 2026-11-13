@@ -20,6 +20,7 @@ from homemade_grids.small_grids import case3_low_gen, case3_high_gen, case4_low_
 from solvers.qubo_formulator import QuboFormulator
 
 from solvers.classical_ip_solver import ClassicalIPSolver
+from solvers.simulated_annealing_solver import SimulatedAnnealingSolver
 from solvers.simulated_quantum_annealing.emulated_qpu_solver import EmulatedQPUSolver
 
 # Pipeline layout (one pass of run_pipeline):
@@ -216,12 +217,9 @@ def solve_discrete_exact(net, formulator_config):
     raise NotImplementedError("discrete exact solver not written yet")
 
 
-def solve_logical_sa(net, formulator_config, num_reads, num_sweeps):
-    """PLACEHOLDER: simulated annealing on the discretised QUBO (no embedding, no hardware effects).
-    Replace the body with the call into the new module once it exists. The earlier version of this script ran
-        SimulatedAnnealingSolver(**formulator_config, num_reads=num_reads, num_sweeps=num_sweeps).solve_opf(net)
-    and saved the result as sa_<formulation>_enc_<encoding>_prec_<precision>.json."""
-    raise NotImplementedError("logical SA solver module not written yet")
+def solve_logical_sa(net, formulator_config, num_reads, num_sweeps, sa_config=None):
+    return SimulatedAnnealingSolver(**formulator_config, num_reads=num_reads, num_sweeps=num_sweeps,
+                                    **(sa_config or {})).solve_opf(net)
 
 ###############################################################################################################
 #                                           Summary tables
@@ -446,12 +444,14 @@ def run_pipeline(formulator_config, pristine_net, num_reads=500, num_sweeps=2000
         lambda: solve_discrete_exact(copy.deepcopy(pristine_net), formulator_config), cache)
     
     # 3b. Logical SA: search error of a classical annealer on the discretised problem
+    sa_config=dict(postprocess="logical")
+
     sa_payload = _run_step(
         f"Logical SA ({form_type})", os.path.join(output_dir, f"sa_{tail}.json"),
         {"step": "logical_sa", "network": net_id, "formulator_config": formulator_config,
-         "num_reads": num_reads, "num_sweeps": num_sweeps},
+         "num_reads": num_reads, "num_sweeps": num_sweeps, "sa_config": sa_config},
         original_problem_parameters,
-        lambda: solve_logical_sa(copy.deepcopy(pristine_net), formulator_config, num_reads, num_sweeps), cache)
+        lambda: solve_logical_sa(copy.deepcopy(pristine_net), formulator_config, num_reads, num_sweeps, sa_config), cache)
 
     # ------------------------------------------------------------------------------------------------------------------------------------ #
     # STEP 4: Hardware-Aware Analog Simulation (Emulated QPU)

@@ -19,6 +19,8 @@ import dwave_networkx as dnx
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
+from dwave.embedding import embed_bqm
+
 from solvers.qubo_formulator import QuboFormulator
 from solvers.simulated_quantum_annealing.s1_hardware import Hardware, Schedule
 from solvers.simulated_quantum_annealing.s1b_embedding import find_embeddings, select_best
@@ -254,20 +256,16 @@ def run_pipeline():
     print(" PENALTY MULTIPLIERS & OPEN-FORM EQUATION INSPECTION")
     print("=" * 80)
     
-    # Print individual constraint penalty weights and scaling factors
     print(f"Balance Penalty Multiplier (lambda_balance): {formulator.lambda_balance}")
     print(f"Line Limit Penalty Multipliers (lambda_line): {formulator.lambda_line}")
     
-    # Reconstruct and print the open-form polynomial equation from the BQM
     print("\nFull Open-Form Quadratic Polynomial H(b):")
     polynomial_lines = [f"H(b) = {bqm.offset:.4f}"]
     
-    # Add linear terms
     for var, coef in sorted(bqm.linear.items(), key=lambda x: str(x[0])):
         if abs(coef) > 1e-6:
-            polynomial_lines.append(f"       {coef:+.4f} * {var}")
+            polynomial_lines.append(f"       {coef:+.4f} {var}")
             
-    # Add quadratic coupling terms
     for (u, v), coef in sorted(bqm.quadratic.items(), key=lambda x: (str(x[0]), str(x[1]))):
         if abs(coef) > 1e-6:
             polynomial_lines.append(f"       {coef:+.4f} * {u} * {v}")
@@ -277,11 +275,10 @@ def run_pipeline():
     print("\n" + "=" * 80)
     print(" STEP 2: HARDWARE TOPOLOGY & MINOR EMBEDDING")
     print("=" * 80)
-    # Define an ideal Zephyr hardware graph (Z(4,4) or Z(12,4))
     hw = Hardware.ideal_zephyr(m=2, t=3)
     print(hw.summary())
     
-    embeddings = find_embeddings(bqm, hw, methods=("clique", "minorminer", "layout", "mm_from_clique"), seeds=(0,1,2))
+    embeddings = find_embeddings(bqm, hw, methods=("clique", "minorminer", "layout", "mm_from_clique"), seeds=(0, 1, 2))
     chosen_label, embedding = select_best(embeddings, key=("physical", "max_chain", "mean_chain"))
 
     print(f"Chosen embedding method: {chosen_label}")
@@ -291,21 +288,66 @@ def run_pipeline():
     print(" STEP 3: EMULATED QPU PIPELINE EXECUTION")
     print("=" * 80)
 
-    export_embedding_graphs(bqm, hw, embedding)
+    # export_embedding_graphs(bqm, hw, embedding)
 
-    # Emulator part
+    print("\n" + "=" * 80)
+    print(" LOGICAL ISING HAMILTONIAN INSPECTION H_Ising(s)")
+    print("=" * 80)
+    
+    # Convert BQM to Ising model (returns biases h, couplers J, and offset energy)
+    ising_h, ising_j, ising_offset = bqm.to_ising()
+    
+    ising_lines = [f"H_Ising(s) = {ising_offset:.4f}"]
+    
+    for var, bias in sorted(ising_h.items(), key=lambda x: str(x[0])):
+        if abs(bias) > 1e-6:
+            ising_lines.append(f"       {bias:+.4f} * s_{var}")
+            
+    for (u, v), coupling in sorted(ising_j.items(), key=lambda x: (str(x[0]), str(x[1]))):
+        if abs(coupling) > 1e-6:
+            ising_lines.append(f"       {coupling:+.4f} * s_{u} * s_{v}")
+            
+    print("\n".join(ising_lines))
+
+    print("\n" + "=" * 80)
+    print(" VERBOSE EMULATOR & PROVENANCE INSPECTION")
+    print("=" * 80)
+    
+    print("--- 1. QUBO-to-Ising Translation & Raw Ranges ---")
+    print(f"Original BQM Variables: {len(bqm.variables)}")
+    print(f"Original BQM Interactions: {len(bqm.quadratic)}")
+    
+    lin_vals = list(bqm.linear.values())
+    quad_vals = list(bqm.quadratic.values())
+    print(f"BQM Linear Range: [{min(lin_vals):.2f}, {max(lin_vals):.2f}]")
+    print(f"BQM Quadratic Range: [{min(quad_vals):.2f}, {max(quad_vals):.2f}]")
+    
+    print("\n--- 2. Minor Embedding Chain Statistics ---")
+    print(f"Chosen Embedding Method: {chosen_label}")
+    print(f"Embedding Footprint: {embeddings[chosen_label]['stats']}")
+    print("Detailed Chain Mappings (Logical Qubit -> Physical Qubit Chain):")
+    for log_var, chain in sorted(embedding.items(), key=lambda x: str(x[0])):
+        print(f"  {log_var} -> Physical Qubits {chain} (length = {len(chain)})")
+
     emulator = EmulatedQPU(
         hardware=hw,
         sampler="sa",
         sampler_kwargs={"num_sweeps": 500},
         dac_bits=5,
-        ice_sigma_h=0.02,
-        ice_sigma_j=0.01,
         schedule=None,
         seed=42
     )
 
-    print("Running EmulatedQPU sampling and decoding...")
+    print("\n--- 3. Emulated QPU Hardware Constraints & Noise Models ---")
+    print(f"Target Sampler: {emulator.sampler}")
+    print(f"DAC Resolution: {emulator.dac_bits} bits (2^{emulator.dac_bits} = {2**emulator.dac_bits} discrete levels)")
+    
+    sigma_h_val = getattr(emulator, "sigma_h", getattr(emulator, "ice_sigma_h", "N/A"))
+    sigma_j_val = getattr(emulator, "sigma_j", getattr(emulator, "ice_sigma_j", "N/A"))
+    print(f"Inter-Connect Error (ICE) Sigma h (bias noise): {sigma_h_val}")
+    print(f"Inter-Connect Error (ICE) Sigma j (coupler noise): {sigma_j_val}")
+
+    print("\nRunning EmulatedQPU sampling and decoding...")
     result = emulator.sample(
         logical_bqm=bqm,
         embedding=embedding,
@@ -316,10 +358,62 @@ def run_pipeline():
     )
 
     print("\n" + "=" * 80)
+    print(" MAPPING DIAGNOSTICS & POST-QUANTIZATION PHYSICAL HAMILTONIAN H_phys(s)")
+    print("=" * 80)
+    
+    mapping_info = result.info.get("mapping", {})
+    for k, v in mapping_info.items():
+        print(f"  {k}: {v}")
+
+    logical_spin = bqm.change_vartype(dimod.SPIN, inplace=False)
+    embedded_bqm = embed_bqm(logical_spin, embedding, hw.graph, chain_strength=result.chain_strength)
+    ideal_ar = IsingArrays.from_bqm(embedded_bqm)
+    
+    qubit_to_var = {q: v for v, chain in embedding.items() for q in chain}
+    owner = np.array([qubit_to_var[lbl] for lbl in ideal_ar.labels], dtype=object)
+    is_chain = owner[ideal_ar.rows] == owner[ideal_ar.cols]
+    
+    chain_j_range = hw.extended_j_range if emulator.use_extended_j else hw.j_range
+    scaled_ar, factor = scale_to_hardware(
+        ideal_ar, hw.h_range, hw.j_range, is_chain=is_chain, chain_j_range=chain_j_range
+    )
+    programmed_ar = quantise(
+        scaled_ar, hw.h_range, hw.j_range, emulator.dac_bits, is_chain=is_chain, chain_j_range=chain_j_range
+    )
+
+    print(f"\nExact Programmed Physical Biases (23 qubits) [Ideal -> Scaled -> 5-bit DAC Quantized]:")
+    for idx, q in enumerate(programmed_ar.labels):
+        log_owner = qubit_to_var[q]
+        print(f"  q_{q:<3} ({log_owner:<11}): ideal={ideal_ar.h[idx]:+10.4f} | scaled={scaled_ar.h[idx]:+9.6f} | DAC={programmed_ar.h[idx]:+9.6f}")
+
+    print(f"\nExact Programmed Physical Couplers ({len(programmed_ar.J)} edges) [Ideal -> Scaled -> 5-bit DAC Quantized]:")
+    for k, (r, c) in enumerate(zip(programmed_ar.rows, programmed_ar.cols)):
+        qu, qv = programmed_ar.labels[r], programmed_ar.labels[c]
+        kind = "INTRA-CHAIN" if is_chain[k] else "inter-chain"
+        print(f"  ({qu:>2}, {qv:>2}) [{kind:<11} | {qubit_to_var[qu]}<->{qubit_to_var[qv]}]: "
+              f"ideal={ideal_ar.J[k]:+11.4f} | scaled={scaled_ar.J[k]:+9.6f} | DAC={programmed_ar.J[k]:+9.6f}")
+
+    print("\n--- 4. Resolved Hardware Parameters & Provenance Inspection ---")
+    print(f"Computed Optimal Chain Strength (J_F): {result.chain_strength}")
+    print(f"Hardware Scale Factor: {getattr(result, 'scale_factor', 'N/A')}")
+    
+    print("\n--- 5. Inspecting Available Result Object Attributes ---")
+    print(dir(result))
+    
+    for attr in ["h_scaled", "j_scaled", "scaled_bqm", "ising_model", "physical_ising", "quantized_h", "quantized_j"]:
+        if hasattr(result, attr):
+            print(f"Result attribute '{attr}':", getattr(result, attr))
+
+    if hasattr(result, "embedding_stats") and result.embedding_stats:
+        print(f"Result Embedding Stats: {result.embedding_stats}")
+        
+    print("=" * 80)
+
+    print("\n" + "=" * 80)
     print(" STEP 4: RESULTS AND FEASIBILITY ANALYSIS")
     print("=" * 80)
     print(f"Chain Strength Used: {result.chain_strength}")
-    print(f"Hardware Scale Factor: {result.scale_factor}")
+    print(f"Hardware Scale Factor: {getattr(result, 'scale_factor', 'N/A')}")
     print(f"Embedding Footprint: {result.embedding_stats}")
     
     print("\nDecoding solution back to power flow domain...")

@@ -1,0 +1,248 @@
+{
+ "settings": {
+  "num_reads": 80,
+  "num_sweeps": 200,
+  "seed": 7,
+  "seed_used": 7,
+  "max_decode": null,
+  "postprocess": null,
+  "sampler_kwargs": {},
+  "selection_rule": "lowest-energy feasible read of the final stage (else lowest-energy read)"
+ },
+ "solution": {
+  "cost_eur_per_hr": 17379.325,
+  "generator_dispatch_mw": {
+   "0": {
+    "p_mw": 30.0
+   },
+   "1": {
+    "p_mw": 304.067
+   },
+   "2": {
+    "p_mw": 510.0
+   }
+  },
+  "static_generator_dispatch_mw": {
+   "0": {
+    "p_mw": 140.0
+   }
+  },
+  "slack_dispatch_mw": {
+   "0": {
+    "p_mw": 15.933
+   }
+  },
+  "grid_state": {
+   "max_line_loading_percent": 101.274,
+   "max_voltage_pu": 1.0,
+   "min_voltage_pu": 1.0,
+   "feasibility": {
+    "total_generation_mw": 1000.0,
+    "total_load_mw": 1000.0,
+    "raw_imbalance_mw": -5.933,
+    "cost_raw_dispatch_eur": 17142.024,
+    "max_line_violation_mw": 3.058,
+    "tolerance_mw": 10.0,
+    "is_feasible": true,
+    "line_flows_mw": {
+     "line_0": 255.679,
+     "line_1": 181.263,
+     "line_2": -266.942,
+     "line_3": -44.321,
+     "line_4": -40.253,
+     "line_5": -243.058
+    },
+    "bus_angles_rad": {
+     "0": 0.055104,
+     "1": -0.016742,
+     "2": -0.011955,
+     "3": 0.0,
+     "4": 0.072188
+    }
+   }
+  }
+ },
+ "metadata": {
+  "status": "Success",
+  "solver_name": "neal_simulated_annealing_dc_ptdf",
+  "execution_time_seconds": {
+   "total": 0.0375,
+   "formulation_cpu": 0.0173,
+   "sampling_cpu_sa": 0.0128,
+   "postprocess_cpu": 0.0,
+   "decoding_cpu": 0.0073
+  },
+  "problem_complexity": {
+   "formulation": "dc_ptdf",
+   "encoding": "radix",
+   "classical_domain_input": {
+    "continuous_variables": 5,
+    "equality_constraints": 1,
+    "inequality_constraints": 4
+   },
+   "quantum_domain_qubo": {
+    "total_logical_qubits": 31,
+    "qubits_used_for_variables": 25,
+    "qubits_used_for_dispatch": 25,
+    "qubits_used_for_angles": 0,
+    "qubits_wasted_on_slack": 6,
+    "num_interactions": 435,
+    "density_percent": 93.55,
+    "offset": 4579214.461894909
+   },
+   "hardware_limits": {
+    "max_coefficient_magnitude": 2120678.0607,
+    "min_coefficient_magnitude": 199.235,
+    "dac_precision_warning": true,
+    "ising_max": 209893.7144,
+    "ising_min": 49.808756,
+    "ising_dynamic_range": 4213.99,
+    "ising_at_risk_percent": 71.24
+   },
+   "penalties": {
+    "balance": 4.0,
+    "line": {
+     "line_0": 3.0,
+     "line_1": 3.0,
+     "line_2": 3.0,
+     "line_3": 3.0,
+     "line_4": 3.0,
+     "line_5": 3.0
+    }
+   }
+  },
+  "hardware_feasibility_report": {
+   "applicable": false,
+   "note": "logical solver: no embedding, scaling, quantisation or noise"
+  },
+  "qubo_parameters": {
+   "mw_precision": 10.0,
+   "angle_precision": null,
+   "penalty_balance": null,
+   "penalty_line": null,
+   "seed": 7
+  },
+  "solver_settings": {
+   "num_reads": 80,
+   "num_sweeps": 200,
+   "seed": 7,
+   "seed_used": 7,
+   "max_decode": null,
+   "postprocess": null,
+   "sampler_kwargs": {},
+   "selection_rule": "lowest-energy feasible read of the final stage (else lowest-energy read)"
+  },
+  "algorithmic_metrics": {
+   "framework": "pure_qubo_discretization",
+   "num_iterations": 1,
+   "optimality_gap_percent": null,
+   "sampler_stats": {
+    "num_reads_requested": 80,
+    "num_sweeps_per_read": 200,
+    "unique_states_found": 80,
+    "energy_best": 17404.33,
+    "energy_mean": 20809.89,
+    "energy_worst": 25170.41,
+    "energy_std_dev": 1988.88,
+    "reads_checked_for_feasibility": 80,
+    "feasible_read_found": true,
+    "chosen_sample_energy": 17404.334200427053,
+    "selected_stage": "raw",
+    "postprocess": null,
+    "fraction_of_raw_reads_at_lowest_energy": 0.0125,
+    "stage_quality": {
+     "raw": {
+      "n_reads": 80,
+      "n_reads_total": 80,
+      "decode_capped": false,
+      "n_feasible": 80,
+      "feasible_pct": 100.0,
+      "feasible_ci95_pct": [
+       95.4180263735425,
+       100.0
+      ],
+      "n_unique_states_decoded": 80,
+      "n_unique_states_total": 80,
+      "cost_of_lowest_energy_feasible": 17379.325,
+      "lowest_cost_among_feasible": 17379.325,
+      "violations_among_infeasible_reads": {
+       "balance": 0,
+       "lines": 0,
+       "bounds": 0
+      },
+      "lowest_energy_state_is_feasible": true,
+      "infeasible_states_below_best_feasible": 0,
+      "energy": {
+       "best": 17404.334200427053,
+       "mean": 20809.888522426234,
+       "worst": 25170.410463392793,
+       "std": 1988.8802378765777,
+       "fraction_of_reads_at_lowest_energy": 0.0125
+      }
+     },
+     "final": {
+      "n_reads": 80,
+      "n_reads_total": 80,
+      "decode_capped": false,
+      "n_feasible": 80,
+      "feasible_pct": 100.0,
+      "feasible_ci95_pct": [
+       95.4180263735425,
+       100.0
+      ],
+      "n_unique_states_decoded": 80,
+      "n_unique_states_total": 80,
+      "cost_of_lowest_energy_feasible": 17379.325,
+      "lowest_cost_among_feasible": 17379.325,
+      "violations_among_infeasible_reads": {
+       "balance": 0,
+       "lines": 0,
+       "bounds": 0
+      },
+      "lowest_energy_state_is_feasible": true,
+      "infeasible_states_below_best_feasible": 0,
+      "energy": {
+       "best": 17404.334200427053,
+       "mean": 20809.888522426234,
+       "worst": 25170.410463392793,
+       "std": 1988.8802378765777,
+       "fraction_of_reads_at_lowest_energy": 0.0125
+      }
+     }
+    }
+   }
+  },
+  "hardware_metrics": {
+   "qpu_target": "classical_cpu_simulated",
+   "perfect_logical_solver": true,
+   "logical_qubits": 31,
+   "physical_qubits": 31,
+   "qubit_overhead_factor": 1.0,
+   "max_chain_length": 1,
+   "mean_chain_length": 1.0,
+   "circuit_depth": 0
+  },
+  "run": {
+   "sampler_info": {
+    "beta_range": [
+     3.268516770158811e-07,
+     0.053186606017554094
+    ],
+    "beta_schedule_type": "geometric",
+    "timing": {
+     "preprocessing_ns": 690906,
+     "sampling_ns": 11832739,
+     "postprocessing_ns": 244738
+    }
+   },
+   "started_utc": "2026-11-13T07:16:21+00:00",
+   "seed_given": 7,
+   "seed_used": 7,
+   "software": {
+    "dwave-samplers": "1.8.0",
+    "dimod": "0.12.22",
+    "numpy": "2.2.6"
+   }
+  }
+ }
+}

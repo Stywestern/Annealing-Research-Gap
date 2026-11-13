@@ -94,9 +94,9 @@
             "status": "Success",
             "solver_name": "pandapower_dc_interior_point",
             "execution_time_seconds": {
-                "total": 0.0409,
+                "total": 0.1992,
                 "qpu_master": 0.0,
-                "cpu_subproblem": 0.0409
+                "cpu_subproblem": 0.1992
             },
             "problem_complexity": {
                 "num_continuous_variables": 9,
@@ -117,5 +117,14 @@
                 "circuit_depth": 0
             }
         }
+    },
+    "run_config": {
+        "signature_hash": "0f63fce3a07c",
+        "signature": {
+            "formulation": "dc",
+            "network": "b174f37174b0",
+            "step": "classical_ip"
+        },
+        "created_utc": "2026-11-13T07:17:13+00:00"
     }
 }
